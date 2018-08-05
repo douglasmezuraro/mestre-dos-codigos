@@ -2,7 +2,7 @@ program MestreDosCodigos;
 
 uses
   Vcl.Forms,
-  MainForm in 'forms\MainForm.pas' {Form1},
+  Forms.Main in 'forms\Forms.Main.pas' {Main},
   Utils.DynamicArray in 'utils\Utils.DynamicArray.pas',
   Model.Person in 'models\Model.Person.pas',
   Forms.ExerciseOne in 'forms\Forms.ExerciseOne.pas' {ExerciseOne},
@@ -14,7 +14,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TMain, Main);
   Application.Run;
 
   ReportMemoryLeaksOnShutdown := True;

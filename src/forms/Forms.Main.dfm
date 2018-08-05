@@ -1,9 +1,9 @@
-object Form1: TForm1
+object Main: TMain
   Left = 0
   Top = 0
-  Caption = 'Form1'
-  ClientHeight = 187
-  ClientWidth = 418
+  Caption = 'Mestre dos C'#243'digos'
+  ClientHeight = 600
+  ClientWidth = 800
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,15 +16,15 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 13
   object MainMenu: TMainMenu
-    Left = 136
-    Top = 56
-    object Exerccio11: TMenuItem
+    Left = 16
+    Top = 52
+    object MenuItemExerciseOne: TMenuItem
       Action = ActionExerciseOne
     end
   end
   object ActionList: TActionList
-    Left = 96
-    Top = 104
+    Left = 16
+    Top = 8
     object ActionExerciseOne: TAction
       Caption = 'Exerc'#237'cio 1'
       OnExecute = ActionExerciseOneExecute
