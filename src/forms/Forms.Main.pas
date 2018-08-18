@@ -33,13 +33,13 @@ implementation
 {$R *.dfm}
 
 uses
-  Forms.ExerciseOne;
+  Forms.Exercise1;
 
 procedure TMain.ActionExerciseOneExecute(Sender: TObject);
 var
-  View: TExerciseOne;
+  View: TExercise1;
 begin
-  View := TExerciseOne.Create(Self);
+  View := TExercise1.Create(Self);
   try
     View.ShowModal;
   finally
