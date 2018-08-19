@@ -15,9 +15,10 @@ uses
   Vcl.Dialogs,
   System.Actions,
   Vcl.ActnList,
-  Vcl.ExtCtrls,
+
   Vcl.Buttons,
-  Utils.Messages;
+  System.StrUtils,
+  Utils.Messages, Vcl.ExtCtrls;
 
 type
   TCrud = class(TForm)
@@ -34,19 +35,19 @@ type
     procedure ActionRemoveExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-  private
-    function GetComponentLabel(Component: TComponent): string;
-    function ValidateMandatoryFields(out ComponentLabel: string): Boolean;
   protected
+    { Crud actions }
     procedure Insert; virtual;
     procedure Edit; virtual;
     procedure Remove; virtual;
-    {}
+    { Form initialization and finalization }
     procedure Initialize;
     procedure Finalize;
-    {}
-    procedure DefineMandatoryFields; virtual; abstract;
-    procedure SetMandatoryFields(const Components: TArray<TComponent>);
+    { Mandatory components }
+    procedure DefineMandatoryComponents(Components: TArray<TComponent>); overload;
+    procedure DefineMandatoryComponents; overload; virtual; abstract;
+    { Other useful methods }
+    procedure Clear; virtual; abstract;
   end;
 
 implementation
@@ -69,7 +70,7 @@ const
 var
   ComponentLabel: string;
 begin
-  if ValidateMandatoryFields(ComponentLabel) then
+  if Self.ValidateMandatoryComponents(ComponentLabel) then
     Insert
   else
     TMessage.Information(Format(MESSAGE, [ComponentLabel.QuotedString]));
@@ -78,6 +79,11 @@ end;
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
 begin
   Remove;
+end;
+
+procedure TCrud.DefineMandatoryComponents(Components: TArray<TComponent>);
+begin
+  SetMandatoryComponents(Components);
 end;
 
 procedure TCrud.Edit;
@@ -100,29 +106,9 @@ begin
   Initialize;
 end;
 
-function TCrud.GetComponentLabel(Component: TComponent): string;
-var
-  ComponentIndex: Integer;
-begin
-  Result := Component.Name;
-  for ComponentIndex := 0 to Pred(ComponentCount) do
-  begin
-    if Components[ComponentIndex] is TLabel then
-    begin
-      if (Components[ComponentIndex] as TLabel).FocusControl = Component then
-        Exit((Components[ComponentIndex] as TLabel).Caption)
-    end
-    else if Components[ComponentIndex] is TLabeledEdit then
-    begin
-      if Components[ComponentIndex] = Component then
-        Exit((Components[ComponentIndex] as TLabeledEdit).EditLabel.Caption);
-    end
-  end;
-end;
-
 procedure TCrud.Initialize;
 begin
-  DefineMandatoryFields;
+  DefineMandatoryComponents;
 end;
 
 procedure TCrud.Insert;
@@ -132,39 +118,7 @@ end;
 
 procedure TCrud.Remove;
 begin
-
-end;
-
-procedure TCrud.SetMandatoryFields(const Components: TArray<TComponent>);
-var
-  Component: TComponent;
-begin
-  for Component in Components do
-    Component.Mandatory := True;
-end;
-
-function TCrud.ValidateMandatoryFields(out ComponentLabel: string): Boolean;
-var
-  ComponentIndex: Integer;
-  Component: TComponent;
-begin
-  Result := True;
-  ComponentLabel := string.Empty;
-  for ComponentIndex := 0 to Pred(ComponentCount) do
-  begin
-    Component := Components[ComponentIndex];
-    if Component is TCustomEdit then
-    begin
-      if not (Component as TCustomEdit).Mandatory then
-        Continue;
-
-      if (Component as TCustomEdit).IsEmpty then
-      begin
-        ComponentLabel := GetComponentLabel(Component);
-        Exit(False);
-      end;
-    end;
-  end;
+  Clear;
 end;
 
 end.

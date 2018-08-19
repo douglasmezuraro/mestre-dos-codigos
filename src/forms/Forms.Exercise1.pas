@@ -26,7 +26,7 @@ type
     procedure ActionIndexExitExecute(Sender: TObject);
   private
     FArray: IDynamicArray<TPerson>;
-    { Getters and Setters }
+    { Getters and setters }
     function GetCount: Integer;
     procedure SetCount(const Value: Integer);
     function GetIndex: Integer;
@@ -44,13 +44,15 @@ type
     { Methods }
     function ViewToModel: TPerson;
     procedure ModelToView(const Model: TPerson);
-    procedure ClearView;
   protected
+    { Crud actions }
     procedure Insert; override;
     procedure Edit; override;
     procedure Remove; override;
-    {}
-    procedure DefineMandatoryFields; override;
+    { Mandatory componentes }
+    procedure DefineMandatoryComponents; override;
+    { Other useful methods }
+    procedure Clear; override;
   public
     constructor Create(AOwner: TComponent); override;
     property Count: Integer read GetCount write SetCount;
@@ -77,7 +79,7 @@ begin
   ModelToView(FArray.Item[Index]);
 end;
 
-procedure TExercise1.ClearView;
+procedure TExercise1.Clear;
 begin
   Name := string.Empty;
   LastName := string.Empty;
@@ -93,10 +95,10 @@ begin
   Count := ZeroValue;
 end;
 
-procedure TExercise1.DefineMandatoryFields;
+procedure TExercise1.DefineMandatoryComponents;
 begin
   inherited;
-  SetMandatoryFields([
+  Self.DefineMandatoryComponents([
     LabeledEditName,
     LabeledEditLastName,
     MaskEditBirth,
@@ -109,21 +111,17 @@ begin
 end;
 
 procedure TExercise1.Insert;
-var
-  Element: TPerson;
 begin
   inherited;
-  Element := ViewToModel;
-  FArray.Insert(Element);
-  Count := FArray.IndexOf(Element);
-  Index := Count;
+  FArray.Insert(ViewToModel);
+  Count := FArray.Count;
+  Index := FArray.Count;
 end;
 
 procedure TExercise1.Remove;
 begin
-  inherited;
   FArray.Remove(FArray.Item[Index]);
-  ClearView;
+  inherited;
 end;
 
 function TExercise1.GetBirth: TDateTime;
@@ -165,7 +163,7 @@ procedure TExercise1.ModelToView(const Model: TPerson);
 begin
   if not Assigned(Model) then
   begin
-    ClearView;
+    Clear;
     Exit;
   end;
 
