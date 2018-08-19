@@ -10,7 +10,8 @@ uses
   Utils.ComponentHelper in 'utils\Utils.ComponentHelper.pas',
   Forms.Crud in 'forms\Forms.Crud.pas' {Crud},
   Forms.Exercise1 in 'forms\Forms.Exercise1.pas' {Exercise1},
-  Utils.Messages in 'utils\Utils.Messages.pas';
+  Utils.Messages in 'utils\Utils.Messages.pas',
+  Utils.Constants in 'utils\Utils.Constants.pas';
 
 {$R *.res}
 

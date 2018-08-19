@@ -3,22 +3,18 @@ unit Forms.Crud;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.StdCtrls,
-  Vcl.Dialogs,
   System.Actions,
+  System.Classes,
+  System.SysUtils,
+  Utils.ComponentHelper,
+  Utils.Constants,
+  Utils.Messages,
   Vcl.ActnList,
-
   Vcl.Buttons,
-  System.StrUtils,
-  Utils.Messages, Vcl.ExtCtrls;
+  Vcl.ComCtrls,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.Forms;
 
 type
   TCrud = class(TForm)
@@ -30,6 +26,7 @@ type
     ButtonInsert: TSpeedButton;
     ButtonEdit: TSpeedButton;
     ButtonRemove: TSpeedButton;
+    StatusBarStatus: TStatusBar;
     procedure ActionInsertExecute(Sender: TObject);
     procedure ActionEditExecute(Sender: TObject);
     procedure ActionRemoveExecute(Sender: TObject);
@@ -48,14 +45,12 @@ type
     procedure DefineMandatoryComponents; overload; virtual; abstract;
     { Other useful methods }
     procedure Clear; virtual; abstract;
+    procedure SetStatusBarText(const Text: string);
   end;
 
 implementation
 
 {$R *.dfm}
-
-uses
-  Utils.ComponentHelper;
 
 { TCrud }
 
@@ -109,6 +104,7 @@ end;
 procedure TCrud.Initialize;
 begin
   DefineMandatoryComponents;
+  SetStatusBarText(Format('%s campos obrigatórios.', [MANDATORY_CHAR]));
 end;
 
 procedure TCrud.Insert;
@@ -119,6 +115,11 @@ end;
 procedure TCrud.Remove;
 begin
   Clear;
+end;
+
+procedure TCrud.SetStatusBarText(const Text: string);
+begin
+  StatusBarStatus.SimpleText := Text;
 end;
 
 end.

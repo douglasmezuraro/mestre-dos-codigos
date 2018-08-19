@@ -1,7 +1,7 @@
 object Crud: TCrud
   Left = 0
   Top = 0
-  Caption = '<Changed in Design Time>'
+  Caption = '<Changed in designtime>'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace
@@ -18,11 +18,12 @@ object Crud: TCrud
   TextHeight = 13
   object PanelButtons: TPanel
     Left = 0
-    Top = 568
+    Top = 549
     Width = 800
     Height = 32
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 472
     object ButtonInsert: TSpeedButton
       Left = 1
       Top = 1
@@ -55,6 +56,16 @@ object Crud: TCrud
       ExplicitLeft = 304
       ExplicitHeight = 45
     end
+  end
+  object StatusBarStatus: TStatusBar
+    Left = 0
+    Top = 581
+    Width = 800
+    Height = 19
+    Panels = <>
+    SimplePanel = True
+    SimpleText = '<Changed in runtime>'
+    ExplicitTop = 573
   end
   object ActionListActions: TActionList
     Left = 504

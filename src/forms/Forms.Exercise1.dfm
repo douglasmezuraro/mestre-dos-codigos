@@ -1,5 +1,6 @@
 inherited Exercise1: TExercise1
   Caption = 'Exercise1'
+  ExplicitTop = 8
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBoxData: TGroupBox [1]
@@ -79,6 +80,7 @@ inherited Exercise1: TExercise1
       MaxLength = 10
       TabOrder = 2
       Text = ''
+      OnExit = MaskEditBirthExit
     end
   end
   object GroupBoxIndex: TGroupBox [2]

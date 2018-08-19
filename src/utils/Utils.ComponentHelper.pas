@@ -7,6 +7,7 @@ uses
   System.Math,
   System.StrUtils,
   System.SysUtils,
+  Utils.Constants,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.Forms,
@@ -16,12 +17,17 @@ uses
 type
   TTagRole = (trUndefined, trMandatory);
 
-  TWinControlHelper = class Helper for TComponent
+  TComponentHelper = class Helper for TComponent
   private
     function GetMandatory: Boolean;
     procedure SetMandatory(const Value: Boolean);
   public
     property Mandatory: Boolean read GetMandatory write SetMandatory;
+  end;
+
+  TWinControlHelper = class Helper for TWinControl
+  public
+    procedure TrySetFocus;
   end;
 
   TCustomEditHelper = class Helper for TCustomEdit
@@ -41,16 +47,23 @@ type
 
 implementation
 
-{ TWinControlHelper }
+{ TComponentHelper }
 
-function TWinControlHelper.GetMandatory: Boolean;
+function TComponentHelper.GetMandatory: Boolean;
 begin
   Result := Self.Tag = Ord(TTagRole.trMandatory);
 end;
 
-procedure TWinControlHelper.SetMandatory(const Value: Boolean);
+procedure TComponentHelper.SetMandatory(const Value: Boolean);
 begin
   Self.Tag := IfThen(Value, Ord(TTagRole.trMandatory), Ord(TTagRole.trUndefined));
+end;
+
+{ TWinControlHelper }
+
+procedure TWinControlHelper.TrySetFocus;
+begin
+  if CanFocus then SetFocus;
 end;
 
 { TCustomEditHelper }
@@ -72,7 +85,7 @@ begin
   ComponentLabel := GetLabel(Component);
   Result := IfThen(
     Assigned(ComponentLabel),
-    ComponentLabel.Caption.Replace('*', ''),
+    string(ComponentLabel.Caption).Replace(MANDATORY_CHAR, string.Empty),
     Component.Name);
 end;
 
@@ -114,7 +127,7 @@ var
 begin
   ComponentLabel := GetLabel(Component);
   if Assigned(ComponentLabel) then
-    ComponentLabel.Caption := Concat(ComponentLabel.Caption, '*');
+    ComponentLabel.Caption := Concat(ComponentLabel.Caption, MANDATORY_CHAR);
 end;
 
 function TFormHelper.ValidateMandatoryComponents(
@@ -124,20 +137,26 @@ var
   Component: TComponent;
 begin
   Result := True;
-  for ComponentIndex := 0 to Pred(ComponentCount) do
-  begin
-    Component := Components[ComponentIndex];
-    if Component is TCustomEdit then
+  Component := nil;
+  try
+    for ComponentIndex := 0 to Pred(ComponentCount) do
     begin
-      if not (Component as TCustomEdit).Mandatory then
-        Continue;
-
-      if (Component as TCustomEdit).IsEmpty then
+      Component := Components[ComponentIndex];
+      if Component is TCustomEdit then
       begin
-        ComponentLabel := GetCaption(Component);
-        Exit(False);
+        if not (Component as TCustomEdit).Mandatory then
+          Continue;
+
+        if (Component as TCustomEdit).IsEmpty then
+        begin
+          ComponentLabel := GetCaption(Component);
+          Exit(False);
+        end;
       end;
     end;
+  finally
+    if (not Result) and (Component is TWinControl) then
+      (Component as TWinControl).TrySetFocus;
   end;
 end;
 

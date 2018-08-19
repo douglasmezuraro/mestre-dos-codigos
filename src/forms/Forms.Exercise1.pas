@@ -3,10 +3,22 @@ unit Forms.Exercise1;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Forms.Crud, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Mask, System.Actions, Vcl.ActnList, Vcl.Buttons, Utils.DynamicArrayInterface,
-  Model.Person, Model.Gender, System.Math;
+  Forms.Crud,
+  Model.Gender,
+  Model.Person,
+  System.Actions,
+  System.Classes,
+  System.Math,
+  System.SysUtils,
+  Utils.DynamicArrayInterface,
+  Vcl.ActnList,
+  Vcl.Buttons,
+  Vcl.ComCtrls,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.Forms,
+  Vcl.Mask,
+  Vcl.StdCtrls;
 
 type
   TExercise1 = class(TCrud)
@@ -24,6 +36,7 @@ type
     LabeledEditIndex: TLabeledEdit;
     ActionIndexExit: TAction;
     procedure ActionIndexExitExecute(Sender: TObject);
+    procedure MaskEditBirthExit(Sender: TObject);
   private
     FArray: IDynamicArray<TPerson>;
     { Getters and setters }
@@ -69,6 +82,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Utils.Messages,
   Utils.DynamicArray;
 
 { TCrud1 }
@@ -93,6 +107,7 @@ begin
   inherited Create(AOwner);
   FArray := TDynamicArray<TPerson>.Create;
   Count := ZeroValue;
+  LabeledEditName.CanFocus
 end;
 
 procedure TExercise1.DefineMandatoryComponents;
@@ -157,6 +172,17 @@ end;
 function TExercise1.GetPhone: string;
 begin
   Result := MaskEditPhone.Text;
+end;
+
+procedure TExercise1.MaskEditBirthExit(Sender: TObject);
+var
+  Date: TDateTime;
+begin
+  if not TryStrToDate((Sender as TMaskEdit).Text, Date) then
+  begin
+    TMessage.Warning('Data inválida!');
+    (Sender as TMaskEdit).Text := string.Empty;
+  end;
 end;
 
 procedure TExercise1.ModelToView(const Model: TPerson);

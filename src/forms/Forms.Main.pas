@@ -5,16 +5,10 @@ interface
 uses
   System.Actions,
   System.Classes,
-  System.SysUtils,
-  System.Variants,
   Vcl.ActnList,
   Vcl.Controls,
-  Vcl.Dialogs,
   Vcl.Forms,
-  Vcl.Graphics,
-  Vcl.Menus,
-  Winapi.Messages,
-  Winapi.Windows;
+  Vcl.Menus;
 
 type
   TMain = class(TForm)
