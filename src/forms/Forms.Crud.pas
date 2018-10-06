@@ -3,7 +3,7 @@ unit Forms.Crud;
 interface
 
 uses
-
+  System.Actions,
   System.Classes,
   System.SysUtils,
   Utils.Vcl,
@@ -14,7 +14,7 @@ uses
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.Forms, System.Actions;
+  Vcl.Forms;
 
 type
   TCrud = class(TForm)
@@ -46,7 +46,7 @@ type
     { Other useful methods }
     procedure Clear; virtual; abstract;
     procedure SetStatusBarText(const Text: string);
-    procedure ControlButtons; virtual; abstract;
+    procedure ControlActions; virtual; abstract;
   end;
 
 implementation
@@ -71,13 +71,13 @@ begin
   end;
 
   Insert;
-  ControlButtons;
+  ControlActions;
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
 begin
   Remove;
-  ControlButtons;
+  ControlActions;
 end;
 
 procedure TCrud.DefineMandatoryComponents(Components: TArray<TComponent>);
@@ -109,11 +109,12 @@ procedure TCrud.Initialize;
 begin
   DefineMandatoryComponents;
   SetStatusBarText(Format('%s: campos obrigatórios.', [MANDATORY_CHAR]));
+  ControlActions;
 end;
 
 procedure TCrud.Insert;
 begin
-  Exit;
+  TMessage.Information('Inserido com sucesso!');
 end;
 
 procedure TCrud.Remove;

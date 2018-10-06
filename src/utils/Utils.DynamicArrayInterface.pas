@@ -8,11 +8,12 @@ type
     function GetCount: Integer;
     function GetItem(Index: Integer): T;
     procedure SetItem(Index: Integer; const Value: T);
-    procedure Insert(const Element: T);
+    function Insert(const Element: T): Integer;
     procedure Remove(const Element: T);
     function IsEmpty: Boolean;
     function Contains(const Element: T): Boolean;
     function IndexOf(const Element: T): Integer;
+    function InRange(const Index: Cardinal): Boolean;
     property Count: Integer read GetCount;
     property Item[Index: Integer]: T read GetItem write SetItem;
   end;

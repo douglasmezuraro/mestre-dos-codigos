@@ -19,11 +19,12 @@ type
   public
     constructor Create(const OwnsObjects: Boolean = True);
     destructor Destroy; override;
-    procedure Insert(const Element: T);
+    function Insert(const Element: T): Integer;
     procedure Remove(const Element: T);
     function IsEmpty: Boolean;
     function Contains(const Element: T): Boolean;
     function IndexOf(const Element: T): Integer;
+    function InRange(const Index: Cardinal): Boolean;
     property Count: Integer read GetCount;
     property Items[Index: Integer]: T read GetItem write SetItem;
     property OwnsObjects: Boolean read FOwnsObjects write FOwnsObjects;
@@ -33,10 +34,11 @@ implementation
 
 { TDynamicArray<T> }
 
-procedure TDynamicArray<T>.Insert(const Element: T);
+function TDynamicArray<T>.Insert(const Element: T): Integer;
 begin
+  Result := Count;
   SetLength(FArray, Succ(Count));
-  FArray[Pred(Count)] := Element;
+  FArray[Result] := Element;
 end;
 
 function TDynamicArray<T>.GetItem(Index: Integer): T;
@@ -54,6 +56,11 @@ begin
   Result := NegativeValue;
   if Values.BinarySearch<T>(FArray, Element, FoundIndex) then
     Result := FoundIndex;
+end;
+
+function TDynamicArray<T>.InRange(const Index: Cardinal): Boolean;
+begin
+  Result := Index <= Pred(Count);
 end;
 
 function TDynamicArray<T>.IsEmpty: Boolean;

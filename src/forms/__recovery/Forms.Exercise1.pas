@@ -124,7 +124,7 @@ procedure TExercise1.DateTimePickerBirthExit(Sender: TObject);
 begin
   inherited;
   if (Sender as TDateTimePicker).DateTime.Compare(TDateTime.Now) = GreaterThanValue then
-    TMessage.Warning('Data inv·lida');
+    TMessage.Warning('Data inv√°lida');
 end;
 
 procedure TExercise1.DefineMandatoryComponents;
@@ -147,7 +147,7 @@ begin
   inherited;
   if not FArray.InRange(Index) then
   begin
-    TMessage.Information('O Ìndice [%d] n„o existe no array.', [Index]);
+    TMessage.Information('O √≠ndice [%d] n√£o existe no array.', [Index]);
     Index := FArray.Count;
   end;
 end;

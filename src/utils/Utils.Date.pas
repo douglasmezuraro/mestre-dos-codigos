@@ -10,7 +10,7 @@ uses
 type
   TDateTimeHelper = record Helper for TDateTime
   public
-    const Null = 0;
+    const Null: Byte = 0;
     class function Now: TDateTime; static;
     function IsEmpty: Boolean;
     function FromString(const DateTime: string): TDateTime;
