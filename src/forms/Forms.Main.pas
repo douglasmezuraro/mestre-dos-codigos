@@ -3,12 +3,12 @@ unit Forms.Main;
 interface
 
 uses
-  System.Actions,
+
   System.Classes,
   Vcl.ActnList,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Menus;
+  Vcl.Menus, System.Actions;
 
 type
   TMain = class(TForm)

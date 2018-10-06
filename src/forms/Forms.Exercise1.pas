@@ -10,7 +10,10 @@ uses
   System.Classes,
   System.Math,
   System.SysUtils,
+  System.Types,
+  Utils.Date,
   Utils.DynamicArrayInterface,
+  Utils.Vcl,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -29,14 +32,14 @@ type
     MaskEditPhone: TMaskEdit;
     RadioGroupGender: TRadioGroup;
     LabeledEditLastName: TLabeledEdit;
-    MaskEditBirth: TMaskEdit;
     GroupBoxIndex: TGroupBox;
     LabelCount: TLabel;
     EditCount: TEdit;
     LabeledEditIndex: TLabeledEdit;
     ActionIndexExit: TAction;
+    DateTimePickerBirth: TDateTimePicker;
     procedure ActionIndexExitExecute(Sender: TObject);
-    procedure MaskEditBirthExit(Sender: TObject);
+    procedure DateTimePickerBirthExit(Sender: TObject);
   private
     FArray: IDynamicArray<TPerson>;
     { Getters and setters }
@@ -66,6 +69,7 @@ type
     procedure DefineMandatoryComponents; override;
     { Other useful methods }
     procedure Clear; override;
+    procedure ControlButtons; override;
   public
     constructor Create(AOwner: TComponent); override;
     property Count: Integer read GetCount write SetCount;
@@ -97,9 +101,15 @@ procedure TExercise1.Clear;
 begin
   Name := string.Empty;
   LastName := string.Empty;
-  Birth := ZeroValue;
+  Birth := TDateTime.Null;
   Phone := string.Empty;
   Gender := TGender.geUndefined;
+end;
+
+procedure TExercise1.ControlButtons;
+begin
+  ActionEdit.Enabled := not FArray.IsEmpty;
+  ActionRemove.Enabled := not FArray.IsEmpty;
 end;
 
 constructor TExercise1.Create(AOwner: TComponent);
@@ -107,7 +117,13 @@ begin
   inherited Create(AOwner);
   FArray := TDynamicArray<TPerson>.Create;
   Count := ZeroValue;
-  LabeledEditName.CanFocus
+end;
+
+procedure TExercise1.DateTimePickerBirthExit(Sender: TObject);
+begin
+  inherited;
+  if (Sender as TDateTimePicker).DateTime.Compare(TDateTime.Now) = GreaterThanValue then
+    TMessage.Warning('Data inválida');
 end;
 
 procedure TExercise1.DefineMandatoryComponents;
@@ -116,7 +132,7 @@ begin
   Self.DefineMandatoryComponents([
     LabeledEditName,
     LabeledEditLastName,
-    MaskEditBirth,
+    DateTimePickerBirth,
     MaskEditPhone]);
 end;
 
@@ -131,6 +147,7 @@ begin
   FArray.Insert(ViewToModel);
   Count := FArray.Count;
   Index := FArray.Count;
+  TMessage.Information('Inserido com sucesso!');
 end;
 
 procedure TExercise1.Remove;
@@ -141,7 +158,7 @@ end;
 
 function TExercise1.GetBirth: TDateTime;
 begin
-  Result := StrToDateDef(MaskEditBirth.Text, ZeroValue);
+  Result := DateTimePickerBirth.DateTime;
 end;
 
 function TExercise1.GetCount: Integer;
@@ -174,24 +191,12 @@ begin
   Result := MaskEditPhone.Text;
 end;
 
-procedure TExercise1.MaskEditBirthExit(Sender: TObject);
-var
-  Date: TDateTime;
-begin
-  if not TryStrToDate((Sender as TMaskEdit).Text, Date) then
-  begin
-    TMessage.Warning('Data inválida!');
-    (Sender as TMaskEdit).Text := string.Empty;
-  end;
-end;
-
 procedure TExercise1.ModelToView(const Model: TPerson);
 begin
+  Clear;
+
   if not Assigned(Model) then
-  begin
-    Clear;
     Exit;
-  end;
 
   Name := Model.Name;
   LastName := Model.LastName;
@@ -202,7 +207,7 @@ end;
 
 procedure TExercise1.SetBirth(const Value: TDateTime);
 begin
-  MaskEditBirth.Text := DateToStr(Value);
+  DateTimePickerBirth.DateTime := Value;
 end;
 
 procedure TExercise1.SetCount(const Value: Integer);

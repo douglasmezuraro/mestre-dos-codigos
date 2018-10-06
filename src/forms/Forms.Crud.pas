@@ -3,10 +3,10 @@ unit Forms.Crud;
 interface
 
 uses
-  System.Actions,
+
   System.Classes,
   System.SysUtils,
-  Utils.ComponentHelper,
+  Utils.Vcl,
   Utils.Constants,
   Utils.Messages,
   Vcl.ActnList,
@@ -14,7 +14,7 @@ uses
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.Forms;
+  Vcl.Forms, System.Actions;
 
 type
   TCrud = class(TForm)
@@ -46,6 +46,7 @@ type
     { Other useful methods }
     procedure Clear; virtual; abstract;
     procedure SetStatusBarText(const Text: string);
+    procedure ControlButtons; virtual; abstract;
   end;
 
 implementation
@@ -60,20 +61,23 @@ begin
 end;
 
 procedure TCrud.ActionInsertExecute(Sender: TObject);
-const
-  MESSAGE: string = 'O campo %s é obrigatório.';
 var
   ComponentLabel: string;
 begin
-  if Self.ValidateMandatoryComponents(ComponentLabel) then
-    Insert
-  else
-    TMessage.Information(Format(MESSAGE, [ComponentLabel.QuotedString]));
+  if not ValidateMandatoryComponents(ComponentLabel) then
+  begin
+    TMessage.Information('O campo %s é obrigatório.', [ComponentLabel.QuotedString]);
+    Exit;
+  end;
+
+  Insert;
+  ControlButtons;
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
 begin
   Remove;
+  ControlButtons;
 end;
 
 procedure TCrud.DefineMandatoryComponents(Components: TArray<TComponent>);
@@ -83,12 +87,12 @@ end;
 
 procedure TCrud.Edit;
 begin
-
+  Exit;
 end;
 
 procedure TCrud.Finalize;
 begin
-
+  Exit;
 end;
 
 procedure TCrud.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -104,12 +108,12 @@ end;
 procedure TCrud.Initialize;
 begin
   DefineMandatoryComponents;
-  SetStatusBarText(Format('%s campos obrigatórios.', [MANDATORY_CHAR]));
+  SetStatusBarText(Format('%s: campos obrigatórios.', [MANDATORY_CHAR]));
 end;
 
 procedure TCrud.Insert;
 begin
-
+  Exit;
 end;
 
 procedure TCrud.Remove;

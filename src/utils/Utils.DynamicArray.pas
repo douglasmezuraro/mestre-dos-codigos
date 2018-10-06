@@ -77,10 +77,8 @@ var
   Element: T;
 begin
   if OwnsObjects then
-  begin
     for Element in FArray do
       Element.Free;
-  end;
 
   inherited Destroy;
 end;
