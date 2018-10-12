@@ -4,6 +4,7 @@ interface
 
 uses
   Forms.Crud,
+  Helpers.DateTime,
   Model.Gender,
   Model.Person,
   System.Actions,
@@ -11,9 +12,7 @@ uses
   System.Math,
   System.SysUtils,
   System.Types,
-  Utils.Date,
-  Utils.DynamicArrayInterface,
-  Utils.Vcl,
+  Utils.Collections.API,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -42,7 +41,7 @@ type
     procedure DateTimePickerBirthExit(Sender: TObject);
     procedure EditIndexExit(Sender: TObject);
   private
-    FArray: IDynamicArray<TPerson>;
+    FArray: ICollection<TPerson>;
     { Getters and setters }
     function GetCount: Integer;
     procedure SetCount(const Value: Integer);
@@ -88,7 +87,7 @@ implementation
 
 uses
   Utils.Messages,
-  Utils.DynamicArray;
+  Utils.Collections.DynamicArray;
 
 { TCrud1 }
 
@@ -124,7 +123,7 @@ procedure TExercise1.DateTimePickerBirthExit(Sender: TObject);
 begin
   inherited;
   if (Sender as TDateTimePicker).DateTime.Compare(TDateTime.Now) = GreaterThanValue then
-    TMessage.Warning('Data inv√°lida');
+    TMessage.Warning('Data inv·lida');
 end;
 
 procedure TExercise1.DefineMandatoryComponents;
@@ -147,7 +146,7 @@ begin
   inherited;
   if not FArray.InRange(Index) then
   begin
-    TMessage.Information('O √≠ndice [%d] n√£o existe no array.', [Index]);
+    TMessage.Information('O Ìndice [%d] n„o existe no array.', [Index]);
     Index := FArray.Count;
   end;
 end;
@@ -156,7 +155,7 @@ procedure TExercise1.Insert;
 var
   NewIndex: Integer;
 begin
-  NewIndex := FArray.Insert(ViewToModel);
+  NewIndex := FArray.Add(ViewToModel);
   Count := NewIndex;
   Index := NewIndex;
   inherited;

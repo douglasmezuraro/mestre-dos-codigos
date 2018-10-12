@@ -6,7 +6,6 @@ uses
   System.Actions,
   System.Classes,
   System.SysUtils,
-  Utils.Vcl,
   Utils.Constants,
   Utils.Messages,
   Vcl.ActnList,
@@ -52,6 +51,9 @@ type
 implementation
 
 {$R *.dfm}
+
+uses
+  Helpers.Form;
 
 { TCrud }
 

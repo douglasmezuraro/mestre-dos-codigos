@@ -1,4 +1,4 @@
-unit Utils.DynamicArray;
+unit Utils.Collections.DynamicArray;
 
 interface
 
@@ -6,10 +6,10 @@ uses
   System.Math,
   System.SysUtils,
   System.Generics.Collections,
-  Utils.DynamicArrayInterface;
+  Utils.Collections.API;
 
 type
-  TDynamicArray<T: class> = class(TInterfacedObject, IDynamicArray<T>)
+  TDynamicArray<T: class> = class(TInterfacedObject, ICollection<T>)
   private
     FArray: TArray<T>;
     FOwnsObjects: Boolean;
@@ -19,12 +19,12 @@ type
   public
     constructor Create(const OwnsObjects: Boolean = True);
     destructor Destroy; override;
-    function Insert(const Element: T): Integer;
+    function Add(const Element: T): Integer;
     procedure Remove(const Element: T);
     function IsEmpty: Boolean;
     function Contains(const Element: T): Boolean;
     function IndexOf(const Element: T): Integer;
-    function InRange(const Index: Cardinal): Boolean;
+    function InRange(const Index: Integer): Boolean;
     property Count: Integer read GetCount;
     property Items[Index: Integer]: T read GetItem write SetItem;
     property OwnsObjects: Boolean read FOwnsObjects write FOwnsObjects;
@@ -34,7 +34,7 @@ implementation
 
 { TDynamicArray<T> }
 
-function TDynamicArray<T>.Insert(const Element: T): Integer;
+function TDynamicArray<T>.Add(const Element: T): Integer;
 begin
   Result := Count;
   SetLength(FArray, Succ(Count));
@@ -44,7 +44,7 @@ end;
 function TDynamicArray<T>.GetItem(Index: Integer): T;
 begin
   Result := nil;
-  if not Self.IsEmpty then
+  if InRange(Index) then
     Result := FArray[Index];
 end;
 
@@ -58,7 +58,7 @@ begin
     Result := FoundIndex;
 end;
 
-function TDynamicArray<T>.InRange(const Index: Cardinal): Boolean;
+function TDynamicArray<T>.InRange(const Index: Integer): Boolean;
 begin
   Result := Index <= Pred(Count);
 end;

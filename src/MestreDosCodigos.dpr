@@ -2,17 +2,22 @@ program MestreDosCodigos;
 
 uses
   Vcl.Forms,
-  Forms.Main in 'forms\Forms.Main.pas' {Main},
-  Utils.DynamicArray in 'utils\Utils.DynamicArray.pas',
-  Model.Person in 'models\Model.Person.pas',
-  Utils.DynamicArrayInterface in 'utils\Utils.DynamicArrayInterface.pas',
-  Model.Gender in 'models\Model.Gender.pas',
-  Utils.Vcl in 'utils\Utils.Vcl.pas',
-  Forms.Crud in 'forms\Forms.Crud.pas' {Crud},
-  Forms.Exercise1 in 'forms\Forms.Exercise1.pas' {Exercise1},
-  Utils.Messages in 'utils\Utils.Messages.pas',
-  Utils.Constants in 'utils\Utils.Constants.pas',
-  Utils.Date in 'utils\Utils.Date.pas';
+  Forms.Main in 'form\Forms.Main.pas' {Main},
+  Forms.Crud in 'form\Forms.Crud.pas' {Crud},
+  Forms.Exercise1 in 'form\Forms.Exercise1.pas' {Exercise1},
+  Utils.Collections.API in 'util\Utils.Collections.API.pas',
+  Utils.Constants in 'util\Utils.Constants.pas',
+  Helpers.DateTime in 'helper\Helpers.DateTime.pas',
+  Utils.Collections.DynamicArray in 'util\Utils.Collections.DynamicArray.pas',
+  Utils.Messages in 'util\Utils.Messages.pas',
+  Helpers.Form in 'helper\Helpers.Form.pas',
+  Model.Person in 'model\Model.Person.pas',
+  Model.Gender in 'model\Model.Gender.pas',
+  Helpers.Component in 'helper\Helpers.Component.pas',
+  Utils.TagRole in 'util\Utils.TagRole.pas',
+  Helpers.WinControl in 'helper\Helpers.WinControl.pas',
+  Helpers.CustomControl in 'helper\Helpers.CustomControl.pas',
+  Helpers.DateTimePicker in 'helper\Helpers.DateTimePicker.pas';
 
 {$R *.res}
 

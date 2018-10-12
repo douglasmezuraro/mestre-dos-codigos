@@ -3,12 +3,13 @@ unit Forms.Main;
 interface
 
 uses
-
+  System.Actions,
   System.Classes,
+  System.SysUtils,
   Vcl.ActnList,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Menus, System.Actions;
+  Vcl.Menus;
 
 type
   TMain = class(TForm)
@@ -37,7 +38,7 @@ begin
   try
     View.ShowModal;
   finally
-    View.Free;
+    FreeAndNil(View);
   end;
 end;
 

@@ -2,6 +2,7 @@ inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
   ClientHeight = 380
   ClientWidth = 303
+  ExplicitTop = -106
   ExplicitWidth = 319
   ExplicitHeight = 418
   PixelsPerInch = 96
@@ -10,7 +11,8 @@ inherited Exercise1: TExercise1
     Top = 329
     Width = 303
     TabOrder = 2
-    ExplicitTop = 549
+    ExplicitTop = 329
+    ExplicitWidth = 303
   end
   object GroupBoxData: TGroupBox [1]
     Left = 8
@@ -126,7 +128,8 @@ inherited Exercise1: TExercise1
   inherited StatusBarStatus: TStatusBar
     Top = 361
     Width = 303
-    ExplicitTop = 581
+    ExplicitTop = 361
+    ExplicitWidth = 303
   end
   inherited ActionListActions: TActionList
     object ActionIndexExit: TAction

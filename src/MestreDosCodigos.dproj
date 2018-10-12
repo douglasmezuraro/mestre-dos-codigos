@@ -91,26 +91,28 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="forms\Forms.Main.pas">
+        <DCCReference Include="form\Forms.Main.pas">
             <Form>Main</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="utils\Utils.DynamicArray.pas"/>
-        <DCCReference Include="models\Model.Person.pas"/>
-        <DCCReference Include="utils\Utils.DynamicArrayInterface.pas"/>
-        <DCCReference Include="models\Model.Gender.pas"/>
-        <DCCReference Include="utils\Utils.Vcl.pas"/>
-        <DCCReference Include="forms\Forms.Crud.pas">
+        <DCCReference Include="form\Forms.Crud.pas">
             <Form>Crud</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="forms\Forms.Exercise1.pas">
+        <DCCReference Include="form\Forms.Exercise1.pas">
             <Form>Exercise1</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="utils\Utils.Messages.pas"/>
-        <DCCReference Include="utils\Utils.Constants.pas"/>
-        <DCCReference Include="utils\Utils.Date.pas"/>
+        <DCCReference Include="util\Utils.Collections.API.pas"/>
+        <DCCReference Include="util\Utils.Constants.pas"/>
+        <DCCReference Include="helper\Helpers.DateTime.pas"/>
+        <DCCReference Include="util\Utils.Collections.DynamicArray.pas"/>
+        <DCCReference Include="util\Utils.Messages.pas"/>
+        <DCCReference Include="helper\Helpers.Form.pas"/>
+        <DCCReference Include="model\Model.Person.pas"/>
+        <DCCReference Include="model\Model.Gender.pas"/>
+        <DCCReference Include="helper\Helpers.Component.pas"/>
+        <DCCReference Include="util\Utils.TagRole.pas"/>
+        <DCCReference Include="helper\Helpers.WinControl.pas"/>
+        <DCCReference Include="helper\Helpers.CustomControl.pas"/>
+        <DCCReference Include="helper\Helpers.DateTimePicker.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
