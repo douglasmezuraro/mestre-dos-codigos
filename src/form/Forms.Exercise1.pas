@@ -34,10 +34,8 @@ type
     GroupBoxIndex: TGroupBox;
     LabelCount: TLabel;
     EditCount: TEdit;
-    ActionIndexExit: TAction;
     DateTimePickerBirth: TDateTimePicker;
     EditIndex: TEdit;
-    procedure ActionIndexExitExecute(Sender: TObject);
     procedure DateTimePickerBirthExit(Sender: TObject);
     procedure EditIndexExit(Sender: TObject);
   private
@@ -92,12 +90,6 @@ uses
 
 { TCrud1 }
 
-procedure TExercise1.ActionIndexExitExecute(Sender: TObject);
-begin
-  inherited;
-  ModelToView(FArray.Item[Index]);
-end;
-
 procedure TExercise1.Clear;
 begin
   Name := string.Empty;
@@ -145,11 +137,13 @@ end;
 procedure TExercise1.EditIndexExit(Sender: TObject);
 begin
   inherited;
-  if not FArray.InRange(Index) then
+  if FArray.InRange(Index) then
   begin
-    TMessage.Information('O índice [%d] não existe no array.', [Index]);
-    Index := FArray.Count;
+    ModelToView(FArray.Item[Index]);
+    Exit;
   end;
+  TMessage.Information('O índice [%d] não existe no array.', [Index]);
+  Index := FArray.Count;
 end;
 
 procedure TExercise1.Insert;

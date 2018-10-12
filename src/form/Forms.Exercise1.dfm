@@ -2,7 +2,6 @@ inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
   ClientHeight = 380
   ClientWidth = 303
-  ExplicitTop = -30
   ExplicitWidth = 319
   ExplicitHeight = 418
   PixelsPerInch = 96
@@ -130,12 +129,5 @@ inherited Exercise1: TExercise1
     Width = 303
     ExplicitTop = 361
     ExplicitWidth = 303
-  end
-  inherited ActionListActions: TActionList
-    object ActionIndexExit: TAction
-      Category = 'Event'
-      Caption = 'ActionIndexExit'
-      OnExecute = ActionIndexExitExecute
-    end
   end
 end
