@@ -27,7 +27,6 @@ type
     function InRange(const Index: Integer): Boolean;
     property Count: Integer read GetCount;
     property Items[Index: Integer]: T read GetItem write SetItem;
-    property OwnsObjects: Boolean read FOwnsObjects write FOwnsObjects;
   end;
 
 implementation
@@ -83,7 +82,7 @@ destructor TDynamicArray<T>.Destroy;
 var
   Element: T;
 begin
-  if OwnsObjects then
+  if FOwnsObjects then
     for Element in FArray do
       Element.Free;
 
