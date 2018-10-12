@@ -31,6 +31,8 @@ type
     procedure ActionRemoveExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure DefineInitialFocus;
   protected
     { Crud actions }
     procedure Insert; virtual;
@@ -46,6 +48,7 @@ type
     procedure Clear; virtual; abstract;
     procedure SetStatusBarText(const Text: string);
     procedure ControlActions; virtual; abstract;
+    function GetInitialFocus: TWinControl; virtual;
   end;
 
 implementation
@@ -53,7 +56,8 @@ implementation
 {$R *.dfm}
 
 uses
-  Helpers.Form;
+  Helpers.Form,
+  Helpers.WinControl;
 
 { TCrud }
 
@@ -107,9 +111,24 @@ begin
   Initialize;
 end;
 
+function TCrud.GetInitialFocus: TWinControl;
+begin
+  Result := nil;
+end;
+
+procedure TCrud.DefineInitialFocus;
+var
+  Component: TWinControl;
+begin
+  Component := GetInitialFocus;
+  if Assigned(Component) then
+    Component.TrySetFocus;
+end;
+
 procedure TCrud.Initialize;
 begin
   DefineMandatoryComponents;
+  DefineInitialFocus;
   SetStatusBarText(Format('%s: campos obrigatórios.', [MANDATORY_CHAR]));
   ControlActions;
 end;

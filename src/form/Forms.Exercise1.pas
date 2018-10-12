@@ -70,6 +70,7 @@ type
     { Other useful methods }
     procedure Clear; override;
     procedure ControlActions; override;
+    function GetInitialFocus: TWinControl; override;
   public
     constructor Create(AOwner: TComponent); override;
     property Count: Integer read GetCount write SetCount;
@@ -189,6 +190,11 @@ begin
   Result.Birth := Birth;
   Result.Phone := Phone;
   Result.Gender := Gender;
+end;
+
+function TExercise1.GetInitialFocus: TWinControl;
+begin
+  Result := LabeledEditName;
 end;
 
 function TExercise1.GetBirth: TDateTime;

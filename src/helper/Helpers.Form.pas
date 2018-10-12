@@ -113,6 +113,7 @@ begin
     if not Result then
     begin
       ComponentLabel := GetCaption(Component);
+      ComponentLabel := ComponentLabel.Replace(MANDATORY_CHAR, string.Empty);
 
       if Component is TWinControl then
         (Component as TWinControl).TrySetFocus;
