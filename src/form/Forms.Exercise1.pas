@@ -14,13 +14,13 @@ uses
   System.Types,
   Utils.Collections.API,
   Vcl.ActnList,
-  Vcl.Buttons,
+
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.Mask,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, Vcl.Buttons;
 
 type
   TExercise1 = class(TCrud)

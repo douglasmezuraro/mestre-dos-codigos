@@ -14,6 +14,7 @@ type
     function GetRequired: Boolean;
     procedure SetRequired(const Value: Boolean);
   public
+    const RequiredChar: Char = '*';
     function TrySetFocus: Boolean;
     function IsEmpty: Boolean;
     property Required: Boolean read GetRequired write SetRequired;
@@ -22,8 +23,7 @@ type
 implementation
 
 uses
-  Vcl.Mask,
-  Utils.Constants;
+  Vcl.Mask;
 
 { TWinControlHelper }
 

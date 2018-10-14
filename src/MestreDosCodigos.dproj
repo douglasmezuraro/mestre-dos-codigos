@@ -101,11 +101,9 @@
             <Form>Exercise1</Form>
         </DCCReference>
         <DCCReference Include="util\Utils.Collections.API.pas"/>
-        <DCCReference Include="util\Utils.Constants.pas"/>
         <DCCReference Include="helper\Helpers.DateTime.pas"/>
         <DCCReference Include="util\Utils.Collections.DynamicArray.pas"/>
         <DCCReference Include="util\Utils.Messages.pas"/>
-        <DCCReference Include="helper\Helpers.Form.pas"/>
         <DCCReference Include="model\Model.Person.pas"/>
         <DCCReference Include="model\Model.Gender.pas"/>
         <DCCReference Include="helper\Helpers.WinControl.pas"/>
