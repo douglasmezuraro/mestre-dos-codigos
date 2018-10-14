@@ -22,8 +22,8 @@ type
 implementation
 
 uses
-  Vcl.ComCtrls,
-  Vcl.Mask;
+  Vcl.Mask,
+  Utils.Constants;
 
 { TWinControlHelper }
 

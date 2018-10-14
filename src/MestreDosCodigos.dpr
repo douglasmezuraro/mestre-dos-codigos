@@ -13,11 +13,7 @@ uses
   Helpers.Form in 'helper\Helpers.Form.pas',
   Model.Person in 'model\Model.Person.pas',
   Model.Gender in 'model\Model.Gender.pas',
-  Helpers.Component in 'helper\Helpers.Component.pas',
-  Utils.TagRole in 'util\Utils.TagRole.pas',
-  Helpers.WinControl in 'helper\Helpers.WinControl.pas',
-  Helpers.CustomControl in 'helper\Helpers.CustomControl.pas',
-  Helpers.DateTimePicker in 'helper\Helpers.DateTimePicker.pas';
+  Helpers.WinControl in 'helper\Helpers.WinControl.pas';
 
 {$R *.res}
 

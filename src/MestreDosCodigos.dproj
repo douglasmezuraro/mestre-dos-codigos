@@ -108,11 +108,7 @@
         <DCCReference Include="helper\Helpers.Form.pas"/>
         <DCCReference Include="model\Model.Person.pas"/>
         <DCCReference Include="model\Model.Gender.pas"/>
-        <DCCReference Include="helper\Helpers.Component.pas"/>
-        <DCCReference Include="util\Utils.TagRole.pas"/>
         <DCCReference Include="helper\Helpers.WinControl.pas"/>
-        <DCCReference Include="helper\Helpers.CustomControl.pas"/>
-        <DCCReference Include="helper\Helpers.DateTimePicker.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
