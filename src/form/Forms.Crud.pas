@@ -42,7 +42,7 @@ type
     procedure Initialize;
     procedure Finalize;
     { Mandatory components }
-    procedure DefineMandatoryComponents(Components: TArray<TComponent>); overload;
+    procedure DefineMandatoryComponents(Components: TArray<TWinControl>); overload;
     procedure DefineMandatoryComponents; overload; virtual; abstract;
     { Other useful methods }
     procedure Clear; virtual; abstract;
@@ -86,7 +86,7 @@ begin
   ControlActions;
 end;
 
-procedure TCrud.DefineMandatoryComponents(Components: TArray<TComponent>);
+procedure TCrud.DefineMandatoryComponents(Components: TArray<TWinControl>);
 begin
   SetMandatoryComponents(Components);
 end;

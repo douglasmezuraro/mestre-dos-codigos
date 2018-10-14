@@ -15,24 +15,22 @@ uses
 type
   TFormHelper = class Helper for TForm
   private
-    function GetLabel(Component: TComponent): TCustomLabel;
-    function GetCaption(Component: TComponent): string;
-    procedure SetMandatoryCaption(Component: TComponent);
+    function GetLabel(Component: TWinControl): TCustomLabel;
+    function GetCaption(Component: TWinControl): string;
+    procedure SetMandatoryCaption(Component: TWinControl);
   public
     function ValidateMandatoryComponents(out ComponentLabel: string): Boolean;
-    procedure SetMandatoryComponents(const Components: TArray<TComponent>);
+    procedure SetMandatoryComponents(const Components: TArray<TWinControl>);
   end;
 
 implementation
 
 uses
-  Helpers.Component,
-  Helpers.DateTimePicker,
   Helpers.WinControl;
 
 { TFormHelper }
 
-function TFormHelper.GetCaption(Component: TComponent): string;
+function TFormHelper.GetCaption(Component: TWinControl): string;
 var
   ComponentLabel: TCustomLabel;
   Caption: string;
@@ -49,7 +47,7 @@ begin
   Result := Caption;
 end;
 
-function TFormHelper.GetLabel(Component: TComponent): TCustomLabel;
+function TFormHelper.GetLabel(Component: TWinControl): TCustomLabel;
 var
   ComponentIndex: Integer;
 begin
@@ -70,9 +68,9 @@ begin
 end;
 
 procedure TFormHelper.SetMandatoryComponents(
-  const Components: TArray<TComponent>);
+  const Components: TArray<TWinControl>);
 var
-  Component: TComponent;
+  Component: TWinControl;
 begin
   for Component in Components do
   begin
@@ -81,7 +79,7 @@ begin
   end;
 end;
 
-procedure TFormHelper.SetMandatoryCaption(Component: TComponent);
+procedure TFormHelper.SetMandatoryCaption(Component: TWinControl);
 var
   ComponentLabel: TCustomLabel;
 begin
@@ -94,12 +92,15 @@ function TFormHelper.ValidateMandatoryComponents(
   out ComponentLabel: string): Boolean;
 var
   Index: Integer;
-  Component: TComponent;
+  Component: TWinControl;
 begin
   Result := True;
   for Index := 0 to Pred(ComponentCount) do
   begin
-    Component := Components[Index];
+    if not (Components[Index] is TWinControl) then
+      Continue;
+
+    Component := Components[Index] as TWinControl;
 
     if not Component.Mandatory then
       Continue;
