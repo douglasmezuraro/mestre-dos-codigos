@@ -27,7 +27,6 @@ implementation
 
 uses
   Helpers.Component,
-  Helpers.CustomControl,
   Helpers.DateTimePicker,
   Helpers.WinControl;
 
