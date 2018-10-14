@@ -7,7 +7,6 @@ uses
   System.Classes,
   System.Generics.Collections,
   System.SysUtils,
-  Utils.Constants,
   Utils.Messages,
   Vcl.ActnList,
   Vcl.Buttons,
@@ -37,7 +36,7 @@ type
     FRequiredComponents: TDictionary<TWinControl, TCustomLabel>;
     function GetLabel(Control: TControl): TCustomLabel;
     procedure DefineInitialFocus;
-    function ValidateMandatoryComponents(out Control: TWinControl): Boolean;
+    function ValidateRequiredComponents(out Control: TWinControl): Boolean;
   protected
     { Crud actions }
     procedure Insert; virtual;
@@ -46,9 +45,9 @@ type
     { Form initialization and finalization }
     procedure Initialize;
     procedure Finalize;
-    { Mandatory components }
-    procedure DefineMandatoryComponents(Components: TArray<TWinControl>); overload;
-    procedure DefineMandatoryComponents; overload; virtual; abstract;
+    { Required components }
+    procedure DefineRequiredComponents(Components: TArray<TWinControl>); overload;
+    procedure DefineRequiredComponents; overload; virtual; abstract;
     { Other useful methods }
     procedure Clear; virtual; abstract;
     procedure SetStatusBarText(const Text: string);
@@ -90,10 +89,10 @@ var
   Control: TWinControl;
   Caption: string;
 begin
-  if not ValidateMandatoryComponents(Control) then
+  if not ValidateRequiredComponents(Control) then
   begin
     Caption := FRequiredComponents.Items[Control].Caption;
-    Caption := Caption.Replace(MANDATORY_CHAR, string.Empty).QuotedString;
+    Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
     TMessage.Information('O campo %s é obrigatório.', [Caption]);
     Exit;
   end;
@@ -108,16 +107,16 @@ begin
   ControlActions;
 end;
 
-procedure TCrud.DefineMandatoryComponents(Components: TArray<TWinControl>);
+procedure TCrud.DefineRequiredComponents(Components: TArray<TWinControl>);
 var
   Control: TWinControl;
   CustomLabel: TCustomLabel;
 begin
   for Control in Components do
   begin
-    Control.Mandatory := True;
+    Control.Required := True;
     CustomLabel := GetLabel(Control);
-    CustomLabel.Caption := CustomLabel.Caption + MANDATORY_CHAR;
+    CustomLabel.Caption := CustomLabel.Caption + RequiredChar;
     FRequiredComponents.Add(Control, CustomLabel);
   end;
 end;
@@ -182,10 +181,10 @@ end;
 
 procedure TCrud.Initialize;
 begin
-  DefineMandatoryComponents;
+  DefineRequiredComponents;
   DefineInitialFocus;
-  SetStatusBarText(Format('%s: campos obrigatórios.', [MANDATORY_CHAR]));
   ControlActions;
+  SetStatusBarText(Format('%s: campos obrigatórios.', [RequiredChar]));
 end;
 
 procedure TCrud.Insert;
@@ -203,20 +202,23 @@ begin
   StatusBarStatus.SimpleText := Text;
 end;
 
-function TCrud.ValidateMandatoryComponents(out Control: TWinControl): Boolean;
+function TCrud.ValidateRequiredComponents(out Control: TWinControl): Boolean;
 var
-  Foo: TWinControl;
+  Component: TWinControl;
 begin
   Result := True;
-  for Foo in FRequiredComponents.Keys do
+  for Component in FRequiredComponents.Keys do
   begin
-    if Foo is TCustomEdit then
-      Result := not (Foo as TCustomEdit).IsEmpty
-    else if Foo is TDateTimePicker then
-      Result := not (Foo as TDateTimePicker).IsEmpty;
+    if Component is TCustomEdit then
+      Result := not (Component as TCustomEdit).IsEmpty
+    else if Component is TDateTimePicker then
+      Result := not (Component as TDateTimePicker).IsEmpty;
 
     if not Result then
-      Control := Foo;
+    begin
+      Control := Component;
+      Break;
+    end;
   end;
 end;
 

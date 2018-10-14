@@ -9,14 +9,14 @@ uses
 type
   TWinControlHelper = class Helper for TWinControl
   private type
-    TTagRole = (trUndefined, trMandatory);
+    TTagRole = (trUndefined, trRequired);
   private
-    function GetMandatory: Boolean;
-    procedure SetMandatory(const Value: Boolean);
+    function GetRequired: Boolean;
+    procedure SetRequired(const Value: Boolean);
   public
     function TrySetFocus: Boolean;
     function IsEmpty: Boolean;
-    property Mandatory: Boolean read GetMandatory write SetMandatory;
+    property Required: Boolean read GetRequired write SetRequired;
   end;
 
 implementation
@@ -27,9 +27,9 @@ uses
 
 { TWinControlHelper }
 
-function TWinControlHelper.GetMandatory: Boolean;
+function TWinControlHelper.GetRequired: Boolean;
 begin
-  Result := TTagRole(Self.Tag) = trMandatory;
+  Result := TTagRole(Self.Tag) = trRequired;
 end;
 
 function TWinControlHelper.IsEmpty: Boolean;
@@ -44,7 +44,7 @@ begin
   Result := EditText.Trim.IsEmpty;
 end;
 
-procedure TWinControlHelper.SetMandatory(const Value: Boolean);
+procedure TWinControlHelper.SetRequired(const Value: Boolean);
 begin
   Self.Tag := Value.ToInteger;
 end;

@@ -64,7 +64,7 @@ type
     procedure Edit; override;
     procedure Remove; override;
     { Mandatory componentes }
-    procedure DefineMandatoryComponents; override;
+    procedure DefineRequiredComponents; override;
     { Other useful methods }
     procedure Clear; override;
     procedure ControlActions; override;
@@ -119,10 +119,10 @@ begin
     TMessage.Warning('Data inválida');
 end;
 
-procedure TExercise1.DefineMandatoryComponents;
+procedure TExercise1.DefineRequiredComponents;
 begin
   inherited;
-  Self.DefineMandatoryComponents([
+  Self.DefineRequiredComponents([
     LabeledEditName,
     LabeledEditLastName,
     DateTimePickerBirth,
