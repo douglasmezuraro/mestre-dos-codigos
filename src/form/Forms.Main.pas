@@ -20,9 +20,6 @@ type
     procedure ActionExerciseOneExecute(Sender: TObject);
   end;
 
-var
-  Main: TMain;
-
 implementation
 
 {$R *.dfm}
@@ -38,7 +35,7 @@ begin
   try
     View.ShowModal;
   finally
-    FreeAndNil(View);
+    View.Free;
   end;
 end;
 

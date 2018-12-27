@@ -13,8 +13,8 @@ type
   private
     FArray: TArray<T>;
     FOwnsObjects: Boolean;
-    function GetItem(Index: Integer): T;
-    procedure SetItem(Index: Integer; const Value: T);
+    function GetItem(const Index: Integer): T;
+    procedure SetItem(const Index: Integer; const Value: T);
     function GetCount: Integer;
   public
     constructor Create(const OwnsObjects: Boolean = True);
@@ -25,8 +25,9 @@ type
     function Contains(const Element: T): Boolean;
     function IndexOf(const Element: T): Integer;
     function InRange(const Index: Integer): Boolean;
+    function ToArray: TArray<T>;
     property Count: Integer read GetCount;
-    property Items[Index: Integer]: T read GetItem write SetItem;
+    property Items[const Index: Integer]: T read GetItem write SetItem;
   end;
 
 implementation
@@ -40,7 +41,7 @@ begin
   FArray[Result] := Element;
 end;
 
-function TDynamicArray<T>.GetItem(Index: Integer): T;
+function TDynamicArray<T>.GetItem(const Index: Integer): T;
 begin
   Result := nil;
   if InRange(Index) then
@@ -50,11 +51,11 @@ end;
 function TDynamicArray<T>.IndexOf(const Element: T): Integer;
 var
   Values: TArray;
-  FoundIndex: Integer;
+  Index: Integer;
 begin
   Result := NegativeValue;
-  if Values.BinarySearch<T>(FArray, Element, FoundIndex) then
-    Result := FoundIndex;
+  if Values.BinarySearch<T>(FArray, Element, Index) then
+    Result := Index;
 end;
 
 function TDynamicArray<T>.InRange(const Index: Integer): Boolean;
@@ -79,11 +80,9 @@ begin
 end;
 
 destructor TDynamicArray<T>.Destroy;
-var
-  Element: T;
 begin
   if FOwnsObjects then
-    for Element in FArray do
+    for var Element in FArray do
       Element.Free;
 
   inherited Destroy;
@@ -95,17 +94,20 @@ begin
 end;
 
 procedure TDynamicArray<T>.Remove(const Element: T);
-var
-  Index: Integer;
 begin
-  Index := IndexOf(Element);
+  var Index := IndexOf(Element);
   if Index <> NegativeValue then
-    FreeAndNil(FArray[Index]);
+    FArray[Index].Free;
 end;
 
-procedure TDynamicArray<T>.SetItem(Index: Integer; const Value: T);
+procedure TDynamicArray<T>.SetItem(const Index: Integer; const Value: T);
 begin
   FArray[Index] := Value;
+end;
+
+function TDynamicArray<T>.ToArray: TArray<T>;
+begin
+  Result := FArray;
 end;
 
 end.

@@ -23,7 +23,6 @@ object Crud: TCrud
     Height = 32
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 472
     object ButtonInsert: TSpeedButton
       Left = 1
       Top = 1
@@ -65,11 +64,10 @@ object Crud: TCrud
     Panels = <>
     SimplePanel = True
     SimpleText = '<Changed in runtime>'
-    ExplicitTop = 573
   end
   object ActionListActions: TActionList
-    Left = 504
-    Top = 48
+    Left = 16
+    Top = 24
     object ActionInsert: TAction
       Category = 'Crud'
       Caption = 'Inserir'

@@ -1,14 +1,15 @@
 inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
-  ClientHeight = 380
-  ClientWidth = 303
-  ExplicitWidth = 319
-  ExplicitHeight = 418
+  ClientHeight = 368
+  ClientWidth = 297
+  ExplicitTop = -33
+  ExplicitWidth = 313
+  ExplicitHeight = 406
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelButtons: TPanel
-    Top = 329
-    Width = 303
+    Top = 317
+    Width = 297
     TabOrder = 2
     ExplicitTop = 329
     ExplicitWidth = 303
@@ -17,7 +18,7 @@ inherited Exercise1: TExercise1
     Left = 8
     Top = 55
     Width = 280
-    Height = 265
+    Height = 250
     Caption = 'Dados'
     TabOrder = 1
     object LabelPhone: TLabel
@@ -58,7 +59,7 @@ inherited Exercise1: TExercise1
     end
     object RadioGroupGender: TRadioGroup
       Left = 12
-      Top = 207
+      Top = 191
       Width = 249
       Height = 48
       Caption = 'G'#234'nero'
@@ -125,9 +126,10 @@ inherited Exercise1: TExercise1
     end
   end
   inherited StatusBarStatus: TStatusBar
-    Top = 361
-    Width = 303
-    ExplicitTop = 361
-    ExplicitWidth = 303
+    Top = 349
+    Width = 297
+    ExplicitLeft = 1
+    ExplicitTop = 346
+    ExplicitWidth = 297
   end
 end

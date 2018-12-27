@@ -10,7 +10,7 @@ uses
 type
   TDateTimeHelper = record Helper for TDateTime
   public
-    const Null: Byte = 0;
+    const Null = 0;
     class function Now: TDateTime; static;
     function IsEmpty: Boolean;
     function FromString(const DateTime: string): TDateTime;
@@ -27,7 +27,7 @@ implementation
 
 function TDateTimeHelper.Compare(const DateTime: TDateTime): TValueRelationship;
 begin
-  Result := CompareDateTime(Self, Date);
+  Result := CompareDateTime(Self, DateTime);
 end;
 
 function TDateTimeHelper.FromString(const DateTime: string): TDateTime;
@@ -70,3 +70,4 @@ begin
 end;
 
 end.
+

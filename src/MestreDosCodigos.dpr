@@ -11,15 +11,21 @@ uses
   Utils.Messages in 'util\Utils.Messages.pas',
   Model.Person in 'model\Model.Person.pas',
   Model.Gender in 'model\Model.Gender.pas',
-  Helpers.WinControl in 'helper\Helpers.WinControl.pas';
+  Helpers.WinControl in 'helper\Helpers.WinControl.pas',
+  DataModule.Connection in 'data\DataModule.Connection.pas' {DataModule1: TDataModule};
 
 {$R *.res}
+
+var
+  Main: TMain;
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMain, Main);
+  Application.CreateForm(TDataModule1, DataModule1);
   Application.Run;
 
   ReportMemoryLeaksOnShutdown := True;
 end.
+

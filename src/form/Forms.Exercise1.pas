@@ -14,7 +14,6 @@ uses
   System.Types,
   Utils.Collections.API,
   Vcl.ActnList,
-
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
@@ -113,9 +112,12 @@ begin
 end;
 
 procedure TExercise1.DateTimePickerBirthExit(Sender: TObject);
+var
+  Birth: TDateTime;
 begin
   inherited;
-  if (Sender as TDateTimePicker).DateTime.Compare(TDateTime.Now) = GreaterThanValue then
+  Birth := (Sender as TDateTimePicker).DateTime;
+  if Birth.Compare(TDateTime.Now) = GreaterThanValue then
     TMessage.Warning('Data inválida');
 end;
 
@@ -208,7 +210,7 @@ end;
 
 function TExercise1.GetIndex: Integer;
 begin
-  Result := StrToIntDef(EditIndex.Text, ZeroValue)
+  Result := StrToIntDef(EditIndex.Text, ZeroValue);
 end;
 
 function TExercise1.GetLastName: string;
@@ -262,3 +264,4 @@ begin
 end;
 
 end.
+

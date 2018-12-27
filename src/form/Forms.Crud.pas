@@ -50,7 +50,6 @@ type
     procedure DefineRequiredComponents; overload; virtual; abstract;
     { Other useful methods }
     procedure Clear; virtual; abstract;
-    procedure SetStatusBarText(const Text: string);
     procedure ControlActions; virtual; abstract;
     function GetInitialFocus: TWinControl; virtual;
   public
@@ -75,7 +74,7 @@ end;
 
 destructor TCrud.Destroy;
 begin
-  FreeAndNil(FRequiredComponents);
+  FRequiredComponents.Free;
   inherited Destroy;
 end;
 
@@ -89,16 +88,16 @@ var
   Control: TWinControl;
   Caption: string;
 begin
-  if not ValidateRequiredComponents(Control) then
+  if ValidateRequiredComponents(Control) then
   begin
-    Caption := FRequiredComponents.Items[Control].Caption;
-    Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
-    TMessage.Information('O campo %s é obrigatório.', [Caption]);
+    Insert;
+    ControlActions;
     Exit;
   end;
 
-  Insert;
-  ControlActions;
+  Caption := FRequiredComponents.Items[Control].Caption;
+  Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
+  TMessage.Information('O campo %s é obrigatório.', [Caption]);
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
@@ -116,6 +115,13 @@ begin
   begin
     Control.Required := True;
     CustomLabel := GetLabel(Control);
+
+    if not Assigned(CustomLabel) then
+    begin
+      TMessage.Error('O componente obrigatório %s não possui label relacionado.', [Control.Name]);
+      Continue;
+    end;
+
     CustomLabel.Caption := CustomLabel.Caption + RequiredChar;
     FRequiredComponents.Add(Control, CustomLabel);
   end;
@@ -184,7 +190,7 @@ begin
   DefineRequiredComponents;
   DefineInitialFocus;
   ControlActions;
-  SetStatusBarText(Format('%s: campos obrigatórios.', [RequiredChar]));
+  StatusBarStatus.SimpleText := Format('%s: campos obrigatórios.', [RequiredChar]);
 end;
 
 procedure TCrud.Insert;
@@ -195,11 +201,6 @@ end;
 procedure TCrud.Remove;
 begin
   Clear;
-end;
-
-procedure TCrud.SetStatusBarText(const Text: string);
-begin
-  StatusBarStatus.SimpleText := Text;
 end;
 
 function TCrud.ValidateRequiredComponents(out Control: TWinControl): Boolean;
@@ -223,3 +224,4 @@ begin
 end;
 
 end.
+

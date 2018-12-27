@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils,
-  Vcl.Controls;
+  Vcl.Controls,
+  Vcl.Mask;
 
 type
   TWinControlHelper = class Helper for TWinControl
@@ -17,43 +18,47 @@ type
     const RequiredChar: Char = '*';
     function TrySetFocus: Boolean;
     function IsEmpty: Boolean;
+    function ToString: string;
     property Required: Boolean read GetRequired write SetRequired;
   end;
 
 implementation
 
-uses
-  Vcl.Mask;
-
 { TWinControlHelper }
 
 function TWinControlHelper.GetRequired: Boolean;
 begin
-  Result := TTagRole(Self.Tag) = trRequired;
+  Result := Tag = Ord(trRequired);
 end;
 
 function TWinControlHelper.IsEmpty: Boolean;
-var
-  EditText: string;
 begin
-  EditText := Self.Text;
-
-  if Self is TMaskEdit then
-    EditText := (Self as TMaskEdit).Text;
-
-  Result := EditText.Trim.IsEmpty;
+  Result := ToString.Trim.IsEmpty;
 end;
 
 procedure TWinControlHelper.SetRequired(const Value: Boolean);
 begin
-  Self.Tag := Value.ToInteger;
+  Tag := Value.ToInteger;
+end;
+
+function TWinControlHelper.ToString: string;
+var
+  Text: string;
+begin
+  Text := Self.Text;
+
+  if Self is TMaskEdit then
+    Text := (Self as TMaskEdit).Text;
+
+  Result := Text;
 end;
 
 function TWinControlHelper.TrySetFocus: Boolean;
 begin
-  Result := Self.CanFocus;
+  Result := CanFocus;
   if Result then
-    Self.SetFocus;
+    SetFocus;
 end;
 
 end.
+
