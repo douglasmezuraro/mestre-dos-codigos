@@ -1,4 +1,4 @@
-unit Utils.Collections.DynamicArray;
+unit Collections.DynamicArray;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   System.Math,
   System.SysUtils,
   System.Generics.Collections,
-  Utils.Collections.API;
+  Collections.API;
 
 type
   TDynamicArray<T: class> = class(TInterfacedObject, ICollection<T>)

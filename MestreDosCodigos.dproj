@@ -91,28 +91,31 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="form\Forms.Main.pas">
-            <Form>Main</Form>
-        </DCCReference>
-        <DCCReference Include="form\Forms.Crud.pas">
-            <Form>Crud</Form>
-        </DCCReference>
-        <DCCReference Include="form\Forms.Exercise1.pas">
-            <Form>Exercise1</Form>
-        </DCCReference>
-        <DCCReference Include="util\Utils.Collections.API.pas"/>
-        <DCCReference Include="helper\Helpers.DateTime.pas"/>
-        <DCCReference Include="util\Utils.Collections.DynamicArray.pas"/>
-        <DCCReference Include="util\Utils.Messages.pas"/>
-        <DCCReference Include="model\Model.Person.pas"/>
-        <DCCReference Include="model\Model.Gender.pas"/>
-        <DCCReference Include="helper\Helpers.WinControl.pas"/>
-        <DCCReference Include="data\DataModule.Connection.pas">
+        <DCCReference Include="src\database\Database.Config.pas"/>
+        <DCCReference Include="src\database\Database.DataModule.pas">
             <Form>Global</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="classes\database\Classes.DataBase.Config.pas"/>
+        <DCCReference Include="src\collections\Collections.API.pas"/>
+        <DCCReference Include="src\collections\Collections.DynamicArray.pas"/>
+        <DCCReference Include="src\helper\Helper.DateTime.pas"/>
+        <DCCReference Include="src\helper\Helper.WinControl.pas"/>
+        <DCCReference Include="src\model\Model.Gender.pas"/>
+        <DCCReference Include="src\model\Model.Person.pas"/>
+        <DCCReference Include="src\util\Util.Messages.pas"/>
+        <DCCReference Include="src\form\Form.Crud.pas">
+            <Form>Crud</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="src\form\Form.Exercise1.pas">
+            <Form>Exercise1</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="src\form\Form.Main.pas">
+            <Form>Main</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

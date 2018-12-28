@@ -1,4 +1,4 @@
-unit Classes.DataBase.Config;
+unit Database.Config;
 
 interface
 

@@ -1,13 +1,14 @@
-unit Forms.Crud;
+unit Form.Crud;
 
 interface
 
 uses
+  Helper.WinControl,
   System.Actions,
   System.Classes,
   System.Generics.Collections,
   System.SysUtils,
-  Utils.Messages,
+  Util.Messages,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -60,9 +61,6 @@ type
 implementation
 
 {$R *.dfm}
-
-uses
-  Helpers.WinControl;
 
 { TCrud }
 

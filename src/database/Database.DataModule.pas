@@ -1,4 +1,4 @@
-unit DataModule.Connection;
+unit Database.DataModule;
 
 interface
 
@@ -19,7 +19,7 @@ uses
   FireDAC.Phys.MySQL,
   Data.DB,
   FireDAC.Comp.Client,
-  Classes.Database.Config,
+  Database.Config,
   System.IOUtils,
   Vcl.Forms,
   REST.Json;
@@ -35,9 +35,6 @@ type
   public
     property Connected: Boolean read GetConnected write SetConnected;
   end;
-
-var
-  Global: TGlobal;
 
 implementation
 

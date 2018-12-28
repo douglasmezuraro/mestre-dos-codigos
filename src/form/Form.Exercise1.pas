@@ -1,10 +1,10 @@
-unit Forms.Exercise1;
+unit Form.Exercise1;
 
 interface
 
 uses
-  Forms.Crud,
-  Helpers.DateTime,
+  Form.Crud,
+  Helper.DateTime,
   Model.Gender,
   Model.Person,
   System.Actions,
@@ -12,14 +12,17 @@ uses
   System.Math,
   System.SysUtils,
   System.Types,
-  Utils.Collections.API,
+  Collections.API,
   Vcl.ActnList,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.Mask,
-  Vcl.StdCtrls, Vcl.Buttons;
+  Vcl.StdCtrls,
+  Vcl.Buttons,
+  Util.Messages,
+  Collections.DynamicArray;
 
 type
   TExercise1 = class(TCrud)
@@ -83,11 +86,7 @@ implementation
 
 {$R *.dfm}
 
-uses
-  Utils.Messages,
-  Utils.Collections.DynamicArray;
-
-{ TCrud1 }
+{ TExercise1 }
 
 procedure TExercise1.Clear;
 begin

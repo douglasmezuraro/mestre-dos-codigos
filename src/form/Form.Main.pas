@@ -1,4 +1,4 @@
-unit Forms.Main;
+unit Form.Main;
 
 interface
 
@@ -25,7 +25,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Forms.Exercise1;
+  Form.Exercise1;
 
 procedure TMain.ActionExerciseOneExecute(Sender: TObject);
 begin

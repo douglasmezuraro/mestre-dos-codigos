@@ -2,7 +2,6 @@ inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
   ClientHeight = 368
   ClientWidth = 297
-  ExplicitTop = -33
   ExplicitWidth = 313
   ExplicitHeight = 406
   PixelsPerInch = 96
@@ -87,8 +86,8 @@ inherited Exercise1: TExercise1
       Top = 118
       Width = 101
       Height = 21
-      Date = 43331.664617638890000000
-      Time = 43331.664617638890000000
+      Date = 43331.000000000000000000
+      Time = 0.664617638889467400
       TabOrder = 2
       OnExit = DateTimePickerBirthExit
     end
