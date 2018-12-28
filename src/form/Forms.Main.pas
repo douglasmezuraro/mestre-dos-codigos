@@ -28,10 +28,8 @@ uses
   Forms.Exercise1;
 
 procedure TMain.ActionExerciseOneExecute(Sender: TObject);
-var
-  View: TExercise1;
 begin
-  View := TExercise1.Create(Self);
+  var View := TExercise1.Create(Self);
   try
     View.ShowModal;
   finally
@@ -40,3 +38,4 @@ begin
 end;
 
 end.
+

@@ -1,0 +1,21 @@
+{
+	"DriverID" : "MySQL",
+	"Pooled" : "False",
+	"Database" : "database",
+	"UserName" : "root",
+	"Password" : "masterkey",
+	"MonitorBy" : 0,
+	"Server" : "localhost",
+	"Port" : 3306,
+	"Compress" : "True",
+	"UseSSL" : "False",
+	"LoginTimeout" : 0,
+	"ReadTimeout" : 0,
+	"WriteTimeout" : 0,
+	"ResultMode" : 1,
+	"CharacterSet" : "",
+	"TinyIntFormat" : 1,
+	"MetaDefCatalog" : "",
+	"MetaCurCatalog" : "",
+	"VendorLib" : "C:\\libmysql.dll"
+}

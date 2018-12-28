@@ -108,10 +108,11 @@
         <DCCReference Include="model\Model.Gender.pas"/>
         <DCCReference Include="helper\Helpers.WinControl.pas"/>
         <DCCReference Include="data\DataModule.Connection.pas">
-            <Form>DataModule1</Form>
+            <Form>Global</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="classes\database\Classes.DataBase.Config.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

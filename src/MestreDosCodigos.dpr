@@ -12,7 +12,8 @@ uses
   Model.Person in 'model\Model.Person.pas',
   Model.Gender in 'model\Model.Gender.pas',
   Helpers.WinControl in 'helper\Helpers.WinControl.pas',
-  DataModule.Connection in 'data\DataModule.Connection.pas' {DataModule1: TDataModule};
+  DataModule.Connection in 'data\DataModule.Connection.pas' {Global: TDataModule},
+  Classes.DataBase.Config in 'classes\database\Classes.DataBase.Config.pas';
 
 {$R *.res}
 
@@ -23,7 +24,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMain, Main);
-  Application.CreateForm(TDataModule1, DataModule1);
+  Application.CreateForm(TGlobal, Global);
   Application.Run;
 
   ReportMemoryLeaksOnShutdown := True;
