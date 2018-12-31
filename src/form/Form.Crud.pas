@@ -15,10 +15,11 @@ uses
   Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
-  Vcl.Forms;
+  Vcl.Forms,
+  System.RegularExpressions;
 
 type
-  TCrud = class(TForm)
+  TCrud = class abstract(TForm)
     PanelButtons: TPanel;
     ActionListActions: TActionList;
     ActionInsert: TAction;
@@ -37,15 +38,15 @@ type
     FRequiredComponents: TDictionary<TWinControl, TCustomLabel>;
     function GetLabel(Control: TControl): TCustomLabel;
     procedure DefineInitialFocus;
-    function ValidateRequiredComponents(out Control: TWinControl): Boolean;
+    function Validate(out Control: TWinControl): Boolean; overload;
   protected
     { Crud actions }
-    procedure Insert; virtual;
+    function Insert: Boolean; virtual;
     procedure Edit; virtual;
     procedure Remove; virtual;
     { Form initialization and finalization }
-    procedure Initialize;
-    procedure Finalize;
+    procedure Initialize; virtual;
+    procedure Finalize; virtual;
     { Required components }
     procedure DefineRequiredComponents(Components: TArray<TWinControl>); overload;
     procedure DefineRequiredComponents; overload; virtual; abstract;
@@ -53,6 +54,7 @@ type
     procedure Clear; virtual; abstract;
     procedure ControlActions; virtual; abstract;
     function GetInitialFocus: TWinControl; virtual;
+    procedure Validate(Component: TObject; const Pattern: string); overload;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
@@ -82,20 +84,12 @@ begin
 end;
 
 procedure TCrud.ActionInsertExecute(Sender: TObject);
-var
-  Control: TWinControl;
-  Caption: string;
 begin
-  if ValidateRequiredComponents(Control) then
+  if Insert then
   begin
-    Insert;
+    TMessage.Information('Inserido com sucesso!');
     ControlActions;
-    Exit;
   end;
-
-  Caption := FRequiredComponents.Items[Control].Caption;
-  Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
-  TMessage.Information('O campo %s é obrigatório.', [Caption]);
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
@@ -115,10 +109,7 @@ begin
     CustomLabel := GetLabel(Control);
 
     if not Assigned(CustomLabel) then
-    begin
-      TMessage.Error('O componente obrigatório %s não possui label relacionado.', [Control.Name]);
-      Continue;
-    end;
+      raise Exception.CreateFmt('O componente obrigatório %s não possui label relacionado.', [Control.Name]);
 
     CustomLabel.Caption := CustomLabel.Caption + RequiredChar;
     FRequiredComponents.Add(Control, CustomLabel);
@@ -152,7 +143,7 @@ end;
 
 function TCrud.GetLabel(Control: TControl): TCustomLabel;
 var
-  Index: Cardinal;
+  Index: Integer;
   Component: TComponent;
 begin
   Result := nil;
@@ -191,9 +182,20 @@ begin
   StatusBarStatus.SimpleText := Format('%s: campos obrigatórios.', [RequiredChar]);
 end;
 
-procedure TCrud.Insert;
+function TCrud.Insert: Boolean;
+var
+  Control: TWinControl;
+  Caption: string;
 begin
-  TMessage.Information('Inserido com sucesso!');
+  Result := Validate(Control);
+
+  if Result then
+    Exit;
+
+  Caption := FRequiredComponents.Items[Control].Caption;
+  Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
+  TMessage.Information('O campo %s é obrigatório.', [Caption]);
+  Control.TrySetFocus;
 end;
 
 procedure TCrud.Remove;
@@ -201,7 +203,29 @@ begin
   Clear;
 end;
 
-function TCrud.ValidateRequiredComponents(out Control: TWinControl): Boolean;
+procedure TCrud.Validate(Component: TObject; const Pattern: string);
+var
+  Control: TWinControl;
+  RegEx: TRegEx;
+  Caption: string;
+begin
+  Control := Component as TWinControl;
+
+  if Control.IsEmpty then
+    Exit;
+
+  RegEx := TRegEx.Create(Pattern, [roIgnoreCase]);
+
+  if RegEx.IsMatch(Control.ToString) then
+    Exit;
+
+  Caption := GetLabel(Control).Caption;
+  Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
+  TMessage.Information('O valor "%s" não é válido para %s.', [Control.ToString, Caption]);
+  Control.TrySetFocus;
+end;
+
+function TCrud.Validate(out Control: TWinControl): Boolean;
 var
   Component: TWinControl;
 begin
@@ -209,8 +233,9 @@ begin
   for Component in FRequiredComponents.Keys do
   begin
     if Component is TCustomEdit then
-      Result := not (Component as TCustomEdit).IsEmpty
-    else if Component is TDateTimePicker then
+      Result := not (Component as TCustomEdit).IsEmpty;
+
+    if Component is TDateTimePicker then
       Result := not (Component as TDateTimePicker).IsEmpty;
 
     if not Result then

@@ -5,11 +5,11 @@ interface
 uses
   System.Actions,
   System.Classes,
-  System.SysUtils,
   Vcl.ActnList,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Menus;
+  Vcl.Menus,
+  Vcl.StdCtrls;
 
 type
   TMain = class(TForm)
@@ -28,8 +28,10 @@ uses
   Form.Exercise1;
 
 procedure TMain.ActionExerciseOneExecute(Sender: TObject);
+var
+  View: TExercise1;
 begin
-  var View := TExercise1.Create(Self);
+  View := TExercise1.Create(Self);
   try
     View.ShowModal;
   finally

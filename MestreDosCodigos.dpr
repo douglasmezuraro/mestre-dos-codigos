@@ -13,9 +13,10 @@ uses
   Util.Messages in 'src\util\Util.Messages.pas',
   Form.Crud in 'src\form\Form.Crud.pas' {Crud},
   Form.Exercise1 in 'src\form\Form.Exercise1.pas' {Exercise1},
-  Form.Main in 'src\form\Form.Main.pas' {Main};
+  Form.Main in 'src\form\Form.Main.pas' {Main},
+  Helper.StringGrid in 'src\helper\Helper.StringGrid.pas';
 
-{R *.res}
+{$R *.res}
 
 var
   Main: TMain;

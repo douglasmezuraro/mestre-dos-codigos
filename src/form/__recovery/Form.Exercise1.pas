@@ -132,7 +132,7 @@ begin
   inherited;
   Birth := (Sender as TDateTimePicker).DateTime;
   if Birth.Compare(TDateTime.Now) = GreaterThanValue then
-    TMessage.Warning('Data inv·lida');
+    TMessage.Warning('Data inv√°lida');
 end;
 
 procedure TExercise1.DefineRequiredComponents;
@@ -159,7 +159,7 @@ const
   Titles: TArray<string> = ['Nome', 'Sobrenome', 'CPF', 'Telefone'];
 begin
   inherited;
-  Grid.Add(Titles);
+  Grid.Add(Titles, True);
 end;
 
 function TExercise1.Insert: Boolean;

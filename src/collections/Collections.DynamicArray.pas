@@ -60,7 +60,7 @@ end;
 
 function TDynamicArray<T>.InRange(const Index: Integer): Boolean;
 begin
-  Result := Index <= Pred(Count);
+  Result := (Index > NegativeValue) and (Index <= Count);
 end;
 
 function TDynamicArray<T>.IsEmpty: Boolean;
@@ -80,9 +80,11 @@ begin
 end;
 
 destructor TDynamicArray<T>.Destroy;
+var
+  Element: T;
 begin
   if FOwnsObjects then
-    for var Element in FArray do
+    for Element in FArray do
       Element.Free;
 
   inherited Destroy;
@@ -94,10 +96,20 @@ begin
 end;
 
 procedure TDynamicArray<T>.Remove(const Element: T);
+var
+  Index: Integer;
 begin
-  var Index := IndexOf(Element);
-  if Index <> NegativeValue then
-    FArray[Index].Free;
+  Index := IndexOf(Element);
+
+  if Index < ZeroValue then
+    Exit;
+
+  FArray[Index].Free;
+
+  for Index := Index to High(FArray) do
+    FArray[Index] := FArray[Succ(Index)];
+
+  SetLength(FArray, Pred(Count));
 end;
 
 procedure TDynamicArray<T>.SetItem(const Index: Integer; const Value: T);
