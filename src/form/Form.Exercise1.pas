@@ -103,19 +103,19 @@ implementation
 
 procedure TExercise1.Clear;
 begin
-  Name := string.Empty;
+  Name     := string.Empty;
   LastName := string.Empty;
-  Birth := TDateTime.Null;
-  Phone := string.Empty;
-  Gender := TGender.geUndefined;
-  Email := string.Empty;
-  CPF := string.Empty;
+  Birth    := TDateTime.Null;
+  Phone    := string.Empty;
+  Gender   := TGender.geUndefined;
+  Email    := string.Empty;
+  CPF      := string.Empty;
 end;
 
 procedure TExercise1.ControlActions;
 begin
-  ActionEdit.Enabled := Grid.Row <> Grid.HeaderIndex;
-  ActionRemove.Enabled := Grid.Row <> Grid.HeaderIndex;
+  ActionEdit.Enabled := FPrevRow <> Grid.HeaderIndex;
+  ActionRemove.Enabled := FPrevRow <> Grid.HeaderIndex;
 end;
 
 constructor TExercise1.Create(AOwner: TComponent);
@@ -159,7 +159,7 @@ const
   Titles: TArray<string> = ['Nome', 'Sobrenome', 'CPF', 'Telefone'];
 begin
   inherited;
-  Grid.Add(Titles);
+  Grid.Add(Titles, Grid.HeaderIndex);
 end;
 
 function TExercise1.Insert: Boolean;
@@ -311,6 +311,7 @@ begin
     Model := FArray.Item[Pred(ARow)];
     ModelToView(Model);
     FPrevRow := ARow;
+    ControlActions;
   finally
     (Sender as TStringGrid).OnSelectCell := GridSelectCell;
   end;

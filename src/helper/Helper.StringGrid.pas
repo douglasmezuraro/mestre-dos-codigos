@@ -10,56 +10,59 @@ uses
 
 type
   TStringGridHelper = class Helper for TStringGrid
+  private
+    procedure AutoFitColumns;
   public
     const HeaderIndex = 0;
     procedure Remove; overload;
     procedure Remove(const Row: Integer); overload;
-    procedure Add(const Values: TArray<string>; const Header: Boolean = False);
-    procedure AutoFitColumns;
+    procedure Add(const Values: TArray<string>); overload;
+    procedure Add(const Values: TArray<string>; const Row: Integer); overload;
   end;
 
 implementation
 
 { TStringGridHelper }
 
-procedure TStringGridHelper.Add(const Values: TArray<string>;
-  const Header: Boolean);
-var
-  RowIndex: Word;
-  ColumnIndex: Byte;
-  Length: Integer;
-  Event: TSelectCellEvent;
+procedure TStringGridHelper.Add(const Values: TArray<string>);
 begin
-  Event := OnSelectCell;
+  Add(Values, RowCount);
+end;
+
+procedure TStringGridHelper.Add(const Values: TArray<string>; const Row: Integer);
+var
+  Insert, Append: Boolean;
+  Column, Length: Integer;
+  OldEvent: TSelectCellEvent;
+begin
+  Length := System.Length(Values);
+
+  if Row = HeaderIndex then
+    ColCount := Length;
+
+  if ColCount <> Length then
+    raise Exception.CreateFmt('Mismatch with the previous column count. Before %d now %d', [ColCount, Length]);
+
+  OldEvent := OnSelectCell;
   OnSelectCell := nil;
   try
-    RowIndex := 0;
-    if not Header then
-    begin
-      RowIndex := RowCount;
+    Insert := (Row > HeaderIndex) and (Row < RowCount);
+    Append := Row >= RowCount;
+
+    if Insert or Append then
       RowCount := Succ(RowCount);
-      Row := RowIndex;
-    end;
 
-    Length := System.Length(Values);
+    if Insert then
+      for Column := Pred(RowCount) downto Succ(Row) do
+        Rows[Column] := Rows[Pred(Column)];
 
-    if ColCount = 1 then
-      ColCount := Length
-    else if ColCount <> Length then
-      raise Exception.Create('Mismatch with the previous column count.');
-
-    for ColumnIndex := Low(Values) to High(Values) do
-      Cells[ColumnIndex, RowIndex] := Values[ColumnIndex];
+    for Column := Low(Values) to High(Values) do
+      Cells[Column, Row] := Values[Column];
 
     AutoFitColumns;
   finally
-    OnSelectCell := Event;
+    OnSelectCell := OldEvent;
   end;
-end;
-
-procedure TStringGridHelper.Remove;
-begin
-  Remove(Row);
 end;
 
 procedure TStringGridHelper.AutoFitColumns;
@@ -77,6 +80,11 @@ begin
     end;
     ColWidths[Column] := Width + BlankSpace + GridLineWidth;
   end;
+end;
+
+procedure TStringGridHelper.Remove;
+begin
+  Remove(Row);
 end;
 
 procedure TStringGridHelper.Remove(const Row: Integer);

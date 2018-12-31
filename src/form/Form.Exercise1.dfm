@@ -2,6 +2,7 @@ inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
   ClientHeight = 368
   ClientWidth = 580
+  ExplicitTop = -78
   ExplicitWidth = 596
   ExplicitHeight = 406
   PixelsPerInch = 96
