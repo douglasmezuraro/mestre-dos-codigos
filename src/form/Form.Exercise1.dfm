@@ -2,7 +2,6 @@ inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
   ClientHeight = 368
   ClientWidth = 580
-  ExplicitTop = -78
   ExplicitWidth = 596
   ExplicitHeight = 406
   PixelsPerInch = 96
@@ -29,6 +28,10 @@ inherited Exercise1: TExercise1
     TabOrder = 2
     object TabSheetList: TTabSheet
       Caption = 'Lista'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Grid: TStringGrid
         Left = 0
         Top = 0
@@ -46,6 +49,10 @@ inherited Exercise1: TExercise1
     object TabSheetData: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LabelBirth: TLabel
         Left = 13
         Top = 43
@@ -97,7 +104,7 @@ inherited Exercise1: TExercise1
         Width = 101
         Height = 21
         Date = 43331.000000000000000000
-        Time = 0.664617638889467300
+        Time = 0.664617638889467400
         TabOrder = 2
         OnExit = DateTimePickerBirthExit
       end
