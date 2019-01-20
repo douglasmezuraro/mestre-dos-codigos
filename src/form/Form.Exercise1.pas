@@ -3,10 +3,10 @@ unit Form.Exercise1;
 interface
 
 uses
+  Collections.API,
+  Collections.DynamicArray,
   Form.Crud,
   Helper.DateTime,
-  Vcl.Helpers,
-  Helper.StringGrid,
   Model.Gender,
   Model.Person,
   System.Actions,
@@ -14,7 +14,7 @@ uses
   System.Math,
   System.SysUtils,
   System.Types,
-  Collections.API,
+  Util.Messages,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -22,9 +22,8 @@ uses
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.Grids,
-  Vcl.StdCtrls,
-  Util.Messages,
-  Collections.DynamicArray;
+  Vcl.Helpers,
+  Vcl.StdCtrls;
 
 type
   TExercise1 = class(TCrud)
