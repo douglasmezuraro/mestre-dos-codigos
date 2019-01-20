@@ -29,11 +29,14 @@ type
     ButtonEdit: TSpeedButton;
     ButtonRemove: TSpeedButton;
     StatusBarStatus: TStatusBar;
+    ButtonClear: TSpeedButton;
+    ActionClear: TAction;
     procedure ActionInsertExecute(Sender: TObject);
     procedure ActionEditExecute(Sender: TObject);
     procedure ActionRemoveExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ActionClearExecute(Sender: TObject);
   private
     FRequiredComponents: TDictionary<TWinControl, TCustomLabel>;
     function GetLabel(Control: TControl): TCustomLabel;
@@ -76,6 +79,11 @@ destructor TCrud.Destroy;
 begin
   FRequiredComponents.Free;
   inherited Destroy;
+end;
+
+procedure TCrud.ActionClearExecute(Sender: TObject);
+begin
+  Clear;
 end;
 
 procedure TCrud.ActionEditExecute(Sender: TObject);

@@ -1,6 +1,7 @@
 object Crud: TCrud
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   Caption = '<Changed in designtime>'
   ClientHeight = 600
   ClientWidth = 800
@@ -55,6 +56,14 @@ object Crud: TCrud
       ExplicitLeft = 304
       ExplicitHeight = 45
     end
+    object ButtonClear: TSpeedButton
+      Left = 301
+      Top = 1
+      Width = 100
+      Height = 30
+      Action = ActionClear
+      Align = alLeft
+    end
   end
   object StatusBarStatus: TStatusBar
     Left = 0
@@ -82,6 +91,11 @@ object Crud: TCrud
       Category = 'Crud'
       Caption = 'Remover'
       OnExecute = ActionRemoveExecute
+    end
+    object ActionClear: TAction
+      Category = 'Crud'
+      Caption = '&Limpar'
+      OnExecute = ActionClearExecute
     end
   end
 end

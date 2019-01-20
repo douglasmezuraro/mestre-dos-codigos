@@ -14,7 +14,6 @@ uses
   Form.Crud in 'src\form\Form.Crud.pas' {Crud},
   Form.Exercise1 in 'src\form\Form.Exercise1.pas' {Exercise1},
   Form.Main in 'src\form\Form.Main.pas' {Main},
-  Helper.StringGrid in 'src\helper\Helper.StringGrid.pas',
   Form.GeometricCalculator in 'src\form\Form.GeometricCalculator.pas' {GeometricCalculator},
   GeometricCalculator.API in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.API.pas',
   GeometricCalculator.GeometricForm in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.GeometricForm.pas',

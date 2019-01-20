@@ -20,7 +20,7 @@ type
     constructor Create(const OwnsObjects: Boolean = True);
     destructor Destroy; override;
     function Add(const Element: T): Integer;
-    procedure Remove(const Element: T);
+    function Remove(const Element: T): Boolean;
     function IsEmpty: Boolean;
     function Contains(const Element: T): Boolean;
     function IndexOf(const Element: T): Integer;
@@ -95,13 +95,14 @@ begin
   Result := Length(FArray);
 end;
 
-procedure TDynamicArray<T>.Remove(const Element: T);
+function TDynamicArray<T>.Remove(const Element: T): Boolean;
 var
   Index: Integer;
 begin
   Index := IndexOf(Element);
+  Result := Index > NegativeValue;
 
-  if Index < ZeroValue then
+  if not Result then
     Exit;
 
   FArray[Index].Free;

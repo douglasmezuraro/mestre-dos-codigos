@@ -11,7 +11,7 @@ type
     procedure SetItem(const Index: Integer; const Value: T);
     { methods }
     function Add(const Element: T): Integer;
-    procedure Remove(const Element: T);
+    function Remove(const Element: T): Boolean;
     function IsEmpty: Boolean;
     function Contains(const Element: T): Boolean;
     function IndexOf(const Element: T): Integer;

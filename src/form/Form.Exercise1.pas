@@ -51,6 +51,7 @@ type
     TPersonColumn = (pcName, pcLastName, pcCPF, pcPhone);
   private
     FArray: ICollection<TPerson>;
+    FModel: TPerson;
     FPrevRow: Byte;
     { Getters and setters }
     function GetName: string;
@@ -64,9 +65,9 @@ type
     function GetGender: TGender;
     procedure SetGender(const Value: TGender);
     { Methods }
-    function ViewToModel: TPerson;
+    procedure ViewToModel;
     function ViewToArray: TArray<string>;
-    procedure ModelToView(const Model: TPerson);
+    procedure ModelToView;
     function GetEmail: string;
     procedure SetEmail(const Value: string);
     function GetCPF: string;
@@ -92,6 +93,7 @@ type
     property Gender: TGender read GetGender write SetGender;
     property Email: string read GetEmail write SetEmail;
     property CPF: string read GetCPF write SetCPF;
+    property Model: TPerson read FModel write FModel;
   end;
 
 implementation
@@ -150,7 +152,8 @@ end;
 
 procedure TExercise1.Edit;
 begin
-  inherited;
+  ViewToModel;
+  Grid.Update(ViewToArray);
 end;
 
 procedure TExercise1.Initialize;
@@ -162,15 +165,14 @@ begin
 end;
 
 function TExercise1.Insert: Boolean;
-var
-  Model: TPerson;
 begin
   Result := inherited Insert;
 
   if not Result then
     Exit;
 
-  Model := ViewToModel;
+  Model := TPerson.Create;
+  ViewToModel;
   Result := FArray.Add(Model) > NegativeValue;
 
   if not Result then
@@ -214,15 +216,15 @@ end;
 
 procedure TExercise1.Remove;
 begin
-  FArray.Remove(FArray.Item[Pred(Grid.Row)]);
-  Grid.Remove;
-  inherited;
+  if FArray.Remove(FArray.Item[Pred(Grid.Row)]) then
+  begin
+    Grid.Remove;
+    inherited;
+  end;
 end;
 
-procedure TExercise1.ModelToView(const Model: TPerson);
+procedure TExercise1.ModelToView;
 begin
-  Clear;
-
   if not Assigned(Model) then
     Exit;
 
@@ -237,23 +239,23 @@ end;
 
 function TExercise1.ViewToArray: TArray<string>;
 begin
-  SetLength(Result, Succ(Ord(High(TPersonColumn))));
+  SetLength(Result, Grid.ColCount);
+
   Result[Ord(pcName)]     := Name;
   Result[Ord(pcLastName)] := LastName;
   Result[Ord(pcCPF)]      := CPF;
   Result[Ord(pcPhone)]    := Phone;
 end;
 
-function TExercise1.ViewToModel: TPerson;
+procedure TExercise1.ViewToModel;
 begin
-  Result := TPerson.Create;
-  Result.Name := Name;
-  Result.LastName := LastName;
-  Result.Birth := Birth;
-  Result.Phone := Phone;
-  Result.Gender := Gender;
-  Result.Email := Email;
-  Result.CPF := CPF;
+  Model.Name     := Name;
+  Model.LastName := LastName;
+  Model.Birth    := Birth;
+  Model.Phone    := Phone;
+  Model.Gender   := Gender;
+  Model.Email    := Email;
+  Model.CPF      := CPF;
 end;
 
 function TExercise1.GetInitialFocus: TWinControl;
@@ -298,8 +300,6 @@ end;
 
 procedure TExercise1.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
-var
-  Model: TPerson;
 begin
   inherited;
   if ARow = FPrevRow then
@@ -308,7 +308,7 @@ begin
   (Sender as TStringGrid).OnSelectCell := nil;
   try
     Model := FArray.Item[Pred(ARow)];
-    ModelToView(Model);
+    ModelToView;
     FPrevRow := ARow;
     ControlActions;
   finally

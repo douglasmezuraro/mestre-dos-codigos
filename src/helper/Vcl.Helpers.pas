@@ -40,6 +40,7 @@ type
     procedure Remove(const Row: Integer); overload;
     procedure Add(const Values: TArray<string>); overload;
     procedure Add(const Values: TArray<string>; const Row: Integer); overload;
+    procedure Update(const Values: TArray<string>);
   end;
 
 implementation
@@ -171,6 +172,14 @@ begin
 
   RowCount := Pred(RowCount);
   AutoFitColumns;
+end;
+
+procedure TStringGridHelper.Update(const Values: TArray<string>);
+var
+  Column: Integer;
+begin
+  for Column := 0 to Pred(ColCount) do
+    Cells[Column, Row] := Values[Column];
 end;
 
 end.

@@ -23,15 +23,11 @@ inherited Exercise1: TExercise1
     Top = 0
     Width = 580
     Height = 317
-    ActivePage = TabSheetList
+    ActivePage = TabSheetData
     Align = alClient
     TabOrder = 2
     object TabSheetList: TTabSheet
       Caption = 'Lista'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Grid: TStringGrid
         Left = 0
         Top = 0
@@ -49,10 +45,6 @@ inherited Exercise1: TExercise1
     object TabSheetData: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LabelBirth: TLabel
         Left = 13
         Top = 43

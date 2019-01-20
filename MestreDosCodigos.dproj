@@ -120,7 +120,6 @@
             <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\helper\Helper.StringGrid.pas"/>
         <DCCReference Include="src\form\Form.GeometricCalculator.pas">
             <Form>GeometricCalculator</Form>
             <FormType>dfm</FormType>
