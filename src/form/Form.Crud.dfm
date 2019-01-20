@@ -74,8 +74,8 @@ object Crud: TCrud
     SimplePanel = True
     SimpleText = '<Changed in runtime>'
   end
-  object ActionListActions: TActionList
-    Left = 16
+  object ActionList: TActionList
+    Left = 72
     Top = 24
     object ActionInsert: TAction
       Category = 'Crud'

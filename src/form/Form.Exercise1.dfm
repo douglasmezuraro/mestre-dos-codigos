@@ -23,7 +23,7 @@ inherited Exercise1: TExercise1
     Top = 0
     Width = 580
     Height = 317
-    ActivePage = TabSheetData
+    ActivePage = TabSheetList
     Align = alClient
     TabOrder = 2
     object TabSheetList: TTabSheet
@@ -136,7 +136,7 @@ inherited Exercise1: TExercise1
       end
     end
   end
-  inherited ActionListActions: TActionList
+  inherited ActionList: TActionList
     Left = 448
     Top = 184
   end

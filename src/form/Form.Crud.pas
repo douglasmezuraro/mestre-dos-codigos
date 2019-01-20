@@ -4,10 +4,10 @@ interface
 
 uses
   Helper.DateTime,
-  Vcl.Helpers,
   System.Actions,
   System.Classes,
   System.Generics.Collections,
+  System.RegularExpressions,
   System.SysUtils,
   Util.Messages,
   Vcl.ActnList,
@@ -15,35 +15,34 @@ uses
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.StdCtrls,
   Vcl.Forms,
-  System.RegularExpressions;
+  Vcl.Helpers,
+  Vcl.StdCtrls;
 
 type
   TCrud = class abstract(TForm)
-    PanelButtons: TPanel;
-    ActionListActions: TActionList;
-    ActionInsert: TAction;
-    ActionEdit: TAction;
-    ActionRemove: TAction;
-    ButtonInsert: TSpeedButton;
-    ButtonEdit: TSpeedButton;
-    ButtonRemove: TSpeedButton;
-    StatusBarStatus: TStatusBar;
-    ButtonClear: TSpeedButton;
+    ActionList: TActionList;
     ActionClear: TAction;
-    procedure ActionInsertExecute(Sender: TObject);
-    procedure ActionEditExecute(Sender: TObject);
-    procedure ActionRemoveExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    ActionEdit: TAction;
+    ActionInsert: TAction;
+    ActionRemove: TAction;
+    ButtonClear: TSpeedButton;
+    ButtonEdit: TSpeedButton;
+    ButtonInsert: TSpeedButton;
+    ButtonRemove: TSpeedButton;
+    PanelButtons: TPanel;
+    StatusBarStatus: TStatusBar;
     procedure ActionClearExecute(Sender: TObject);
+    procedure ActionEditExecute(Sender: TObject);
+    procedure ActionInsertExecute(Sender: TObject);
+    procedure ActionRemoveExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
-    FRequiredComponents: TDictionary<TWinControl, string>;
+    FRequiredControls: TDictionary<TWinControl, string>;
 
     { Define Methods }
-    procedure DefineInitialFocus;
-    procedure DefineRequiredComponents;
+    procedure DefineRequiredControls;
 
     { Other }
     function Validate(out Control: TWinControl): Boolean;
@@ -60,8 +59,8 @@ type
     procedure Finalize; virtual;
 
     { Required components }
-    function GetRequiredComponents: TArray<TWinControl>; virtual;
-    function GetInitialFocus: TWinControl; virtual;
+    function GetRequiredControls: TArray<TWinControl>; virtual; abstract;
+    function GetInitialFocus: TWinControl; virtual; abstract;
 
     { Other useful methods }
     procedure ControlActions; virtual; abstract;
@@ -88,7 +87,7 @@ begin
 
     if Component is TCustomEdit then
     begin
-      (Component as TCustomEdit).Text := string.Empty;
+      (Component as TCustomEdit).Clear;
       Continue;
     end;
 
@@ -109,12 +108,12 @@ end;
 constructor TCrud.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
-  FRequiredComponents := TDictionary<TWinControl, string>.Create;
+  FRequiredControls := TDictionary<TWinControl, string>.Create;
 end;
 
 destructor TCrud.Destroy;
 begin
-  FRequiredComponents.Free;
+  FRequiredControls.Free;
   inherited Destroy;
 end;
 
@@ -140,19 +139,18 @@ end;
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
 begin
   Remove;
-  ControlActions;
 end;
 
-procedure TCrud.DefineRequiredComponents;
+procedure TCrud.DefineRequiredControls;
 var
   Control: TWinControl;
   Caption: string;
 begin
-  for Control in GetRequiredComponents do
+  for Control in GetRequiredControls do
   begin
     Caption := GetCaption(Control);
     Control.Required := True;
-    FRequiredComponents.Add(Control, Caption);
+    FRequiredControls.Add(Control, Caption);
   end;
 end;
 
@@ -180,15 +178,15 @@ function TCrud.GetCaption(Control: TWinControl): string;
 
       if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
       begin
-        Exit(Component as TLabel);
+        Result := Component as TLabel;
+        Break;
       end;
 
       if (Component is TLabeledEdit) and (Control = Component) then
       begin
-        Exit((Component as TLabeledEdit).EditLabel);
+        Result := (Component as TLabeledEdit).EditLabel;
+        Break;
       end;
-
-
     end;
   end;
 
@@ -202,11 +200,13 @@ begin
     (Control as TRadioGroup).Caption := Result + RequiredChar;
   end;
 
-  if TArray.BinarySearch<TClass>([TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
+  if TArray.BinarySearch<TClass>([TEdit, TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
   begin
     LinkedLabel := GetLinkedLabel;
+
     if not Assigned(LinkedLabel) then
-      raise Exception.Create('Error Message');
+      raise Exception.CreateFmt('Não foi encontrado label vínculado ao componente "%s"', [Control]);
+
     Result := LinkedLabel.Caption;
     LinkedLabel.Caption := Result + RequiredChar;
   end;
@@ -222,31 +222,12 @@ begin
   Initialize;
 end;
 
-function TCrud.GetInitialFocus: TWinControl;
-begin
-  Result := nil;
-end;
-
-function TCrud.GetRequiredComponents: TArray<TWinControl>;
-begin
-  Result := [];
-end;
-
-procedure TCrud.DefineInitialFocus;
-var
-  Component: TWinControl;
-begin
-  Component := GetInitialFocus;
-  if Assigned(Component) then
-    Component.TrySetFocus;
-end;
-
 procedure TCrud.Initialize;
 begin
-  DefineRequiredComponents;
-  DefineInitialFocus;
+  DefineRequiredControls;
   ControlActions;
   StatusBarStatus.SimpleText := Format('%s: campos obrigatórios.', [RequiredChar]);
+  GetInitialFocus.TrySetFocus;
 end;
 
 function TCrud.Insert: Boolean;
@@ -256,7 +237,7 @@ begin
   Result := Validate(Control);
   if not Result then
   begin
-    TMessage.Information('O campo %s é obrigatório.', [FRequiredComponents.Items[Control]]);
+    TMessage.Information('O campo %s é obrigatório.', [FRequiredControls.Items[Control]]);
     Control.TrySetFocus;
   end;
 end;
@@ -264,6 +245,7 @@ end;
 procedure TCrud.Remove;
 begin
   Clear;
+  ControlActions
 end;
 
 procedure TCrud.RegExValidate(Component: TObject; const Pattern: string);
@@ -280,8 +262,8 @@ begin
   RegEx := TRegEx.Create(Pattern, [roIgnoreCase]);
   if not RegEx.IsMatch(Control.ToString) then
   begin
-    Caption := FRequiredComponents.Items[Component as TWinControl];
-    TMessage.Information('O valor "%s" não é válido para %s.', [Control.ToString, Caption]);
+    Caption := FRequiredControls.Items[Component as TWinControl];
+    TMessage.Information('O valor "%s" não é válido para "%s".', [Control.ToString.ToLower, Caption]);
     Control.TrySetFocus;
   end;
 end;
@@ -291,7 +273,7 @@ var
   Component: TWinControl;
 begin
   Result := True;
-  for Component in FRequiredComponents.Keys do
+  for Component in FRequiredControls.Keys do
   begin
     if Component is TCustomEdit then
       Result := not (Component as TCustomEdit).IsEmpty;
