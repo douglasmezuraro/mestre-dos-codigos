@@ -19,7 +19,13 @@ object Main: TMain
     Left = 16
     Top = 52
     object MenuItemExerciseOne: TMenuItem
-      Action = ActionExerciseOne
+      Caption = 'Exerc'#237'cios'
+      object MenuItemGeometricCalculator: TMenuItem
+        Action = ActionGeometricCalculator
+      end
+      object MenuItemExerciseOne1: TMenuItem
+        Action = ActionExerciseOne
+      end
     end
   end
   object ActionList: TActionList
@@ -28,6 +34,10 @@ object Main: TMain
     object ActionExerciseOne: TAction
       Caption = 'Exerc'#237'cio 1'
       OnExecute = ActionExerciseOneExecute
+    end
+    object ActionGeometricCalculator: TAction
+      Caption = '&Calculadora geom'#233'trica'
+      OnExecute = ActionGeometricCalculatorExecute
     end
   end
 end
