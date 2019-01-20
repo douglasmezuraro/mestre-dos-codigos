@@ -51,7 +51,7 @@ inherited Exercise1: TExercise1
         Width = 55
         Height = 13
         Caption = 'Nascimento'
-        FocusControl = DateTimePickerBirth
+        FocusControl = EditBirth
       end
       object RadioGroupGender: TRadioGroup
         Left = 13
@@ -68,7 +68,7 @@ inherited Exercise1: TExercise1
         TabOrder = 6
         TabStop = True
       end
-      object LabeledEditPhone: TLabeledEdit
+      object EditPhone: TLabeledEdit
         Left = 268
         Top = 102
         Width = 121
@@ -77,9 +77,9 @@ inherited Exercise1: TExercise1
         EditLabel.Height = 13
         EditLabel.Caption = 'Telefone'
         TabOrder = 5
-        OnExit = LabeledEditPhoneExit
+        OnExit = EditPhoneExit
       end
-      object LabeledEditEmail: TLabeledEdit
+      object EditEmail: TLabeledEdit
         Left = 13
         Top = 102
         Width = 249
@@ -88,9 +88,9 @@ inherited Exercise1: TExercise1
         EditLabel.Height = 13
         EditLabel.Caption = 'E-mail'
         TabOrder = 4
-        OnExit = LabeledEditEmailExit
+        OnExit = EditEmailExit
       end
-      object DateTimePickerBirth: TDateTimePicker
+      object EditBirth: TDateTimePicker
         Left = 12
         Top = 62
         Width = 101
@@ -98,9 +98,9 @@ inherited Exercise1: TExercise1
         Date = 43331.000000000000000000
         Time = 0.664617638889467400
         TabOrder = 2
-        OnExit = DateTimePickerBirthExit
+        OnExit = EditBirthExit
       end
-      object LabeledEditCPF: TLabeledEdit
+      object EditCPF: TLabeledEdit
         Left = 119
         Top = 62
         Width = 142
@@ -111,9 +111,9 @@ inherited Exercise1: TExercise1
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
-        OnExit = LabeledEditCPFExit
+        OnExit = EditCPFExit
       end
-      object LabeledEditName: TLabeledEdit
+      object EditName: TLabeledEdit
         Left = 12
         Top = 16
         Width = 249
@@ -122,9 +122,9 @@ inherited Exercise1: TExercise1
         EditLabel.Height = 13
         EditLabel.Caption = 'Nome'
         TabOrder = 0
-        OnExit = LabeledEditNameExit
+        OnExit = EditNameExit
       end
-      object LabeledEditLastName: TLabeledEdit
+      object EditLastName: TLabeledEdit
         Left = 267
         Top = 16
         Width = 249

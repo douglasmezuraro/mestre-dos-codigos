@@ -31,19 +31,19 @@ type
     TabSheetList: TTabSheet;
     TabSheetData: TTabSheet;
     RadioGroupGender: TRadioGroup;
-    LabeledEditPhone: TLabeledEdit;
-    LabeledEditEmail: TLabeledEdit;
-    DateTimePickerBirth: TDateTimePicker;
-    LabeledEditCPF: TLabeledEdit;
+    EditPhone: TLabeledEdit;
+    EditEmail: TLabeledEdit;
+    EditBirth: TDateTimePicker;
+    EditCPF: TLabeledEdit;
     LabelBirth: TLabel;
-    LabeledEditName: TLabeledEdit;
-    LabeledEditLastName: TLabeledEdit;
+    EditName: TLabeledEdit;
+    EditLastName: TLabeledEdit;
     Grid: TStringGrid;
-    procedure DateTimePickerBirthExit(Sender: TObject);
-    procedure LabeledEditNameExit(Sender: TObject);
-    procedure LabeledEditEmailExit(Sender: TObject);
-    procedure LabeledEditCPFExit(Sender: TObject);
-    procedure LabeledEditPhoneExit(Sender: TObject);
+    procedure EditBirthExit(Sender: TObject);
+    procedure EditNameExit(Sender: TObject);
+    procedure EditEmailExit(Sender: TObject);
+    procedure EditCPFExit(Sender: TObject);
+    procedure EditPhoneExit(Sender: TObject);
     procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
   private type
@@ -53,46 +53,24 @@ type
     FArray: ICollection<TPerson>;
     FModel: TPerson;
     FPrevRow: Byte;
-    { Getters and setters }
-    function GetName: string;
-    procedure SetName(const Value: string); reintroduce;
-    function GetLastName: string;
-    procedure SetLastName(const Value: string);
-    function GetPhone: string;
-    procedure SetPhone(const Value: string);
-    function GetBirth: TDateTime;
-    procedure SetBirth(const Value: TDateTime);
-    function GetGender: TGender;
-    procedure SetGender(const Value: TGender);
     { Methods }
     procedure ViewToModel;
-    function ViewToArray: TArray<string>;
     procedure ModelToView;
-    function GetEmail: string;
-    procedure SetEmail(const Value: string);
-    function GetCPF: string;
-    procedure SetCPF(const Value: string);
+    function ModelToArray: TArray<string>;
   protected
     procedure Initialize; override;
-    { Crud actions }
+
+    { Main actions }
     function Insert: Boolean; override;
     procedure Edit; override;
     procedure Remove; override;
-    { Mandatory componentes }
-    procedure DefineRequiredComponents; override;
-    { Other useful methods }
-    procedure Clear; override;
-    procedure ControlActions; override;
+
+    { Other }
     function GetInitialFocus: TWinControl; override;
+    function GetRequiredComponents: TArray<TWinControl>; override;
+    procedure ControlActions; override;
   public
     constructor Create(AOwner: TComponent); override;
-    property Name: string read GetName write SetName;
-    property LastName: string read GetLastName write SetLastName;
-    property Birth: TDateTime read GetBirth write SetBirth;
-    property Phone: string read GetPhone write SetPhone;
-    property Gender: TGender read GetGender write SetGender;
-    property Email: string read GetEmail write SetEmail;
-    property CPF: string read GetCPF write SetCPF;
     property Model: TPerson read FModel write FModel;
   end;
 
@@ -101,17 +79,6 @@ implementation
 {$R *.dfm}
 
 { TExercise1 }
-
-procedure TExercise1.Clear;
-begin
-  Name     := string.Empty;
-  LastName := string.Empty;
-  Birth    := TDateTime.Null;
-  Phone    := string.Empty;
-  Gender   := TGender.geUndefined;
-  Email    := string.Empty;
-  CPF      := string.Empty;
-end;
 
 procedure TExercise1.ControlActions;
 begin
@@ -126,7 +93,7 @@ begin
   FPrevRow := Grid.Row;
 end;
 
-procedure TExercise1.DateTimePickerBirthExit(Sender: TObject);
+procedure TExercise1.EditBirthExit(Sender: TObject);
 var
   Birth: TDateTime;
 begin
@@ -136,24 +103,10 @@ begin
     TMessage.Warning('Data inválida');
 end;
 
-procedure TExercise1.DefineRequiredComponents;
-begin
-  inherited;
-  DefineRequiredComponents([
-    LabeledEditName,
-    LabeledEditLastName
-//    ,
-//    DateTimePickerBirth,
-//    LabeledEditPhone,
-//    LabeledEditEmail,
-//    LabeledEditCPF
-  ]);
-end;
-
 procedure TExercise1.Edit;
 begin
   ViewToModel;
-  Grid.Update(ViewToArray);
+  Grid.Update(ModelToArray);
 end;
 
 procedure TExercise1.Initialize;
@@ -178,40 +131,40 @@ begin
   if not Result then
     Exit;
 
-  Grid.Add(ViewToArray);
+  Grid.Add(ModelToArray);
   PageControlLayout.ActivePage := TabSheetList;
 end;
 
-procedure TExercise1.LabeledEditCPFExit(Sender: TObject);
+procedure TExercise1.EditCPFExit(Sender: TObject);
 const
   Pattern = '\d{3}.\d{3}.\d{3}-\d{2}';
 begin
   inherited;
-  Validate(Sender, Pattern);
+  RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.LabeledEditEmailExit(Sender: TObject);
+procedure TExercise1.EditEmailExit(Sender: TObject);
 const
   Pattern = '\w+@\w+\.[a-z]+';
 begin
   inherited;
-  Validate(Sender, Pattern);
+  RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.LabeledEditNameExit(Sender: TObject);
+procedure TExercise1.EditNameExit(Sender: TObject);
 const
   Pattern = '^[a-zA-Z\s]+$';
 begin
   inherited;
-  Validate(Sender, Pattern);
+  RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.LabeledEditPhoneExit(Sender: TObject);
+procedure TExercise1.EditPhoneExit(Sender: TObject);
 const
   Pattern = '\(\d{2}\)(\s|)(\d{4}|\d{5})\-\d{4}';
 begin
   inherited;
-  Validate(Sender, Pattern);
+  RegExValidate(Sender, Pattern);
 end;
 
 procedure TExercise1.Remove;
@@ -228,74 +181,51 @@ begin
   if not Assigned(Model) then
     Exit;
 
-  Name     := Model.Name;
-  LastName := Model.LastName;
-  Birth    := Model.Birth;
-  Phone    := Model.Phone;
-  Gender   := Model.Gender;
-  Email    := Model.Email;
-  CPF      := Model.CPF;
+  EditName.Text              := Model.Name;
+  EditLastName.Text          := Model.LastName;
+  EditBirth.DateTime         := Model.Birth;
+  EditPhone.Text             := Model.Phone;
+  EditEmail.Text             := Model.Email;
+  EditCPF.Text               := Model.CPF;
+  RadioGroupGender.ItemIndex := Ord(Model.Gender);
 end;
 
-function TExercise1.ViewToArray: TArray<string>;
+function TExercise1.ModelToArray: TArray<string>;
 begin
   SetLength(Result, Grid.ColCount);
 
-  Result[Ord(pcName)]     := Name;
-  Result[Ord(pcLastName)] := LastName;
-  Result[Ord(pcCPF)]      := CPF;
-  Result[Ord(pcPhone)]    := Phone;
+  Result[Ord(pcName)]     := Model.Name;
+  Result[Ord(pcLastName)] := Model.LastName;
+  Result[Ord(pcCPF)]      := Model.CPF;
+  Result[Ord(pcPhone)]    := Model.Phone;
 end;
 
 procedure TExercise1.ViewToModel;
 begin
-  Model.Name     := Name;
-  Model.LastName := LastName;
-  Model.Birth    := Birth;
-  Model.Phone    := Phone;
-  Model.Gender   := Gender;
-  Model.Email    := Email;
-  Model.CPF      := CPF;
+  Model.Name     := EditName.Text;
+  Model.LastName := EditLastName.Text;
+  Model.Birth    := EditBirth.DateTime;
+  Model.Phone    := EditPhone.Text;
+  Model.Gender   := TGender(RadioGroupGender.ItemIndex);
+  Model.Email    := EditEmail.Text;
+  Model.CPF      := EditCPF.Text;
 end;
 
 function TExercise1.GetInitialFocus: TWinControl;
 begin
-  Result := LabeledEditName;
+  Result := EditName;
 end;
 
-function TExercise1.GetBirth: TDateTime;
+function TExercise1.GetRequiredComponents: TArray<TWinControl>;
 begin
-  Result := DateTimePickerBirth.DateTime;
-end;
-
-function TExercise1.GetCPF: string;
-begin
-  Result := LabeledEditCPF.Text;
-end;
-
-function TExercise1.GetEmail: string;
-begin
-  Result := LabeledEditEmail.Text;
-end;
-
-function TExercise1.GetGender: TGender;
-begin
-  Result := TGender(RadioGroupGender.ItemIndex);
-end;
-
-function TExercise1.GetLastName: string;
-begin
-  Result := LabeledEditLastName.Text;
-end;
-
-function TExercise1.GetName: string;
-begin
-  Result := LabeledEditName.Text;
-end;
-
-function TExercise1.GetPhone: string;
-begin
-  Result := LabeledEditPhone.Text;
+  Result := [
+    EditName,
+    EditLastName,
+    RadioGroupGender,
+    EditBirth,
+    EditPhone,
+    EditEmail,
+    EditCPF];
 end;
 
 procedure TExercise1.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
@@ -314,41 +244,6 @@ begin
   finally
     (Sender as TStringGrid).OnSelectCell := GridSelectCell;
   end;
-end;
-
-procedure TExercise1.SetBirth(const Value: TDateTime);
-begin
-  DateTimePickerBirth.DateTime := Value;
-end;
-
-procedure TExercise1.SetCPF(const Value: string);
-begin
-  LabeledEditCPF.Text := Value;
-end;
-
-procedure TExercise1.SetEmail(const Value: string);
-begin
-  LabeledEditEmail.Text := Value;
-end;
-
-procedure TExercise1.SetGender(const Value: TGender);
-begin
-  RadioGroupGender.ItemIndex := Ord(Value);
-end;
-
-procedure TExercise1.SetLastName(const Value: string);
-begin
-  LabeledEditLastName.Text := Value;
-end;
-
-procedure TExercise1.SetName(const Value: string);
-begin
-  LabeledEditName.Text := Value;
-end;
-
-procedure TExercise1.SetPhone(const Value: string);
-begin
-  LabeledEditPhone.Text := Value;
 end;
 
 end.

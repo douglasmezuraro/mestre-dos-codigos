@@ -3,6 +3,7 @@ unit Form.Crud;
 interface
 
 uses
+  Helper.DateTime,
   Vcl.Helpers,
   System.Actions,
   System.Classes,
@@ -38,26 +39,33 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActionClearExecute(Sender: TObject);
   private
-    FRequiredComponents: TDictionary<TWinControl, TCustomLabel>;
-    function GetLabel(Control: TControl): TCustomLabel;
+    FRequiredComponents: TDictionary<TWinControl, string>;
+
+    { Define Methods }
     procedure DefineInitialFocus;
-    function Validate(out Control: TWinControl): Boolean; overload;
+    procedure DefineRequiredComponents;
+
+    { Other }
+    function Validate(out Control: TWinControl): Boolean;
+    function GetCaption(Control: TWinControl): string;
   protected
-    { Crud actions }
+    { Main actions }
     function Insert: Boolean; virtual;
     procedure Edit; virtual;
     procedure Remove; virtual;
+    procedure Clear; virtual;
+
     { Form initialization and finalization }
     procedure Initialize; virtual;
     procedure Finalize; virtual;
+
     { Required components }
-    procedure DefineRequiredComponents(Components: TArray<TWinControl>); overload;
-    procedure DefineRequiredComponents; overload; virtual; abstract;
-    { Other useful methods }
-    procedure Clear; virtual; abstract;
-    procedure ControlActions; virtual; abstract;
+    function GetRequiredComponents: TArray<TWinControl>; virtual;
     function GetInitialFocus: TWinControl; virtual;
-    procedure Validate(Component: TObject; const Pattern: string); overload;
+
+    { Other useful methods }
+    procedure ControlActions; virtual; abstract;
+    procedure RegExValidate(Component: TObject; const Pattern: string);
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
@@ -69,10 +77,39 @@ implementation
 
 { TCrud }
 
+procedure TCrud.Clear;
+var
+  Index: Integer;
+  Component: TComponent;
+begin
+  for Index := 0 to Pred(ComponentCount) do
+  begin
+    Component := Components[Index];
+
+    if Component is TCustomEdit then
+    begin
+      (Component as TCustomEdit).Text := string.Empty;
+      Continue;
+    end;
+
+    if Component is TDateTimePicker then
+    begin
+      (Component as TDateTimePicker).DateTime := TDateTime.Null;
+      Continue;
+    end;
+
+    if Component is TRadioGroup then
+    begin
+      (Component as TRadioGroup).ItemIndex := -1;
+      Continue;
+    end;
+  end;
+end;
+
 constructor TCrud.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
-  FRequiredComponents := TDictionary<TWinControl, TCustomLabel>.Create;
+  FRequiredComponents := TDictionary<TWinControl, string>.Create;
 end;
 
 destructor TCrud.Destroy;
@@ -106,21 +143,16 @@ begin
   ControlActions;
 end;
 
-procedure TCrud.DefineRequiredComponents(Components: TArray<TWinControl>);
+procedure TCrud.DefineRequiredComponents;
 var
   Control: TWinControl;
-  CustomLabel: TCustomLabel;
+  Caption: string;
 begin
-  for Control in Components do
+  for Control in GetRequiredComponents do
   begin
+    Caption := GetCaption(Control);
     Control.Required := True;
-    CustomLabel := GetLabel(Control);
-
-    if not Assigned(CustomLabel) then
-      raise Exception.CreateFmt('O componente obrigatório %s não possui label relacionado.', [Control.Name]);
-
-    CustomLabel.Caption := CustomLabel.Caption + RequiredChar;
-    FRequiredComponents.Add(Control, CustomLabel);
+    FRequiredComponents.Add(Control, Caption);
   end;
 end;
 
@@ -132,6 +164,52 @@ end;
 procedure TCrud.Finalize;
 begin
   Exit;
+end;
+
+function TCrud.GetCaption(Control: TWinControl): string;
+
+  function GetLinkedLabel: TCustomLabel;
+  var
+    Index: Integer;
+    Component: TComponent;
+  begin
+    Result := nil;
+    for Index := 0 to Pred(ComponentCount) do
+    begin
+      Component := Components[Index];
+
+      if Component is TLabel then
+      begin
+        if Control = (Component as TLabel).FocusControl then
+          Exit(Component as TLabel);
+      end;
+
+      if Component is TLabeledEdit then
+      begin
+        if Control = Component then
+          Exit((Component as TLabeledEdit).EditLabel);
+      end;
+    end;
+  end;
+
+var
+  LinkedLabel: TCustomLabel;
+  Index: Integer;
+begin
+  if Control is TRadioGroup then
+  begin
+    Result := (Control as TRadioGroup).Caption;
+    (Control as TRadioGroup).Caption := Result + RequiredChar;
+  end;
+
+  if TArray.BinarySearch<TClass>([TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
+  begin
+    LinkedLabel := GetLinkedLabel;
+    if not Assigned(LinkedLabel) then
+      raise Exception.Create('Error Message');
+    Result := LinkedLabel.Caption;
+    LinkedLabel.Caption := Result + RequiredChar;
+  end;
 end;
 
 procedure TCrud.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -149,28 +227,9 @@ begin
   Result := nil;
 end;
 
-function TCrud.GetLabel(Control: TControl): TCustomLabel;
-var
-  Index: Integer;
-  Component: TComponent;
+function TCrud.GetRequiredComponents: TArray<TWinControl>;
 begin
-  Result := nil;
-  for Index := 0 to Pred(ComponentCount) do
-  begin
-    Component := Components[Index];
-
-    if Component is TLabel then
-    begin
-      if Control = (Component as TLabel).FocusControl then
-        Exit(Component as TLabel);
-    end;
-
-    if Component is TLabeledEdit then
-    begin
-      if Control = Component then
-        Exit((Component as TLabeledEdit).EditLabel);
-    end;
-  end;
+  Result := [];
 end;
 
 procedure TCrud.DefineInitialFocus;
@@ -193,17 +252,13 @@ end;
 function TCrud.Insert: Boolean;
 var
   Control: TWinControl;
-  Caption: string;
 begin
   Result := Validate(Control);
-
-  if Result then
-    Exit;
-
-  Caption := FRequiredComponents.Items[Control].Caption;
-  Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
-  TMessage.Information('O campo %s é obrigatório.', [Caption]);
-  Control.TrySetFocus;
+  if not Result then
+  begin
+    TMessage.Information('O campo %s é obrigatório.', [FRequiredComponents.Items[Control]]);
+    Control.TrySetFocus;
+  end;
 end;
 
 procedure TCrud.Remove;
@@ -211,7 +266,7 @@ begin
   Clear;
 end;
 
-procedure TCrud.Validate(Component: TObject; const Pattern: string);
+procedure TCrud.RegExValidate(Component: TObject; const Pattern: string);
 var
   Control: TWinControl;
   RegEx: TRegEx;
@@ -223,14 +278,12 @@ begin
     Exit;
 
   RegEx := TRegEx.Create(Pattern, [roIgnoreCase]);
-
-  if RegEx.IsMatch(Control.ToString) then
-    Exit;
-
-  Caption := GetLabel(Control).Caption;
-  Caption := Caption.Replace(RequiredChar, string.Empty).QuotedString;
-  TMessage.Information('O valor "%s" não é válido para %s.', [Control.ToString, Caption]);
-  Control.TrySetFocus;
+  if not RegEx.IsMatch(Control.ToString) then
+  begin
+    Caption := FRequiredComponents.Items[Component as TWinControl];
+    TMessage.Information('O valor "%s" não é válido para %s.', [Control.ToString, Caption]);
+    Control.TrySetFocus;
+  end;
 end;
 
 function TCrud.Validate(out Control: TWinControl): Boolean;
@@ -245,6 +298,9 @@ begin
 
     if Component is TDateTimePicker then
       Result := not (Component as TDateTimePicker).IsEmpty;
+
+    if Component is TRadioGroup then
+      Result := (Component as TRadioGroup).ItemIndex > -1;
 
     if not Result then
     begin
