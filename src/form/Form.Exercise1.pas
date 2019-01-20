@@ -47,7 +47,6 @@ type
     procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
   private type
-    TFormPage = (fpList, fpData);
     TPersonColumn = (pcName, pcLastName, pcCPF, pcPhone);
   private
     FArray: ICollection<TPerson>;

@@ -43,6 +43,9 @@ type
     procedure Update(const Values: TArray<string>);
   end;
 
+const
+  OutOfBoundIndex = -1;
+
 implementation
 
 { TWinControlHelper }

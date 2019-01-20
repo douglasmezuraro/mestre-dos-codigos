@@ -100,7 +100,7 @@ begin
 
     if Component is TRadioGroup then
     begin
-      (Component as TRadioGroup).ItemIndex := -1;
+      (Component as TRadioGroup).ItemIndex := OutOfBoundIndex;
       Continue;
     end;
   end;
@@ -178,17 +178,17 @@ function TCrud.GetCaption(Control: TWinControl): string;
     begin
       Component := Components[Index];
 
-      if Component is TLabel then
+      if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
       begin
-        if Control = (Component as TLabel).FocusControl then
-          Exit(Component as TLabel);
+        Exit(Component as TLabel);
       end;
 
-      if Component is TLabeledEdit then
+      if (Component is TLabeledEdit) and (Control = Component) then
       begin
-        if Control = Component then
-          Exit((Component as TLabeledEdit).EditLabel);
+        Exit((Component as TLabeledEdit).EditLabel);
       end;
+
+
     end;
   end;
 
@@ -300,7 +300,7 @@ begin
       Result := not (Component as TDateTimePicker).IsEmpty;
 
     if Component is TRadioGroup then
-      Result := (Component as TRadioGroup).ItemIndex > -1;
+      Result := (Component as TRadioGroup).ItemIndex > OutOfBoundIndex;
 
     if not Result then
     begin
