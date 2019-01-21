@@ -17,7 +17,8 @@ uses
   Form.GeometricCalculator in 'src\form\Form.GeometricCalculator.pas' {GeometricCalculator},
   GeometricCalculator.API in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.API.pas',
   GeometricCalculator.GeometricForm in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.GeometricForm.pas',
-  GeometricCalculator.CalculationType in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.CalculationType.pas';
+  GeometricCalculator.CalculationType in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.CalculationType.pas',
+  Form.Thread in 'src\form\Form.Thread.pas' {Form1};
 
 {$R *.res}
 
@@ -30,6 +31,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMain, Main);
   Application.CreateForm(TGlobal, Global);
+  Application.CreateForm(TForm1, Form1);
   Application.Run;
 
   ReportMemoryLeaksOnShutdown := True;

@@ -66,7 +66,7 @@ type
 
     { Other }
     function GetInitialFocus: TWinControl; override;
-    function GetRequiredComponents: TArray<TWinControl>; override;
+    function GetRequiredControls: TArray<TWinControl>; override;
     procedure ControlActions; override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -215,7 +215,7 @@ begin
   Result := EditName;
 end;
 
-function TExercise1.GetRequiredComponents: TArray<TWinControl>;
+function TExercise1.GetRequiredControls: TArray<TWinControl>;
 begin
   Result := [
     EditName,

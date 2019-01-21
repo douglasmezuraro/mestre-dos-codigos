@@ -20,8 +20,11 @@ type
     MenuItemGeometricCalculator: TMenuItem;
     ActionGeometricCalculator: TAction;
     MenuItemExerciseOne1: TMenuItem;
+    ActionDownload: TAction;
+    MenuItemDownload: TMenuItem;
     procedure ActionExerciseOneExecute(Sender: TObject);
     procedure ActionGeometricCalculatorExecute(Sender: TObject);
+    procedure ActionDownloadExecute(Sender: TObject);
   end;
 
 implementation
@@ -30,7 +33,20 @@ implementation
 
 uses
   Form.Exercise1,
-  Form.GeometricCalculator;
+  Form.GeometricCalculator,
+  Form.Thread;
+
+procedure TMain.ActionDownloadExecute(Sender: TObject);
+var
+  View: TForm1;
+begin
+  View := TForm1.Create(Self);
+  try
+    View.ShowModal;
+  finally
+    View.Free;
+  end;
+end;
 
 procedure TMain.ActionExerciseOneExecute(Sender: TObject);
 var

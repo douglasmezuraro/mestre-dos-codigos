@@ -26,6 +26,9 @@ object Main: TMain
       object MenuItemExerciseOne1: TMenuItem
         Action = ActionExerciseOne
       end
+      object MenuItemDownload: TMenuItem
+        Action = ActionDownload
+      end
     end
   end
   object ActionList: TActionList
@@ -38,6 +41,10 @@ object Main: TMain
     object ActionGeometricCalculator: TAction
       Caption = '&Calculadora geom'#233'trica'
       OnExecute = ActionGeometricCalculatorExecute
+    end
+    object ActionDownload: TAction
+      Caption = '&Download'
+      OnExecute = ActionDownloadExecute
     end
   end
 end
