@@ -3,13 +3,15 @@ unit Vcl.Helpers;
 interface
 
 uses
+  Helper.DateTime,
   System.Math,
   System.SysUtils,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.Grids,
-  Vcl.Mask;
+  Vcl.Mask,
+  Vcl.StdCtrls;
 
 type
   TWinControlHelper = class Helper for TWinControl
@@ -28,6 +30,7 @@ type
 
   TCustomRadioGroupHelper = class Helper for TCustomRadioGroup
   public
+    const OutOfBoundIndex = -1;
     procedure AddValues(const Values: array of string);
   end;
 
@@ -43,9 +46,6 @@ type
     procedure Update(const Values: TArray<string>);
   end;
 
-const
-  OutOfBoundIndex = -1;
-
 implementation
 
 { TWinControlHelper }
@@ -57,7 +57,24 @@ end;
 
 function TWinControlHelper.IsEmpty: Boolean;
 begin
-  Result := ToString.Trim.IsEmpty;
+  Result := True;
+
+  if Self is TCustomEdit then
+  begin
+    Result := (Self as TCustomEdit).Text = string.Empty;
+    Exit;
+  end;
+
+  if Self is TDateTimePicker then
+  begin
+    Result := (Self as TDateTimePicker).Date = TDateTime.Null;
+    Exit;
+  end;
+
+  if Self is TRadioGroup then
+  begin
+    Result := (Self as TRadioGroup).ItemIndex > TRadioGroup.OutOfBoundIndex;
+  end;
 end;
 
 procedure TWinControlHelper.SetRequired(const Value: Boolean);

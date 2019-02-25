@@ -103,7 +103,7 @@ begin
 
     if Component is TRadioGroup then
     begin
-      (Component as TRadioGroup).ItemIndex := OutOfBoundIndex;
+      (Component as TRadioGroup).ItemIndex := TRadioGroup.OutOfBoundIndex;
       Continue;
     end;
   end;
@@ -270,24 +270,15 @@ function TCrud.Validate(out Control: TWinControl): Boolean;
 var
   Component: TWinControl;
 begin
-  Result := True;
   for Component in FRequiredControls.Keys do
   begin
-    if Component is TCustomEdit then
-      Result := not (Component as TCustomEdit).IsEmpty;
-
-    if Component is TDateTimePicker then
-      Result := not (Component as TDateTimePicker).IsEmpty;
-
-    if Component is TRadioGroup then
-      Result := (Component as TRadioGroup).ItemIndex > OutOfBoundIndex;
-
-    if not Result then
+    if Component.IsEmpty then
     begin
       Control := Component;
       Break;
     end;
   end;
+  Result := True;
 end;
 
 end.
