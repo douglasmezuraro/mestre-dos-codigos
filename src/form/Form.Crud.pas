@@ -17,7 +17,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.Helpers,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, Vcl.Grids;
 
 type
   TCrud = class abstract(TForm)
@@ -32,6 +32,10 @@ type
     ButtonRemove: TSpeedButton;
     PanelButtons: TPanel;
     StatusBarStatus: TStatusBar;
+    PageControlLayout: TPageControl;
+    TabSheetList: TTabSheet;
+    Grid: TStringGrid;
+    TabSheetData: TTabSheet;
     procedure ActionClearExecute(Sender: TObject);
     procedure ActionEditExecute(Sender: TObject);
     procedure ActionInsertExecute(Sender: TObject);
@@ -179,12 +183,6 @@ function TCrud.GetCaption(Control: TWinControl): string;
       if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
       begin
         Result := Component as TLabel;
-        Break;
-      end;
-
-      if (Component is TLabeledEdit) and (Control = Component) then
-      begin
-        Result := (Component as TLabeledEdit).EditLabel;
         Break;
       end;
     end;

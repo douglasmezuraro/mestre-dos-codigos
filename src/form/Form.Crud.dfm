@@ -74,9 +74,47 @@ object Crud: TCrud
     SimplePanel = True
     SimpleText = '<Changed in runtime>'
   end
+  object PageControlLayout: TPageControl
+    Left = 0
+    Top = 0
+    Width = 800
+    Height = 549
+    ActivePage = TabSheetData
+    Align = alClient
+    TabOrder = 2
+    ExplicitLeft = 8
+    ExplicitTop = 8
+    ExplicitWidth = 580
+    ExplicitHeight = 317
+    object TabSheetList: TTabSheet
+      Caption = 'Lista'
+      ExplicitWidth = 572
+      ExplicitHeight = 289
+      object Grid: TStringGrid
+        Left = 0
+        Top = 0
+        Width = 792
+        Height = 521
+        Align = alClient
+        ColCount = 1
+        FixedCols = 0
+        RowCount = 1
+        FixedRows = 0
+        TabOrder = 0
+        ExplicitWidth = 572
+        ExplicitHeight = 289
+      end
+    end
+    object TabSheetData: TTabSheet
+      Caption = 'Dados'
+      ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = -64
+    end
+  end
   object ActionList: TActionList
-    Left = 72
-    Top = 24
+    Left = 184
+    Top = 88
     object ActionInsert: TAction
       Category = 'Crud'
       Caption = 'Inserir'

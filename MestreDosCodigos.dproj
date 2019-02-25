@@ -95,12 +95,6 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="src\database\Database.Config.pas"/>
-        <DCCReference Include="src\database\Database.DataModule.pas">
-            <Form>Global</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="src\collections\Collections.API.pas"/>
         <DCCReference Include="src\collections\Collections.DynamicArray.pas"/>
         <DCCReference Include="src\helper\Helper.DateTime.pas"/>
@@ -127,10 +121,6 @@
         <DCCReference Include="src\3rdParty\GeometricCalculator\src\GeometricCalculator.API.pas"/>
         <DCCReference Include="src\3rdParty\GeometricCalculator\src\GeometricCalculator.GeometricForm.pas"/>
         <DCCReference Include="src\3rdParty\GeometricCalculator\src\GeometricCalculator.CalculationType.pas"/>
-        <DCCReference Include="src\form\Form.Thread.pas">
-            <Form>Form1</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -172,6 +162,7 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Win32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>0</Operation>
                     </Platform>
                 </DeployClass>
@@ -307,11 +298,6 @@
                         <Operation>1</Operation>
                         <Extensions>.framework</Extensions>
                     </Platform>
-                    <Platform Name="OSX64">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.framework</Extensions>
-                    </Platform>
                     <Platform Name="Win32">
                         <Operation>0</Operation>
                     </Platform>
@@ -330,11 +316,6 @@
                         <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="OSX64">
                         <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                         <Extensions>.dylib</Extensions>
@@ -362,11 +343,6 @@
                         <Operation>1</Operation>
                         <Extensions>.dylib</Extensions>
                     </Platform>
-                    <Platform Name="OSX64">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
                     <Platform Name="Win32">
                         <Operation>0</Operation>
                         <Extensions>.bpl</Extensions>
@@ -386,10 +362,6 @@
                         <Operation>0</Operation>
                     </Platform>
                     <Platform Name="OSX32">
-                        <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
-                        <Operation>0</Operation>
-                    </Platform>
-                    <Platform Name="OSX64">
                         <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
                         <Operation>0</Operation>
                     </Platform>
@@ -540,27 +512,15 @@
                         <RemoteDir>..\</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
-                    <Platform Name="OSX64">
-                        <RemoteDir>..\</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectOSXInfoPList">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
-                    <Platform Name="OSX64">
-                        <RemoteDir>Contents</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
-                        <RemoteDir>Contents\Resources</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="OSX64">
                         <RemoteDir>Contents\Resources</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -583,10 +543,6 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="OSX64">
                         <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>

@@ -1,138 +1,150 @@
 inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
-  ClientHeight = 368
+  ClientHeight = 476
   ClientWidth = 580
   ExplicitWidth = 596
-  ExplicitHeight = 406
+  ExplicitHeight = 514
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelButtons: TPanel
-    Top = 317
+    Top = 425
     Width = 580
     ExplicitTop = 317
     ExplicitWidth = 580
   end
   inherited StatusBarStatus: TStatusBar
-    Top = 349
+    Top = 457
     Width = 580
     ExplicitTop = 349
     ExplicitWidth = 580
   end
-  object PageControlLayout: TPageControl [2]
-    Left = 0
-    Top = 0
+  inherited PageControlLayout: TPageControl
     Width = 580
-    Height = 317
-    ActivePage = TabSheetList
-    Align = alClient
-    TabOrder = 2
-    object TabSheetList: TTabSheet
-      Caption = 'Lista'
-      object Grid: TStringGrid
-        Left = 0
-        Top = 0
+    Height = 425
+    ExplicitLeft = 0
+    ExplicitTop = 0
+    inherited TabSheetList: TTabSheet
+      inherited Grid: TStringGrid
         Width = 572
-        Height = 289
-        Align = alClient
-        ColCount = 1
-        FixedCols = 0
-        RowCount = 1
-        FixedRows = 0
-        TabOrder = 0
-        OnSelectCell = GridSelectCell
+        Height = 397
+        OnSelectCell = nil
+        ExplicitTop = -1
       end
     end
-    object TabSheetData: TTabSheet
-      Caption = 'Dados'
-      ImageIndex = 1
+    inherited TabSheetData: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 572
+      ExplicitHeight = 289
+      object LabelName: TLabel
+        Left = 16
+        Top = 3
+        Width = 27
+        Height = 13
+        Caption = 'Nome'
+        FocusControl = EditName
+      end
+      object LabelLastName: TLabel
+        Left = 16
+        Top = 49
+        Width = 54
+        Height = 13
+        Caption = 'Sobrenome'
+        FocusControl = EditLastName
+      end
       object LabelBirth: TLabel
-        Left = 13
-        Top = 43
+        Left = 16
+        Top = 95
         Width = 55
         Height = 13
         Caption = 'Nascimento'
         FocusControl = EditBirth
       end
+      object LabelPhone: TLabel
+        Left = 16
+        Top = 141
+        Width = 42
+        Height = 13
+        Caption = 'Telefone'
+        FocusControl = EditPhone
+      end
+      object LabelEmail: TLabel
+        Left = 16
+        Top = 187
+        Width = 28
+        Height = 13
+        Caption = 'E-mail'
+        FocusControl = EditEmail
+      end
+      object LabelCPF: TLabel
+        Left = 16
+        Top = 233
+        Width = 19
+        Height = 13
+        Caption = 'CPF'
+        FocusControl = EditCPF
+      end
+      object EditName: TEdit
+        Left = 16
+        Top = 22
+        Width = 121
+        Height = 21
+        TabOrder = 0
+        Text = 'EditName'
+      end
+      object EditLastName: TEdit
+        Left = 16
+        Top = 68
+        Width = 121
+        Height = 21
+        TabOrder = 1
+        Text = 'EditLastName'
+      end
+      object EditBirth: TDateTimePicker
+        Left = 16
+        Top = 114
+        Width = 186
+        Height = 21
+        Date = 43520.959959583340000000
+        Time = 43520.959959583340000000
+        TabOrder = 2
+      end
+      object EditPhone: TEdit
+        Left = 16
+        Top = 160
+        Width = 121
+        Height = 21
+        TabOrder = 3
+        Text = 'EditPhone'
+      end
+      object EditEmail: TEdit
+        Left = 16
+        Top = 206
+        Width = 121
+        Height = 21
+        TabOrder = 4
+        Text = 'EditEmail'
+      end
+      object EditCPF: TEdit
+        Left = 16
+        Top = 252
+        Width = 121
+        Height = 21
+        TabOrder = 5
+        Text = 'EditCPF'
+      end
       object RadioGroupGender: TRadioGroup
-        Left = 13
-        Top = 129
-        Width = 249
-        Height = 48
+        Left = 16
+        Top = 279
+        Width = 313
+        Height = 36
         Caption = 'G'#234'nero'
         Columns = 3
-        ItemIndex = 0
         Items.Strings = (
           'Indefinido'
           'Feminino'
           'Masculino')
         TabOrder = 6
-        TabStop = True
-      end
-      object EditPhone: TLabeledEdit
-        Left = 268
-        Top = 102
-        Width = 121
-        Height = 21
-        EditLabel.Width = 42
-        EditLabel.Height = 13
-        EditLabel.Caption = 'Telefone'
-        TabOrder = 5
-        OnExit = EditPhoneExit
-      end
-      object EditEmail: TLabeledEdit
-        Left = 13
-        Top = 102
-        Width = 249
-        Height = 21
-        EditLabel.Width = 28
-        EditLabel.Height = 13
-        EditLabel.Caption = 'E-mail'
-        TabOrder = 4
-        OnExit = EditEmailExit
-      end
-      object EditBirth: TDateTimePicker
-        Left = 12
-        Top = 62
-        Width = 101
-        Height = 21
-        Date = 43331.000000000000000000
-        Time = 0.664617638889467400
-        TabOrder = 2
-        OnExit = EditBirthExit
-      end
-      object EditCPF: TLabeledEdit
-        Left = 119
-        Top = 62
-        Width = 142
-        Height = 21
-        EditLabel.Width = 19
-        EditLabel.Height = 13
-        EditLabel.Caption = 'CPF'
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 3
-        OnExit = EditCPFExit
-      end
-      object EditName: TLabeledEdit
-        Left = 12
-        Top = 16
-        Width = 249
-        Height = 21
-        EditLabel.Width = 27
-        EditLabel.Height = 13
-        EditLabel.Caption = 'Nome'
-        TabOrder = 0
-        OnExit = EditNameExit
-      end
-      object EditLastName: TLabeledEdit
-        Left = 267
-        Top = 16
-        Width = 249
-        Height = 21
-        EditLabel.Width = 54
-        EditLabel.Height = 13
-        EditLabel.Caption = 'Sobrenome'
-        TabOrder = 1
       end
     end
   end

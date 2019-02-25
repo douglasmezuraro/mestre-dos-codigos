@@ -27,18 +27,19 @@ uses
 
 type
   TExercise1 = class(TCrud)
-    PageControlLayout: TPageControl;
-    TabSheetList: TTabSheet;
-    TabSheetData: TTabSheet;
-    RadioGroupGender: TRadioGroup;
-    EditPhone: TLabeledEdit;
-    EditEmail: TLabeledEdit;
+    LabelName: TLabel;
+    EditName: TEdit;
+    LabelLastName: TLabel;
+    EditLastName: TEdit;
     EditBirth: TDateTimePicker;
-    EditCPF: TLabeledEdit;
     LabelBirth: TLabel;
-    EditName: TLabeledEdit;
-    EditLastName: TLabeledEdit;
-    Grid: TStringGrid;
+    LabelPhone: TLabel;
+    EditPhone: TEdit;
+    LabelEmail: TLabel;
+    EditEmail: TEdit;
+    LabelCPF: TLabel;
+    EditCPF: TEdit;
+    RadioGroupGender: TRadioGroup;
     procedure EditBirthExit(Sender: TObject);
     procedure EditNameExit(Sender: TObject);
     procedure EditEmailExit(Sender: TObject);
