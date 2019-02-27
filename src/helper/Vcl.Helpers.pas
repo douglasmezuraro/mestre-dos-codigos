@@ -30,7 +30,7 @@ type
   TCustomRadioGroupHelper = class Helper for TCustomRadioGroup
   public
     const OutOfBoundIndex = -1;
-    procedure AddValues(const Values: array of string);
+    procedure AddValues(const Values: array of string); deprecated 'Use TCustomRadioGroup.Strings.AddStrings()';
   end;
 
   TStringGridHelper = class Helper for TStringGrid

@@ -51,6 +51,7 @@ type
     { Other }
     function Validate(out Control: TWinControl): Boolean;
     function GetCaption(Control: TWinControl): string;
+    function GetLinkedLabel(Control: TWinControl): TCustomLabel;
   protected
     { Main actions }
     function Insert: Boolean; virtual;
@@ -169,25 +170,6 @@ begin
 end;
 
 function TCrud.GetCaption(Control: TWinControl): string;
-
-  function GetLinkedLabel: TCustomLabel;
-  var
-    Index: Integer;
-    Component: TComponent;
-  begin
-    Result := nil;
-    for Index := 0 to Pred(ComponentCount) do
-    begin
-      Component := Components[Index];
-
-      if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
-      begin
-        Result := Component as TLabel;
-        Break;
-      end;
-    end;
-  end;
-
 var
   LinkedLabel: TCustomLabel;
   Index: Integer;
@@ -200,13 +182,30 @@ begin
 
   if TArray.BinarySearch<TClass>([TEdit, TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
   begin
-    LinkedLabel := GetLinkedLabel;
+    LinkedLabel := GetLinkedLabel(Control);
 
     if not Assigned(LinkedLabel) then
       raise Exception.CreateFmt('Não foi encontrado label vínculado ao componente "%s"', [Control]);
 
     Result := LinkedLabel.Caption;
     LinkedLabel.Caption := Result + RequiredChar;
+  end;
+end;
+
+function TCrud.GetLinkedLabel(Control: TWinControl): TCustomLabel;
+var
+  Index: Integer;
+  Component: TComponent;
+begin
+  Result := nil;
+  for Index := 0 to Pred(ComponentCount) do
+  begin
+    Component := Components[Index];
+    if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
+    begin
+      Result := Component as TLabel;
+      Break;
+    end;
   end;
 end;
 

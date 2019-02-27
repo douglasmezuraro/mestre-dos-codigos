@@ -84,10 +84,6 @@ object Crud: TCrud
     TabOrder = 2
     object TabSheetList: TTabSheet
       Caption = 'Lista'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 572
-      ExplicitHeight = 289
       object Grid: TStringGrid
         Left = 0
         Top = 0
@@ -99,8 +95,6 @@ object Crud: TCrud
         RowCount = 1
         FixedRows = 0
         TabOrder = 0
-        ExplicitWidth = 572
-        ExplicitHeight = 289
       end
     end
     object TabSheetData: TTabSheet
