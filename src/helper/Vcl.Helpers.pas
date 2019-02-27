@@ -24,7 +24,6 @@ type
     const RequiredChar: Char = '*';
     function TrySetFocus: Boolean;
     function IsEmpty: Boolean;
-    function ToString: string;
     property Required: Boolean read GetRequired write SetRequired;
   end;
 
@@ -73,25 +72,13 @@ begin
 
   if Self is TRadioGroup then
   begin
-    Result := (Self as TRadioGroup).ItemIndex > TRadioGroup.OutOfBoundIndex;
+    Result := (Self as TRadioGroup).ItemIndex = TRadioGroup.OutOfBoundIndex;
   end;
 end;
 
 procedure TWinControlHelper.SetRequired(const Value: Boolean);
 begin
   Tag := Value.ToInteger;
-end;
-
-function TWinControlHelper.ToString: string;
-var
-  Text: string;
-begin
-  Text := Self.Text;
-
-  if Self is TMaskEdit then
-    Text := (Self as TMaskEdit).Text;
-
-  Result := Text;
 end;
 
 function TWinControlHelper.TrySetFocus: Boolean;
