@@ -15,6 +15,7 @@ uses
   System.SysUtils,
   System.Types,
   Util.Messages,
+  Util,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -47,8 +48,6 @@ type
     procedure EditPhoneExit(Sender: TObject);
     procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
-  private type
-    TPersonColumn = (pcName, pcLastName, pcCPF, pcPhone);
   private
     FArray: ICollection<TPerson>;
     FModel: TPerson;
@@ -114,7 +113,7 @@ const
   Titles: TArray<string> = ['Nome', 'Sobrenome', 'CPF', 'Telefone'];
 begin
   inherited;
-  Grid.Add(Titles, Grid.HeaderIndex);
+  Grid.AddHeader(Titles);
 end;
 
 function TExercise1.Insert: Boolean;
@@ -191,13 +190,17 @@ begin
 end;
 
 function TExercise1.ModelToArray: TArray<string>;
+type
+  TGridColumn = (gcName, gcLastName, gcCPF, gcPhone);
+var
+  Values: array[TGridColumn] of string;
 begin
-  SetLength(Result, Grid.ColCount);
+  Values[gcName]     := Model.Name;
+  Values[gcLastName] := Model.LastName;
+  Values[gcCPF]      := Model.CPF;
+  Values[gcPhone]    := Model.Phone;
 
-  Result[Ord(pcName)]     := Model.Name;
-  Result[Ord(pcLastName)] := Model.LastName;
-  Result[Ord(pcCPF)]      := Model.CPF;
-  Result[Ord(pcPhone)]    := Model.Phone;
+  Result := TUtil.Methods.ArrayOfToTArray(Values);
 end;
 
 procedure TExercise1.ViewToModel;

@@ -4,16 +4,26 @@ interface
 
 uses
   Helper.DateTime,
+  System.Classes,
   System.Math,
   System.SysUtils,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
+  Vcl.Forms,
   Vcl.Grids,
   Vcl.Mask,
   Vcl.StdCtrls;
 
 type
+  TComponentHelper = class Helper for TComponent
+  private
+    function GetComponents: TArray<TComponent>;
+  public
+    procedure Clear;
+    property ComponentsArray: TArray<TComponent> read GetComponents;
+  end;
+
   TWinControlHelper = class Helper for TWinControl
   private type
     TTagRole = (trUndefined, trRequired);
@@ -27,21 +37,15 @@ type
     property Required: Boolean read GetRequired write SetRequired;
   end;
 
-  TCustomRadioGroupHelper = class Helper for TCustomRadioGroup
-  public
-    const OutOfBoundIndex = -1;
-    procedure AddValues(const Values: array of string); deprecated 'Use TCustomRadioGroup.Strings.AddStrings()';
-  end;
-
   TStringGridHelper = class Helper for TStringGrid
   private
     procedure AutoFitColumns;
+    procedure Add(const Values: TArray<string>; const Row: Integer); overload;
   public
     const HeaderIndex = 0;
-    procedure Remove; overload;
-    procedure Remove(const Row: Integer); overload;
+    procedure Remove;
     procedure Add(const Values: TArray<string>); overload;
-    procedure Add(const Values: TArray<string>; const Row: Integer); overload;
+    procedure AddHeader(const Values: TArray<string>);
     procedure Update(const Values: TArray<string>);
   end;
 
@@ -72,7 +76,7 @@ begin
 
   if Self is TRadioGroup then
   begin
-    Result := (Self as TRadioGroup).ItemIndex = TRadioGroup.OutOfBoundIndex;
+    Result := (Self as TRadioGroup).ItemIndex = -1;
   end;
 end;
 
@@ -88,21 +92,12 @@ begin
     SetFocus;
 end;
 
-{ TCustomRadioGroupHelper }
-
-procedure TCustomRadioGroupHelper.AddValues(const Values: array of string);
-var
-  Value: string;
-begin
-  Items.Clear;
-  for Value in Values do
-    Items.Add(Value);
-
-  if Items.Count > 0 then
-    ItemIndex := 0;
-end;
-
 { TStringGridHelper }
+
+procedure TStringGridHelper.AddHeader(const Values: TArray<string>);
+begin
+  Add(Values, HeaderIndex);
+end;
 
 procedure TStringGridHelper.Add(const Values: TArray<string>);
 begin
@@ -113,7 +108,7 @@ procedure TStringGridHelper.Add(const Values: TArray<string>; const Row: Integer
 var
   Insert, Append: Boolean;
   Column, Length: Integer;
-  OldEvent: TSelectCellEvent;
+  Event: TSelectCellEvent;
 begin
   Length := System.Length(Values);
 
@@ -121,9 +116,9 @@ begin
     ColCount := Length;
 
   if ColCount <> Length then
-    raise Exception.CreateFmt('Mismatch with the previous column count. Before %d now %d', [ColCount, Length]);
+    raise Exception.CreateFmt('Mismatch with the previous column count. Before %d now %d.', [ColCount, Length]);
 
-  OldEvent := OnSelectCell;
+  Event := OnSelectCell;
   OnSelectCell := nil;
   try
     Insert := (Row > HeaderIndex) and (Row < RowCount);
@@ -141,7 +136,7 @@ begin
 
     AutoFitColumns;
   finally
-    OnSelectCell := OldEvent;
+    OnSelectCell := Event;
   end;
 end;
 
@@ -163,11 +158,6 @@ begin
 end;
 
 procedure TStringGridHelper.Remove;
-begin
-  Remove(Row);
-end;
-
-procedure TStringGridHelper.Remove(const Row: Integer);
 var
   Index: Integer;
 begin
@@ -187,6 +177,46 @@ var
 begin
   for Column := 0 to Pred(ColCount) do
     Cells[Column, Row] := Values[Column];
+end;
+
+{ TComponentHelper }
+
+procedure TComponentHelper.Clear;
+var
+  Component: TComponent;
+begin
+  if Self is TCustomEdit then
+  begin
+    (Self as TCustomEdit).Clear;
+    Exit;
+  end;
+
+  if Self is TDateTimePicker then
+  begin
+    (Self as TDateTimePicker).DateTime := TDateTime.Null;
+    Exit;
+  end;
+
+  if Self is TRadioGroup then
+  begin
+    (Self as TRadioGroup).ItemIndex := -1;
+    Exit;
+  end;
+
+  if Self is TForm then
+  begin
+    for Component in ComponentsArray do
+      Component.Clear;
+  end;
+end;
+
+function TComponentHelper.GetComponents: TArray<TComponent>;
+var
+  Index: Integer;
+begin
+  SetLength(Result, ComponentCount);
+  for Index := 0 to Pred(ComponentCount) do
+    Result[Index] := Components[Index];
 end;
 
 end.

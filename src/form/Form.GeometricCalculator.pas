@@ -9,6 +9,7 @@ uses
   System.Actions,
   System.Classes,
   System.SysUtils,
+  Util,
   Vcl.ActnList,
   Vcl.Controls,
   Vcl.ExtCtrls,
@@ -116,8 +117,8 @@ end;
 
 procedure TGeometricCalculator.Initialize;
 begin
-  RadioGroupGeometricFigure.AddValues(GeometricFormMap);
-  RadioGroupCalculationType.AddValues(CalculationTypeMap);
+  RadioGroupGeometricFigure.Items.AddStrings(TUtil.Methods.ArrayOfToTArray(GeometricFormMap));
+  RadioGroupCalculationType.Items.AddStrings(TUtil.Methods.ArrayOfToTArray(CalculationTypeMap));
 end;
 
 procedure TGeometricCalculator.RadioGroupGeometricFigureClick(Sender: TObject);

@@ -3,39 +3,44 @@ inherited Exercise1: TExercise1
   ClientHeight = 476
   ClientWidth = 580
   ExplicitWidth = 596
-  ExplicitHeight = 514
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelButtons: TPanel
     Top = 425
     Width = 580
-    ExplicitTop = 317
+    ExplicitTop = 425
     ExplicitWidth = 580
   end
   inherited StatusBarStatus: TStatusBar
     Top = 457
     Width = 580
-    ExplicitTop = 349
+    ExplicitTop = 457
     ExplicitWidth = 580
   end
   inherited PageControlLayout: TPageControl
     Width = 580
     Height = 425
-    ExplicitLeft = 0
-    ExplicitTop = 0
+    ActivePage = TabSheetList
+    ExplicitWidth = 580
+    ExplicitHeight = 425
     inherited TabSheetList: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 572
+      ExplicitHeight = 397
       inherited Grid: TStringGrid
         Width = 572
         Height = 397
-        OnSelectCell = nil
-        ExplicitTop = -1
+        ExplicitWidth = 572
+        ExplicitHeight = 397
       end
     end
     inherited TabSheetData: TTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 572
-      ExplicitHeight = 289
+      ExplicitHeight = 397
       object LabelName: TLabel
         Left = 16
         Top = 3
@@ -87,23 +92,21 @@ inherited Exercise1: TExercise1
       object EditName: TEdit
         Left = 16
         Top = 22
-        Width = 121
+        Width = 250
         Height = 21
         TabOrder = 0
-        Text = 'EditName'
       end
       object EditLastName: TEdit
         Left = 16
         Top = 68
-        Width = 121
+        Width = 250
         Height = 21
         TabOrder = 1
-        Text = 'EditLastName'
       end
       object EditBirth: TDateTimePicker
         Left = 16
         Top = 114
-        Width = 186
+        Width = 250
         Height = 21
         Date = 43520.959959583340000000
         Time = 43520.959959583340000000
@@ -112,31 +115,28 @@ inherited Exercise1: TExercise1
       object EditPhone: TEdit
         Left = 16
         Top = 160
-        Width = 121
+        Width = 250
         Height = 21
         TabOrder = 3
-        Text = 'EditPhone'
       end
       object EditEmail: TEdit
         Left = 16
         Top = 206
-        Width = 121
+        Width = 250
         Height = 21
         TabOrder = 4
-        Text = 'EditEmail'
       end
       object EditCPF: TEdit
         Left = 16
         Top = 252
-        Width = 121
+        Width = 250
         Height = 21
         TabOrder = 5
-        Text = 'EditCPF'
       end
       object RadioGroupGender: TRadioGroup
         Left = 16
         Top = 279
-        Width = 313
+        Width = 250
         Height = 36
         Caption = 'G'#234'nero'
         Columns = 3

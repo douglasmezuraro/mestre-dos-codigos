@@ -1,4 +1,4 @@
-unit Form.Crud;
+ï»¿unit Form.Crud;
 
 interface
 
@@ -57,7 +57,6 @@ type
     function Insert: Boolean; virtual;
     procedure Edit; virtual;
     procedure Remove; virtual;
-    procedure Clear; virtual;
 
     { Form initialization and finalization }
     procedure Initialize; virtual;
@@ -81,35 +80,6 @@ implementation
 
 { TCrud }
 
-procedure TCrud.Clear;
-var
-  Index: Integer;
-  Component: TComponent;
-begin
-  for Index := 0 to Pred(ComponentCount) do
-  begin
-    Component := Components[Index];
-
-    if Component is TCustomEdit then
-    begin
-      (Component as TCustomEdit).Clear;
-      Continue;
-    end;
-
-    if Component is TDateTimePicker then
-    begin
-      (Component as TDateTimePicker).DateTime := TDateTime.Null;
-      Continue;
-    end;
-
-    if Component is TRadioGroup then
-    begin
-      (Component as TRadioGroup).ItemIndex := TRadioGroup.OutOfBoundIndex;
-      Continue;
-    end;
-  end;
-end;
-
 constructor TCrud.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
@@ -124,7 +94,7 @@ end;
 
 procedure TCrud.ActionClearExecute(Sender: TObject);
 begin
-  Clear;
+  Self.Clear;
 end;
 
 procedure TCrud.ActionEditExecute(Sender: TObject);
@@ -149,13 +119,11 @@ end;
 procedure TCrud.DefineRequiredControls;
 var
   Control: TWinControl;
-  Caption: string;
 begin
   for Control in GetRequiredControls do
   begin
-    Caption := GetCaption(Control);
     Control.Required := True;
-    FRequiredControls.Add(Control, Caption);
+    FRequiredControls.Add(Control, GetCaption(Control));
   end;
 end;
 
@@ -177,7 +145,8 @@ begin
   if Control is TRadioGroup then
   begin
     Result := (Control as TRadioGroup).Caption;
-    (Control as TRadioGroup).Caption := Result + RequiredChar;
+    TRadioGroup(Control).Caption := Result + RequiredChar;
+    Exit;
   end;
 
   if TArray.BinarySearch<TClass>([TEdit, TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
@@ -185,7 +154,7 @@ begin
     LinkedLabel := GetLinkedLabel(Control);
 
     if not Assigned(LinkedLabel) then
-      raise Exception.CreateFmt('Não foi encontrado label vínculado ao componente "%s"', [Control]);
+      raise Exception.CreateFmt('Nï¿½o foi encontrado label vï¿½nculado ao componente "%s"', [Control]);
 
     Result := LinkedLabel.Caption;
     LinkedLabel.Caption := Result + RequiredChar;
@@ -194,13 +163,11 @@ end;
 
 function TCrud.GetLinkedLabel(Control: TWinControl): TCustomLabel;
 var
-  Index: Integer;
   Component: TComponent;
 begin
   Result := nil;
-  for Index := 0 to Pred(ComponentCount) do
+  for Component in ComponentsArray do
   begin
-    Component := Components[Index];
     if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
     begin
       Result := Component as TLabel;
@@ -223,7 +190,7 @@ procedure TCrud.Initialize;
 begin
   DefineRequiredControls;
   ControlActions;
-  StatusBarStatus.SimpleText := Format('%s: campos obrigatórios.', [RequiredChar]);
+  StatusBarStatus.SimpleText := Format('%s: campos obrigatï¿½rios.', [RequiredChar]);
   GetInitialFocus.TrySetFocus;
 end;
 
@@ -234,7 +201,7 @@ begin
   Result := Validate(Control);
   if not Result then
   begin
-    TMessage.Information('O campo %s é obrigatório.', [FRequiredControls.Items[Control]]);
+    TMessage.Information('O campo %s ï¿½ obrigatï¿½rio.', [FRequiredControls.Items[Control]]);
     Control.TrySetFocus;
   end;
 end;
@@ -260,7 +227,7 @@ begin
   if not RegEx.IsMatch(Control.ToString) then
   begin
     Caption := FRequiredControls.Items[Component as TWinControl];
-    TMessage.Information('O valor "%s" não é válido para "%s".', [Control.ToString.ToLower, Caption]);
+    TMessage.Information('O valor "%s" nï¿½o ï¿½ vï¿½lido para "%s".', [Control.ToString.ToLower, Caption]);
     Control.TrySetFocus;
   end;
 end;
@@ -274,7 +241,7 @@ begin
     if Component.IsEmpty then
     begin
       Control := Component;
-      Break;
+      Exit(False);
     end;
   end;
   Result := True;

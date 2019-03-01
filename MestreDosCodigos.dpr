@@ -15,7 +15,8 @@ uses
   Form.GeometricCalculator in 'src\form\Form.GeometricCalculator.pas' {GeometricCalculator},
   GeometricCalculator.API in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.API.pas',
   GeometricCalculator.GeometricForm in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.GeometricForm.pas',
-  GeometricCalculator.CalculationType in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.CalculationType.pas';
+  GeometricCalculator.CalculationType in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.CalculationType.pas',
+  Util in 'src\util\Util.pas';
 
 {$R *.res}
 
