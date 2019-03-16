@@ -3,7 +3,7 @@ inherited Exercise1: TExercise1
   ClientHeight = 476
   ClientWidth = 580
   ExplicitWidth = 596
-  ExplicitHeight = 515
+  ExplicitHeight = 514
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelButtons: TPanel
@@ -21,12 +21,9 @@ inherited Exercise1: TExercise1
   inherited PageControlLayout: TPageControl
     Width = 580
     Height = 425
-    ActivePage = TabSheetList
     ExplicitWidth = 580
     ExplicitHeight = 425
     inherited TabSheetList: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 572
       ExplicitHeight = 397
       inherited Grid: TStringGrid
@@ -37,8 +34,6 @@ inherited Exercise1: TExercise1
       end
     end
     inherited TabSheetData: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 572
       ExplicitHeight = 397
       object LabelName: TLabel
@@ -108,8 +103,8 @@ inherited Exercise1: TExercise1
         Top = 114
         Width = 250
         Height = 21
-        Date = 43520.959959583340000000
-        Time = 43520.959959583340000000
+        Date = 43520.000000000000000000
+        Time = 0.959959583342424600
         TabOrder = 2
       end
       object EditPhone: TEdit

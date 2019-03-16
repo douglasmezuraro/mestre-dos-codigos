@@ -46,31 +46,27 @@ type
     procedure EditEmailExit(Sender: TObject);
     procedure EditCPFExit(Sender: TObject);
     procedure EditPhoneExit(Sender: TObject);
-    procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
-      var CanSelect: Boolean);
   private
     FArray: ICollection<TPerson>;
-    FModel: TPerson;
-    FPrevRow: Byte;
-    { Methods }
-    procedure ViewToModel;
-    procedure ModelToView;
-    function ModelToArray: TArray<string>;
   protected
     procedure Initialize; override;
 
-    { Main actions }
     function Insert: Boolean; override;
-    procedure Edit; override;
     procedure Remove; override;
+    {}
+    procedure ViewToModel; override;
+    procedure ModelToView; override;
+    function ModelToArray: TArray<string>; override;
 
     { Other }
     function GetInitialFocus: TWinControl; override;
     function GetRequiredControls: TArray<TWinControl>; override;
-    procedure ControlActions; override;
+
+    function CreateModel: TObject; override;
+    function GetModel: TPerson; reintroduce; overload;
+    function GetModel(const Row: Integer): TObject; overload; override;
   public
     constructor Create(AOwner: TComponent); override;
-    property Model: TPerson read FModel write FModel;
   end;
 
 implementation
@@ -79,17 +75,10 @@ implementation
 
 { TExercise1 }
 
-procedure TExercise1.ControlActions;
-begin
-  ActionEdit.Enabled := FPrevRow <> Grid.HeaderIndex;
-  ActionRemove.Enabled := FPrevRow <> Grid.HeaderIndex;
-end;
-
 constructor TExercise1.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FArray := TDynamicArray<TPerson>.Create;
-  FPrevRow := Grid.Row;
 end;
 
 procedure TExercise1.EditBirthExit(Sender: TObject);
@@ -102,10 +91,9 @@ begin
     TMessage.Warning('Data inválida');
 end;
 
-procedure TExercise1.Edit;
+function TExercise1.CreateModel: TObject;
 begin
-  ViewToModel;
-  Grid.Update(ModelToArray);
+  Result := TPerson.Create;
 end;
 
 procedure TExercise1.Initialize;
@@ -119,19 +107,8 @@ end;
 function TExercise1.Insert: Boolean;
 begin
   Result := inherited Insert;
-
-  if not Result then
-    Exit;
-
-  Model := TPerson.Create;
-  ViewToModel;
-  Result := FArray.Add(Model) > NegativeValue;
-
-  if not Result then
-    Exit;
-
-  Grid.Add(ModelToArray);
-  PageControlLayout.ActivePage := TabSheetList;
+  if Result then
+    FArray.Add(GetModel);
 end;
 
 procedure TExercise1.EditCPFExit(Sender: TObject);
@@ -166,27 +143,24 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.Remove;
-begin
-  if FArray.Remove(FArray.Item[Pred(Grid.Row)]) then
-  begin
-    Grid.Remove;
-    inherited;
-  end;
-end;
-
 procedure TExercise1.ModelToView;
 begin
-  if not Assigned(Model) then
+  if GetModel = nil then
     Exit;
 
-  EditName.Text              := Model.Name;
-  EditLastName.Text          := Model.LastName;
-  EditBirth.DateTime         := Model.Birth;
-  EditPhone.Text             := Model.Phone;
-  EditEmail.Text             := Model.Email;
-  EditCPF.Text               := Model.CPF;
-  RadioGroupGender.ItemIndex := Ord(Model.Gender);
+  EditName.Text              := GetModel.Name;
+  EditLastName.Text          := GetModel.LastName;
+  EditBirth.DateTime         := GetModel.Birth;
+  EditPhone.Text             := GetModel.Phone;
+  EditEmail.Text             := GetModel.Email;
+  EditCPF.Text               := GetModel.CPF;
+  RadioGroupGender.ItemIndex := Ord(GetModel.Gender);
+end;
+
+procedure TExercise1.Remove;
+begin
+  if FArray.Remove(GetModel(Grid.Row) as TPerson) then
+    inherited Remove;
 end;
 
 function TExercise1.ModelToArray: TArray<string>;
@@ -195,28 +169,38 @@ type
 var
   Values: array[TGridColumn] of string;
 begin
-  Values[gcName]     := Model.Name;
-  Values[gcLastName] := Model.LastName;
-  Values[gcCPF]      := Model.CPF;
-  Values[gcPhone]    := Model.Phone;
+  Values[gcName]     := GetModel.Name;
+  Values[gcLastName] := GetModel.LastName;
+  Values[gcCPF]      := GetModel.CPF;
+  Values[gcPhone]    := GetModel.Phone;
 
   Result := TUtil.Methods.ArrayOfToTArray(Values);
 end;
 
 procedure TExercise1.ViewToModel;
 begin
-  Model.Name     := EditName.Text;
-  Model.LastName := EditLastName.Text;
-  Model.Birth    := EditBirth.DateTime;
-  Model.Phone    := EditPhone.Text;
-  Model.Gender   := TGender(RadioGroupGender.ItemIndex);
-  Model.Email    := EditEmail.Text;
-  Model.CPF      := EditCPF.Text;
+  GetModel.Name     := EditName.Text;
+  GetModel.LastName := EditLastName.Text;
+  GetModel.Birth    := EditBirth.DateTime;
+  GetModel.Phone    := EditPhone.Text;
+  GetModel.Gender   := TGender(RadioGroupGender.ItemIndex);
+  GetModel.Email    := EditEmail.Text;
+  GetModel.CPF      := EditCPF.Text;
 end;
 
 function TExercise1.GetInitialFocus: TWinControl;
 begin
   Result := EditName;
+end;
+
+function TExercise1.GetModel(const Row: Integer): TObject;
+begin
+  Result := FArray.Item[Pred(Row)];
+end;
+
+function TExercise1.GetModel: TPerson;
+begin
+  Result := TPerson(inherited GetModel);
 end;
 
 function TExercise1.GetRequiredControls: TArray<TWinControl>;
@@ -229,24 +213,6 @@ begin
     EditPhone,
     EditEmail,
     EditCPF];
-end;
-
-procedure TExercise1.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
-  var CanSelect: Boolean);
-begin
-  inherited;
-  if ARow = FPrevRow then
-    Exit;
-
-  (Sender as TStringGrid).OnSelectCell := nil;
-  try
-    Model := FArray.Item[Pred(ARow)];
-    ModelToView;
-    FPrevRow := ARow;
-    ControlActions;
-  finally
-    (Sender as TStringGrid).OnSelectCell := GridSelectCell;
-  end;
 end;
 
 end.

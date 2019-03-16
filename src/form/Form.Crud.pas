@@ -20,6 +20,8 @@ uses
   Vcl.StdCtrls, Vcl.Grids;
 
 type
+  TGridState = (gsNone, gsBrowse, gsInsert, gsEdit, gsRemove);
+
   TCrud = class abstract(TForm)
     ActionList: TActionList;
     ActionClear: TAction;
@@ -36,14 +38,21 @@ type
     TabSheetList: TTabSheet;
     Grid: TStringGrid;
     TabSheetData: TTabSheet;
+    ButtonNew: TSpeedButton;
+    ActionNew: TAction;
     procedure ActionClearExecute(Sender: TObject);
     procedure ActionEditExecute(Sender: TObject);
     procedure ActionInsertExecute(Sender: TObject);
     procedure ActionRemoveExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure ActionNewExecute(Sender: TObject);
+    procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure GridDblClick(Sender: TObject);
   private
     FRequiredControls: TDictionary<TWinControl, string>;
+    FState: TGridState;
 
     { Define Methods }
     procedure DefineRequiredControls;
@@ -53,22 +62,35 @@ type
     function GetCaption(Control: TWinControl): string;
     function GetLinkedLabel(Control: TWinControl): TCustomLabel;
   protected
+    FPrevRow: Byte;
+    FModel: TObject;
+
     { Main actions }
     function Insert: Boolean; virtual;
-    procedure Edit; virtual;
+    procedure Edit;
     procedure Remove; virtual;
 
     { Form initialization and finalization }
     procedure Initialize; virtual;
     procedure Finalize; virtual;
 
+    {}
+    procedure ViewToModel; virtual; abstract;
+    procedure ModelToView; virtual; abstract;
+    function ModelToArray: TArray<string>; virtual; abstract;
+
     { Required components }
     function GetRequiredControls: TArray<TWinControl>; virtual; abstract;
     function GetInitialFocus: TWinControl; virtual; abstract;
 
     { Other useful methods }
-    procedure ControlActions; virtual; abstract;
+    procedure ControlActions;
     procedure RegExValidate(Component: TObject; const Pattern: string);
+
+    {}
+    function CreateModel: TObject; virtual; abstract;
+    function GetModel: TObject; overload; virtual;
+    function GetModel(const Row: Integer): TObject; overload; virtual; abstract;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
@@ -80,10 +102,23 @@ implementation
 
 { TCrud }
 
+procedure TCrud.ControlActions;
+begin
+  ActionNew.Enabled := FState <> TGridState.gsInsert;
+  ActionInsert.Enabled := FState = TGridState.gsInsert;
+  ActionEdit.Enabled := (FState <> TGridState.gsInsert) and (FPrevRow <> Grid.HeaderIndex);
+  ActionRemove.Enabled := (FState <> TGridState.gsInsert) and (FPrevRow <> Grid.HeaderIndex);
+
+  TabSheetData.Enabled := FState in [gsEdit, gsInsert];
+end;
+
 constructor TCrud.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
   FRequiredControls := TDictionary<TWinControl, string>.Create;
+  FPrevRow := Grid.Row;
+  FState := TGridState.gsNone;
+  TabSheetData.Enabled := False;
 end;
 
 destructor TCrud.Destroy;
@@ -104,11 +139,14 @@ end;
 
 procedure TCrud.ActionInsertExecute(Sender: TObject);
 begin
-  if Insert then
-  begin
-    TMessage.Information('Inserido com sucesso!');
-    ControlActions;
-  end;
+  Insert;
+end;
+
+procedure TCrud.ActionNewExecute(Sender: TObject);
+begin
+  FState := TGridState.gsInsert;
+  ControlActions;
+  PageControlLayout.ActivePage := TabSheetData;
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
@@ -129,7 +167,8 @@ end;
 
 procedure TCrud.Edit;
 begin
-  Exit;
+  ViewToModel;
+  Grid.Update(ModelToArray);
 end;
 
 procedure TCrud.Finalize;
@@ -176,6 +215,33 @@ begin
   end;
 end;
 
+function TCrud.GetModel: TObject;
+begin
+  Result := FModel;
+end;
+
+procedure TCrud.GridDblClick(Sender: TObject);
+begin
+  PageControlLayout.ActivePage := TabSheetData;
+end;
+
+procedure TCrud.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
+  var CanSelect: Boolean);
+begin
+  if ARow = FPrevRow then
+    Exit;
+
+  (Sender as TStringGrid).OnSelectCell := nil;
+  try
+    FModel := GetModel(ARow);
+    ModelToView;
+    FPrevRow := ARow;
+    ControlActions;
+  finally
+    (Sender as TStringGrid).OnSelectCell := GridSelectCell;
+  end;
+end;
+
 procedure TCrud.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Finalize;
@@ -199,15 +265,29 @@ var
   Control: TWinControl;
 begin
   Result := Validate(Control);
-  if not Result then
-  begin
-    TMessage.Information('O campo %s � obrigat�rio.', [FRequiredControls.Items[Control]]);
-    Control.TrySetFocus;
+  try
+    if not Result then
+    begin
+      Control.TrySetFocus;
+      TMessage.Information('O campo %s � obrigat�rio.', [FRequiredControls.Items[Control]]);
+      Exit;
+    end;
+
+    FModel := CreateModel;
+    ViewToModel;
+    Grid.Add(ModelToArray);
+
+    FState := gsBrowse;
+    TMessage.Information('Inserido com sucesso!');
+    Clear;
+  finally
+    ControlActions;
   end;
 end;
 
 procedure TCrud.Remove;
 begin
+  Grid.Remove;
   Clear;
   ControlActions
 end;

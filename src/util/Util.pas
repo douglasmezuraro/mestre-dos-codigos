@@ -22,10 +22,14 @@ implementation
 class function TUtil.TMethods.ArrayOfToTArray<T>(const Arr: array of T): TArray<T>;
 var
   Index: Integer;
+  Size: Integer;
 begin
-  SetLength(Result, Length(Arr));
-  for Index := 0 to Length(Arr) do
+  Size := Length(Arr);
+  SetLength(Result, Size);
+  for Index := 0 to Pred(Size) do
+  begin
     Result[Index] := Arr[Index];
+  end;
 end;
 
 end.

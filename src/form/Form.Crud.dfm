@@ -25,7 +25,7 @@ object Crud: TCrud
     Align = alBottom
     TabOrder = 0
     object ButtonInsert: TSpeedButton
-      Left = 1
+      Left = 101
       Top = 1
       Width = 100
       Height = 30
@@ -36,7 +36,7 @@ object Crud: TCrud
       ExplicitHeight = 22
     end
     object ButtonEdit: TSpeedButton
-      Left = 101
+      Left = 201
       Top = 1
       Width = 100
       Height = 30
@@ -47,7 +47,7 @@ object Crud: TCrud
       ExplicitHeight = 22
     end
     object ButtonRemove: TSpeedButton
-      Left = 201
+      Left = 301
       Top = 1
       Width = 100
       Height = 30
@@ -57,12 +57,23 @@ object Crud: TCrud
       ExplicitHeight = 45
     end
     object ButtonClear: TSpeedButton
-      Left = 301
+      Left = 401
       Top = 1
       Width = 100
       Height = 30
       Action = ActionClear
       Align = alLeft
+      ExplicitLeft = 301
+    end
+    object ButtonNew: TSpeedButton
+      Left = 1
+      Top = 1
+      Width = 100
+      Height = 30
+      Action = ActionNew
+      Align = alLeft
+      ExplicitLeft = -27
+      ExplicitTop = 2
     end
   end
   object StatusBarStatus: TStatusBar
@@ -79,15 +90,11 @@ object Crud: TCrud
     Top = 0
     Width = 800
     Height = 549
-    ActivePage = TabSheetData
+    ActivePage = TabSheetList
     Align = alClient
     TabOrder = 2
     object TabSheetList: TTabSheet
       Caption = 'Lista'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Grid: TStringGrid
         Left = 0
         Top = 0
@@ -99,20 +106,23 @@ object Crud: TCrud
         RowCount = 1
         FixedRows = 0
         TabOrder = 0
+        OnDblClick = GridDblClick
+        OnSelectCell = GridSelectCell
       end
     end
     object TabSheetData: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object ActionList: TActionList
     Left = 184
     Top = 88
+    object ActionNew: TAction
+      Category = 'Crud'
+      Caption = '&Novo'
+      OnExecute = ActionNewExecute
+    end
     object ActionInsert: TAction
       Category = 'Crud'
       Caption = 'Inserir'
