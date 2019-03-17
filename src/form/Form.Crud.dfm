@@ -13,7 +13,6 @@ object Crud: TCrud
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
-  OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -24,30 +23,19 @@ object Crud: TCrud
     Height = 32
     Align = alBottom
     TabOrder = 0
-    object ButtonInsert: TSpeedButton
+    object ButtonSave: TSpeedButton
       Left = 101
       Top = 1
       Width = 100
       Height = 30
-      Action = ActionInsert
+      Action = ActionSave
       Align = alLeft
       ExplicitLeft = 24
       ExplicitTop = 16
       ExplicitHeight = 22
     end
-    object ButtonEdit: TSpeedButton
-      Left = 201
-      Top = 1
-      Width = 100
-      Height = 30
-      Action = ActionEdit
-      Align = alLeft
-      ExplicitLeft = 157
-      ExplicitTop = 16
-      ExplicitHeight = 22
-    end
     object ButtonRemove: TSpeedButton
-      Left = 301
+      Left = 201
       Top = 1
       Width = 100
       Height = 30
@@ -57,13 +45,12 @@ object Crud: TCrud
       ExplicitHeight = 45
     end
     object ButtonClear: TSpeedButton
-      Left = 401
+      Left = 301
       Top = 1
       Width = 100
       Height = 30
       Action = ActionClear
       Align = alLeft
-      ExplicitLeft = 301
     end
     object ButtonNew: TSpeedButton
       Left = 1
@@ -123,16 +110,6 @@ object Crud: TCrud
       Caption = '&Novo'
       OnExecute = ActionNewExecute
     end
-    object ActionInsert: TAction
-      Category = 'Crud'
-      Caption = 'Inserir'
-      OnExecute = ActionInsertExecute
-    end
-    object ActionEdit: TAction
-      Category = 'Crud'
-      Caption = 'Editar'
-      OnExecute = ActionEditExecute
-    end
     object ActionRemove: TAction
       Category = 'Crud'
       Caption = 'Remover'
@@ -142,6 +119,11 @@ object Crud: TCrud
       Category = 'Crud'
       Caption = '&Limpar'
       OnExecute = ActionClearExecute
+    end
+    object ActionSave: TAction
+      Category = 'Crud'
+      Caption = '&Salvar'
+      OnExecute = ActionSaveExecute
     end
   end
 end

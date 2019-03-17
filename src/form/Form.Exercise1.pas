@@ -51,7 +51,7 @@ type
   protected
     procedure Initialize; override;
 
-    function Insert: Boolean; override;
+    function Save: Boolean; override;
     procedure Remove; override;
     {}
     procedure ViewToModel; override;
@@ -59,8 +59,8 @@ type
     function ModelToArray: TArray<string>; override;
 
     { Other }
-    function GetInitialFocus: TWinControl; override;
-    function GetRequiredControls: TArray<TWinControl>; override;
+    function DefineInitialFocus: TWinControl; override;
+    function DefineRequiredControls: TArray<TWinControl>; override;
 
     function CreateModel: TObject; override;
     function GetModel: TPerson; reintroduce; overload;
@@ -104,9 +104,9 @@ begin
   Grid.AddHeader(Titles);
 end;
 
-function TExercise1.Insert: Boolean;
+function TExercise1.Save: Boolean;
 begin
-  Result := inherited Insert;
+  Result := inherited Save;
   if Result then
     FArray.Add(GetModel);
 end;
@@ -188,7 +188,7 @@ begin
   GetModel.CPF      := EditCPF.Text;
 end;
 
-function TExercise1.GetInitialFocus: TWinControl;
+function TExercise1.DefineInitialFocus: TWinControl;
 begin
   Result := EditName;
 end;
@@ -203,16 +203,17 @@ begin
   Result := TPerson(inherited GetModel);
 end;
 
-function TExercise1.GetRequiredControls: TArray<TWinControl>;
+function TExercise1.DefineRequiredControls: TArray<TWinControl>;
 begin
   Result := [
     EditName,
-    EditLastName,
-    RadioGroupGender,
-    EditBirth,
-    EditPhone,
-    EditEmail,
-    EditCPF];
+    EditLastName//,
+  //  RadioGroupGender,
+  //  EditBirth,
+  //  EditPhone,
+  //  EditEmail,
+  //  EditCPF
+  ];
 end;
 
 end.
