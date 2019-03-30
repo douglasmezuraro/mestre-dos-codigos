@@ -3,6 +3,8 @@
 interface
 
 uses
+  Collections.API,
+  Collections.DynamicArray,
   Helper.DateTime,
   System.Actions,
   System.Classes,
@@ -21,12 +23,8 @@ uses
   Vcl.StdCtrls;
 
 type
-  TGridState = (gsNone, gsBrowse, gsInsert, gsEdit, gsRemove);
+  TState = (sBrowse, sInsert, sUpdate);
 
-const
-  EditModes = [gsInsert, gsEdit];
-
-type
   TCrud = class abstract(TForm)
     ActionList: TActionList;
     ActionClear: TAction;
@@ -53,8 +51,7 @@ type
     procedure ActionSaveExecute(Sender: TObject);
   private
     FRequiredControls: TDictionary<TWinControl, string>;
-    FState: TGridState;
-
+    FState: TState;
     { Define Methods }
     procedure SetRequiredControls;
 
@@ -65,8 +62,10 @@ type
   protected
     FPrevRow: Byte;
     FModel: TObject;
+    FArray: ICollection<TObject>;
 
     { Main actions }
+    procedure New;
     procedure Remove; virtual;
     function Save: Boolean; virtual;
 
@@ -103,20 +102,20 @@ implementation
 
 procedure TCrud.ControlActions;
 begin
-  ActionNew.Enabled := FState <> gsInsert;
-  ActionSave.Enabled := FState in EditModes;
-  ActionRemove.Enabled := (FState <> gsInsert) and (FPrevRow <> Grid.HeaderIndex);
-
-  TabSheetData.Enabled := FState in EditModes;
+  ActionNew.Enabled := FState <> sInsert;
+  ActionSave.Enabled := FState in [sInsert, sUpdate];
+  ActionRemove.Enabled := (FState <> sInsert) and (FPrevRow <> Grid.HeaderIndex);
+  TabSheetData.Enabled := FState in [sInsert, sUpdate];
 end;
 
 constructor TCrud.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
+
+  FArray            := TDynamicArray<TObject>.Create;
   FRequiredControls := TDictionary<TWinControl, string>.Create;
-  FPrevRow := Grid.Row;
-  FState := TGridState.gsNone;
-  TabSheetData.Enabled := False;
+  FPrevRow          := Grid.Row;
+  FState            := sBrowse;
 end;
 
 destructor TCrud.Destroy;
@@ -132,9 +131,7 @@ end;
 
 procedure TCrud.ActionNewExecute(Sender: TObject);
 begin
-  FState := TGridState.gsInsert;
-  ControlActions;
-  PageControlLayout.ActivePage := TabSheetData;
+  New;
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
@@ -205,6 +202,12 @@ end;
 procedure TCrud.GridDblClick(Sender: TObject);
 begin
   PageControlLayout.ActivePage := TabSheetData;
+
+  if GetModel(Grid.Row) = nil then
+    Exit;
+
+  FState := sUpdate;
+  ControlActions;
 end;
 
 procedure TCrud.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
@@ -237,11 +240,23 @@ begin
   DefineInitialFocus.TrySetFocus;
 end;
 
+procedure TCrud.New;
+begin
+  FModel := CreateModel;
+  FState := sInsert;
+  PageControlLayout.ActivePage := TabSheetData;
+
+  ControlActions;
+end;
+
 procedure TCrud.Remove;
 begin
-  Grid.Remove;
-  Clear;
-  ControlActions
+  if FArray.Remove(GetModel(Grid.Row)) then
+  begin
+    Grid.Remove;
+    Clear;
+    ControlActions
+  end;
 end;
 
 function TCrud.Save: Boolean;
@@ -257,17 +272,23 @@ begin
     Exit;
   end;
 
-  if FState = gsInsert then
-    FModel := CreateModel;
-
   ViewToModel;
 
   case FState of
-    gsInsert: Grid.Add(ModelToArray);
-    gsEdit: Grid.Update(ModelToArray);
+    sInsert:
+      begin
+        Grid.Add(ModelToArray);
+        FArray.Add(GetModel);
+      end;
+    sUpdate:
+      begin
+        Grid.Update(ModelToArray);
+      end;
   end;
 
-  FState := gsBrowse;
+  FState := sBrowse;
+  ControlActions;
+
   TMessage.Information('Salvo com sucesso!');
   Clear;
 end;

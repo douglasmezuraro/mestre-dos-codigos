@@ -1,10 +1,5 @@
 inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
-  ClientHeight = 476
-  ClientWidth = 580
-  ExplicitTop = 2
-  ExplicitWidth = 596
-  ExplicitHeight = 514
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelButtons: TPanel

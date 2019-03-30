@@ -47,12 +47,9 @@ type
     procedure EditCPFExit(Sender: TObject);
     procedure EditPhoneExit(Sender: TObject);
   private
-    FArray: ICollection<TPerson>;
+   // FArray: ICollection<TPerson>;
   protected
     procedure Initialize; override;
-
-    function Save: Boolean; override;
-    procedure Remove; override;
     {}
     procedure ViewToModel; override;
     procedure ModelToView; override;
@@ -65,8 +62,6 @@ type
     function CreateModel: TObject; override;
     function GetModel: TPerson; reintroduce; overload;
     function GetModel(const Row: Integer): TObject; overload; override;
-  public
-    constructor Create(AOwner: TComponent); override;
   end;
 
 implementation
@@ -74,12 +69,6 @@ implementation
 {$R *.dfm}
 
 { TExercise1 }
-
-constructor TExercise1.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-  FArray := TDynamicArray<TPerson>.Create;
-end;
 
 procedure TExercise1.EditBirthExit(Sender: TObject);
 var
@@ -102,13 +91,6 @@ const
 begin
   inherited;
   Grid.AddHeader(Titles);
-end;
-
-function TExercise1.Save: Boolean;
-begin
-  Result := inherited Save;
-  if Result then
-    FArray.Add(GetModel);
 end;
 
 procedure TExercise1.EditCPFExit(Sender: TObject);
@@ -155,12 +137,6 @@ begin
   EditEmail.Text             := GetModel.Email;
   EditCPF.Text               := GetModel.CPF;
   RadioGroupGender.ItemIndex := Ord(GetModel.Gender);
-end;
-
-procedure TExercise1.Remove;
-begin
-  if FArray.Remove(GetModel(Grid.Row) as TPerson) then
-    inherited Remove;
 end;
 
 function TExercise1.ModelToArray: TArray<string>;
