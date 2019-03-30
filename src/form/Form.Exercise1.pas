@@ -42,8 +42,6 @@ type
     procedure EditEmailExit(Sender: TObject);
     procedure EditCPFExit(Sender: TObject);
     procedure EditPhoneExit(Sender: TObject);
-  private
-   // FArray: ICollection<TPerson>;
   protected
     procedure Initialize; override;
     {}
@@ -52,7 +50,6 @@ type
     function ModelToArray: TArray<string>; override;
 
     { Other }
-    function DefineInitialFocus: TWinControl; override;
     function DefineRequiredControls: TArray<TWinControl>; override;
 
     function CreateModel: TObject; override;
@@ -157,11 +154,6 @@ begin
   GetModel.Gender   := TGender(RadioGroupGender.ItemIndex);
   GetModel.Email    := EditEmail.Text;
   GetModel.CPF      := EditCPF.Text;
-end;
-
-function TExercise1.DefineInitialFocus: TWinControl;
-begin
-  Result := EditName;
 end;
 
 function TExercise1.GetModel: TPerson;

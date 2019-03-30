@@ -5,7 +5,6 @@ interface
 uses
   Collections.API,
   Collections.DynamicArray,
-  Helper.DateTime,
   System.Actions,
   System.Classes,
   System.Generics.Collections,
@@ -76,7 +75,6 @@ type
 
     { Required components }
     function DefineRequiredControls: TArray<TWinControl>; virtual; abstract;
-    function DefineInitialFocus: TWinControl; virtual; abstract;
 
     { Other useful methods }
     procedure ControlActions(const NewState: TState);
@@ -124,10 +122,11 @@ end;
 
 procedure TCrud.New;
 begin
-  FModel := CreateModel;
-  PageControlLayout.ActivePage := TabSheetData;
+  if not FArray.Contains(FModel) then
+    FModel := CreateModel;
 
   ControlActions(sInsert);
+  PageControlLayout.ActivePage := TabSheetData;
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
@@ -176,6 +175,7 @@ begin
   end;
 
   ControlActions(sBrowse);
+  PageControlLayout.ActivePage := TabSheetList;
 
   TMessage.Information('Salvo com sucesso!');
   Clear;
@@ -241,15 +241,15 @@ end;
 
 procedure TCrud.GridDblClick(Sender: TObject);
 begin
-  PageControlLayout.ActivePage := TabSheetData;
-
   FModel := GetCurrentModel(Grid.Row);
 
   if not Assigned(FModel) then
     Exit;
 
   ModelToView;
+
   ControlActions(sUpdate);
+  PageControlLayout.ActivePage := TabSheetData;
 end;
 
 procedure TCrud.FormShow(Sender: TObject);
@@ -262,7 +262,6 @@ begin
   SetRequiredControls;
   ControlActions(sBrowse);
   StatusBarStatus.SimpleText := Format('%s: campos obrigat�rios.', [RequiredChar]);
-  DefineInitialFocus.TrySetFocus;
 end;
 
 procedure TCrud.SetRequiredControls;
