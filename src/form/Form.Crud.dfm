@@ -94,7 +94,6 @@ object Crud: TCrud
         FixedRows = 0
         TabOrder = 0
         OnDblClick = GridDblClick
-        OnSelectCell = GridSelectCell
       end
     end
     object TabSheetData: TTabSheet

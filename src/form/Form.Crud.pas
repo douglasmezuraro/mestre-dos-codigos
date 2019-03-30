@@ -45,13 +45,14 @@ type
     procedure ActionRemoveExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ActionNewExecute(Sender: TObject);
-    procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
-      var CanSelect: Boolean);
     procedure GridDblClick(Sender: TObject);
     procedure ActionSaveExecute(Sender: TObject);
   private
-    FRequiredControls: TDictionary<TWinControl, string>;
+    FRequired: TDictionary<TWinControl, string>;
     FState: TState;
+    FModel: TObject;
+    FArray: ICollection<TObject>;
+
     { Define Methods }
     procedure SetRequiredControls;
 
@@ -60,14 +61,10 @@ type
     function GetCaption(Control: TWinControl): string;
     function GetLinkedLabel(Control: TWinControl): TCustomLabel;
   protected
-    FPrevRow: Byte;
-    FModel: TObject;
-    FArray: ICollection<TObject>;
-
     { Main actions }
     procedure New;
-    procedure Remove; virtual;
-    function Save: Boolean; virtual;
+    procedure Remove;
+    procedure Save;
 
     { Form initialization and finalization }
     procedure Initialize; virtual;
@@ -82,13 +79,13 @@ type
     function DefineInitialFocus: TWinControl; virtual; abstract;
 
     { Other useful methods }
-    procedure ControlActions;
+    procedure ControlActions(const NewState: TState);
     procedure RegExValidate(Component: TObject; const Pattern: string);
 
     {}
     function CreateModel: TObject; virtual; abstract;
-    function GetModel: TObject; overload; virtual;
-    function GetModel(const Row: Integer): TObject; overload; virtual; abstract;
+    function GetModel: TObject; virtual;
+    function GetCurrentModel(const Row: Integer): TObject;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
@@ -100,27 +97,18 @@ implementation
 
 { TCrud }
 
-procedure TCrud.ControlActions;
-begin
-  ActionNew.Enabled := FState <> sInsert;
-  ActionSave.Enabled := FState in [sInsert, sUpdate];
-  ActionRemove.Enabled := (FState <> sInsert) and (FPrevRow <> Grid.HeaderIndex);
-  TabSheetData.Enabled := FState in [sInsert, sUpdate];
-end;
-
 constructor TCrud.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
 
-  FArray            := TDynamicArray<TObject>.Create;
-  FRequiredControls := TDictionary<TWinControl, string>.Create;
-  FPrevRow          := Grid.Row;
-  FState            := sBrowse;
+  FArray    := TDynamicArray<TObject>.Create;
+  FRequired := TDictionary<TWinControl, string>.Create;
+  FState    := sBrowse;
 end;
 
 destructor TCrud.Destroy;
 begin
-  FRequiredControls.Free;
+  FRequired.Free;
   inherited Destroy;
 end;
 
@@ -134,9 +122,27 @@ begin
   New;
 end;
 
+procedure TCrud.New;
+begin
+  FModel := CreateModel;
+  PageControlLayout.ActivePage := TabSheetData;
+
+  ControlActions(sInsert);
+end;
+
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
 begin
   Remove;
+end;
+
+procedure TCrud.Remove;
+begin
+  if FArray.Remove(GetCurrentModel(Grid.Row)) then
+  begin
+    Grid.Remove;
+    Clear;
+    ControlActions(sBrowse);
+  end;
 end;
 
 procedure TCrud.ActionSaveExecute(Sender: TObject);
@@ -144,15 +150,44 @@ begin
   Save;
 end;
 
-procedure TCrud.SetRequiredControls;
+procedure TCrud.Save;
 var
   Control: TWinControl;
 begin
-  for Control in DefineRequiredControls do
+  if not Validate(Control) then
   begin
-    Control.Required := True;
-    FRequiredControls.Add(Control, GetCaption(Control));
+    Control.TrySetFocus;
+    TMessage.Information('O campo %s � obrigat�rio.', [FRequired.Items[Control]]);
+    Exit;
   end;
+
+  ViewToModel;
+
+  case FState of
+    sInsert:
+      begin
+        Grid.Add(ModelToArray);
+        FArray.Add(GetModel);
+      end;
+    sUpdate:
+      begin
+        Grid.Update(ModelToArray);
+      end;
+  end;
+
+  ControlActions(sBrowse);
+
+  TMessage.Information('Salvo com sucesso!');
+  Clear;
+end;
+
+procedure TCrud.ControlActions(const NewState: TState);
+begin
+  FState := NewState;
+
+  ActionNew.Enabled := FState <> sInsert;
+  ActionSave.Enabled := FState in [sInsert, sUpdate];
+  ActionRemove.Enabled := (FState <> sInsert) and Assigned(FModel);
 end;
 
 function TCrud.GetCaption(Control: TWinControl): string;
@@ -194,6 +229,11 @@ begin
   end;
 end;
 
+function TCrud.GetCurrentModel(const Row: Integer): TObject;
+begin
+  Result := FArray.Item[Pred(Row)];
+end;
+
 function TCrud.GetModel: TObject;
 begin
   Result := FModel;
@@ -203,28 +243,13 @@ procedure TCrud.GridDblClick(Sender: TObject);
 begin
   PageControlLayout.ActivePage := TabSheetData;
 
-  if GetModel(Grid.Row) = nil then
+  FModel := GetCurrentModel(Grid.Row);
+
+  if not Assigned(FModel) then
     Exit;
 
-  FState := sUpdate;
-  ControlActions;
-end;
-
-procedure TCrud.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
-  var CanSelect: Boolean);
-begin
-  if ARow = FPrevRow then
-    Exit;
-
-  (Sender as TStringGrid).OnSelectCell := nil;
-  try
-    FModel := GetModel(ARow);
-    ModelToView;
-    FPrevRow := ARow;
-    ControlActions;
-  finally
-    (Sender as TStringGrid).OnSelectCell := GridSelectCell;
-  end;
+  ModelToView;
+  ControlActions(sUpdate);
 end;
 
 procedure TCrud.FormShow(Sender: TObject);
@@ -235,62 +260,20 @@ end;
 procedure TCrud.Initialize;
 begin
   SetRequiredControls;
-  ControlActions;
+  ControlActions(sBrowse);
   StatusBarStatus.SimpleText := Format('%s: campos obrigat�rios.', [RequiredChar]);
   DefineInitialFocus.TrySetFocus;
 end;
 
-procedure TCrud.New;
-begin
-  FModel := CreateModel;
-  FState := sInsert;
-  PageControlLayout.ActivePage := TabSheetData;
-
-  ControlActions;
-end;
-
-procedure TCrud.Remove;
-begin
-  if FArray.Remove(GetModel(Grid.Row)) then
-  begin
-    Grid.Remove;
-    Clear;
-    ControlActions
-  end;
-end;
-
-function TCrud.Save: Boolean;
+procedure TCrud.SetRequiredControls;
 var
   Control: TWinControl;
 begin
-  Result := Validate(Control);
-
-  if not Result then
+  for Control in DefineRequiredControls do
   begin
-    Control.TrySetFocus;
-    TMessage.Information('O campo %s � obrigat�rio.', [FRequiredControls.Items[Control]]);
-    Exit;
+    Control.Required := True;
+    FRequired.Add(Control, GetCaption(Control));
   end;
-
-  ViewToModel;
-
-  case FState of
-    sInsert:
-      begin
-        Grid.Add(ModelToArray);
-        FArray.Add(GetModel);
-      end;
-    sUpdate:
-      begin
-        Grid.Update(ModelToArray);
-      end;
-  end;
-
-  FState := sBrowse;
-  ControlActions;
-
-  TMessage.Information('Salvo com sucesso!');
-  Clear;
 end;
 
 procedure TCrud.RegExValidate(Component: TObject; const Pattern: string);
@@ -307,7 +290,7 @@ begin
   RegEx := TRegEx.Create(Pattern, [roIgnoreCase]);
   if not RegEx.IsMatch(Control.ToString) then
   begin
-    Caption := FRequiredControls.Items[Component as TWinControl];
+    Caption := FRequired.Items[Component as TWinControl];
     TMessage.Information('O valor "%s" n�o � v�lido para "%s".', [Control.ToString.ToLower, Caption]);
     Control.TrySetFocus;
   end;
@@ -317,7 +300,7 @@ function TCrud.Validate(out Control: TWinControl): Boolean;
 var
   Component: TWinControl;
 begin
-  for Component in FRequiredControls.Keys do
+  for Component in FRequired.Keys do
   begin
     if Component.IsEmpty then
     begin

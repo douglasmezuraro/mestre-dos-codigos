@@ -3,16 +3,12 @@ unit Form.Exercise1;
 interface
 
 uses
-  Collections.API,
-  Collections.DynamicArray,
   Form.Crud,
   Helper.DateTime,
   Model.Gender,
   Model.Person,
   System.Actions,
   System.Classes,
-  System.Math,
-  System.SysUtils,
   System.Types,
   Util.Messages,
   Util,
@@ -60,8 +56,7 @@ type
     function DefineRequiredControls: TArray<TWinControl>; override;
 
     function CreateModel: TObject; override;
-    function GetModel: TPerson; reintroduce; overload;
-    function GetModel(const Row: Integer): TObject; overload; override;
+    function GetModel: TPerson; reintroduce;
   end;
 
 implementation
@@ -167,11 +162,6 @@ end;
 function TExercise1.DefineInitialFocus: TWinControl;
 begin
   Result := EditName;
-end;
-
-function TExercise1.GetModel(const Row: Integer): TObject;
-begin
-  Result := FArray.Item[Pred(Row)];
 end;
 
 function TExercise1.GetModel: TPerson;

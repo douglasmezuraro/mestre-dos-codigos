@@ -1,35 +1,12 @@
 inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
+  ExplicitTop = 2
   PixelsPerInch = 96
   TextHeight = 13
-  inherited PanelButtons: TPanel
-    Top = 425
-    Width = 580
-    ExplicitTop = 425
-    ExplicitWidth = 580
-  end
-  inherited StatusBarStatus: TStatusBar
-    Top = 457
-    Width = 580
-    ExplicitTop = 457
-    ExplicitWidth = 580
-  end
   inherited PageControlLayout: TPageControl
-    Width = 580
-    Height = 425
-    ExplicitWidth = 580
-    ExplicitHeight = 425
-    inherited TabSheetList: TTabSheet
-      ExplicitWidth = 572
-      ExplicitHeight = 397
-      inherited Grid: TStringGrid
-        Width = 572
-        Height = 397
-        ExplicitWidth = 572
-        ExplicitHeight = 397
-      end
-    end
     inherited TabSheetData: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 572
       ExplicitHeight = 397
       object LabelName: TLabel
