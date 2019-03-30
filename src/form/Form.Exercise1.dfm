@@ -1,14 +1,11 @@
 inherited Exercise1: TExercise1
   Caption = 'Exerc'#237'cio 1'
-  ExplicitTop = 2
+  ExplicitTop = -2
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControlLayout: TPageControl
+    ActivePage = TabSheetData
     inherited TabSheetData: TTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 572
-      ExplicitHeight = 397
       object LabelName: TLabel
         Left = 16
         Top = 3

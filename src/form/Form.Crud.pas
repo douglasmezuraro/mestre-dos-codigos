@@ -22,7 +22,7 @@ uses
   Vcl.StdCtrls;
 
 type
-  TState = (sBrowse, sInsert, sUpdate);
+  TGridState = (gsBrowse, gsInsert, gsEdit);
 
   TCrud = class abstract(TForm)
     ActionList: TActionList;
@@ -48,7 +48,7 @@ type
     procedure ActionSaveExecute(Sender: TObject);
   private
     FRequired: TDictionary<TWinControl, string>;
-    FState: TState;
+    FState: TGridState;
     FModel: TObject;
     FArray: ICollection<TObject>;
 
@@ -58,17 +58,19 @@ type
     { Other }
     function Validate(out Control: TWinControl): Boolean;
     function GetCaption(Control: TWinControl): string;
+    procedure SetCaption(Control: TWinControl);
     function GetLinkedLabel(Control: TWinControl): TCustomLabel;
   protected
     { Main actions }
     procedure New;
     procedure Remove;
     procedure Save;
+    procedure Edit;
 
     { Form initialization and finalization }
     procedure Initialize; virtual;
 
-    {}
+    { Abstract useful methods }
     procedure ViewToModel; virtual; abstract;
     procedure ModelToView; virtual; abstract;
     function ModelToArray: TArray<string>; virtual; abstract;
@@ -77,10 +79,10 @@ type
     function DefineRequiredControls: TArray<TWinControl>; virtual; abstract;
 
     { Other useful methods }
-    procedure ControlActions(const NewState: TState);
+    procedure ControlView(const State: TGridState; const Tab: TTabSheet);
     procedure RegExValidate(Component: TObject; const Pattern: string);
 
-    {}
+    { Model methods }
     function CreateModel: TObject; virtual; abstract;
     function GetModel: TObject; virtual;
     function GetCurrentModel(const Row: Integer): TObject;
@@ -101,12 +103,16 @@ begin
 
   FArray    := TDynamicArray<TObject>.Create;
   FRequired := TDictionary<TWinControl, string>.Create;
-  FState    := sBrowse;
+  FState    := gsBrowse;
 end;
 
 destructor TCrud.Destroy;
 begin
   FRequired.Free;
+
+  if (not FArray.Contains(FModel)) and Assigned(FModel) then
+    FModel.Free;
+
   inherited Destroy;
 end;
 
@@ -122,11 +128,15 @@ end;
 
 procedure TCrud.New;
 begin
-  if not FArray.Contains(FModel) then
-    FModel := CreateModel;
+  if FState = gsEdit then
+  begin
+    if not TMessage.Confirmation('Deseja cancelar a edição do registro?') then
+      Exit;
+  end;
 
-  ControlActions(sInsert);
-  PageControlLayout.ActivePage := TabSheetData;
+  FModel := CreateModel;
+  Clear;
+  ControlView(gsInsert, TabSheetData);
 end;
 
 procedure TCrud.ActionRemoveExecute(Sender: TObject);
@@ -140,7 +150,7 @@ begin
   begin
     Grid.Remove;
     Clear;
-    ControlActions(sBrowse);
+    ControlView(gsBrowse, TabSheetList);
   end;
 end;
 
@@ -163,54 +173,47 @@ begin
   ViewToModel;
 
   case FState of
-    sInsert:
+    gsInsert:
       begin
         Grid.Add(ModelToArray);
         FArray.Add(GetModel);
       end;
-    sUpdate:
+    gsEdit:
       begin
         Grid.Update(ModelToArray);
       end;
   end;
 
-  ControlActions(sBrowse);
-  PageControlLayout.ActivePage := TabSheetList;
+  ControlView(gsBrowse, TabSheetList);
 
   TMessage.Information('Salvo com sucesso!');
   Clear;
 end;
 
-procedure TCrud.ControlActions(const NewState: TState);
+procedure TCrud.ControlView(const State: TGridState; const Tab: TTabSheet);
 begin
-  FState := NewState;
+  FState := State;
+  PageControlLayout.ActivePage := Tab;
 
-  ActionNew.Enabled := FState <> sInsert;
-  ActionSave.Enabled := FState in [sInsert, sUpdate];
-  ActionRemove.Enabled := (FState <> sInsert) and Assigned(FModel);
+  ActionNew.Enabled    := FState <> gsInsert;
+  ActionSave.Enabled   := FState in [gsInsert, gsEdit];
+  ActionRemove.Enabled := (FState <> gsInsert) and Assigned(FModel);
+
+  TabSheetData.Enabled := FState in [gsInsert, gsEdit];
 end;
 
 function TCrud.GetCaption(Control: TWinControl): string;
 var
-  LinkedLabel: TCustomLabel;
   Index: Integer;
 begin
   if Control is TRadioGroup then
   begin
-    Result := (Control as TRadioGroup).Caption;
-    TRadioGroup(Control).Caption := Result + RequiredChar;
-    Exit;
+    Exit((Control as TRadioGroup).Caption);
   end;
 
   if TArray.BinarySearch<TClass>([TEdit, TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
   begin
-    LinkedLabel := GetLinkedLabel(Control);
-
-    if not Assigned(LinkedLabel) then
-      raise Exception.CreateFmt('N�o foi encontrado label v�nculado ao componente "%s"', [Control]);
-
-    Result := LinkedLabel.Caption;
-    LinkedLabel.Caption := Result + RequiredChar;
+    Exit(GetLinkedLabel(Control).Caption);
   end;
 end;
 
@@ -218,15 +221,15 @@ function TCrud.GetLinkedLabel(Control: TWinControl): TCustomLabel;
 var
   Component: TComponent;
 begin
-  Result := nil;
   for Component in ComponentsArray do
   begin
     if (Component is TLabel) and (Control = (Component as TLabel).FocusControl) then
     begin
-      Result := Component as TLabel;
-      Break;
+      Exit(Component as TCustomLabel);
     end;
   end;
+
+  raise Exception.CreateFmt('N�o foi encontrado label v�nculado ao componente "%s"', [Control]);
 end;
 
 function TCrud.GetCurrentModel(const Row: Integer): TObject;
@@ -241,15 +244,7 @@ end;
 
 procedure TCrud.GridDblClick(Sender: TObject);
 begin
-  FModel := GetCurrentModel(Grid.Row);
-
-  if not Assigned(FModel) then
-    Exit;
-
-  ModelToView;
-
-  ControlActions(sUpdate);
-  PageControlLayout.ActivePage := TabSheetData;
+  Edit;
 end;
 
 procedure TCrud.FormShow(Sender: TObject);
@@ -260,8 +255,26 @@ end;
 procedure TCrud.Initialize;
 begin
   SetRequiredControls;
-  ControlActions(sBrowse);
+  ControlView(gsBrowse, TabSheetList);
   StatusBarStatus.SimpleText := Format('%s: campos obrigat�rios.', [RequiredChar]);
+end;
+
+procedure TCrud.SetCaption(Control: TWinControl);
+var
+  Index: Integer;
+  LinkedLabel: TCustomLabel;
+begin
+  if Control is TRadioGroup then
+  begin
+    (Control as TRadioGroup).Caption := (Control as TRadioGroup).Caption + RequiredChar;
+    Exit;
+  end;
+
+  if TArray.BinarySearch<TClass>([TEdit, TLabeledEdit, TDateTimePicker], Control.ClassType, Index) then
+  begin
+    LinkedLabel := GetLinkedLabel(Control);
+    LinkedLabel.Caption := LinkedLabel.Caption + RequiredChar;
+  end;
 end;
 
 procedure TCrud.SetRequiredControls;
@@ -272,7 +285,27 @@ begin
   begin
     Control.Required := True;
     FRequired.Add(Control, GetCaption(Control));
+    SetCaption(Control);
   end;
+end;
+
+procedure TCrud.Edit;
+begin
+  if FState = gsInsert then
+  begin
+    if not TMessage.Confirmation('Deseja cancelar a inserção do registro?') then
+      Exit;
+    FModel.Free;
+  end;
+
+  FModel := GetCurrentModel(Grid.Row);
+
+  if not Assigned(FModel) then
+    Exit;
+
+  ModelToView;
+
+  ControlView(gsEdit, TabSheetData);
 end;
 
 procedure TCrud.RegExValidate(Component: TObject; const Pattern: string);
@@ -299,6 +332,7 @@ function TCrud.Validate(out Control: TWinControl): Boolean;
 var
   Component: TWinControl;
 begin
+  Result := True;
   for Component in FRequired.Keys do
   begin
     if Component.IsEmpty then
@@ -307,7 +341,6 @@ begin
       Exit(False);
     end;
   end;
-  Result := True;
 end;
 
 end.
