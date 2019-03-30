@@ -110,7 +110,7 @@ destructor TCrud.Destroy;
 begin
   FRequired.Free;
 
-  if (not FArray.Contains(FModel)) and Assigned(FModel) then
+  if FState = gsInsert then
     FModel.Free;
 
   inherited Destroy;
@@ -323,7 +323,7 @@ begin
   if not RegEx.IsMatch(Control.ToString) then
   begin
     Caption := FRequired.Items[Component as TWinControl];
-    TMessage.Information('O valor "%s" n�o � v�lido para "%s".', [Control.ToString.ToLower, Caption]);
+    TMessage.Information('Valor não válido para "%s".', [Caption]);
     Control.TrySetFocus;
   end;
 end;

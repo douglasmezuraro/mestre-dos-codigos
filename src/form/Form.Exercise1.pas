@@ -42,6 +42,7 @@ type
     procedure EditEmailExit(Sender: TObject);
     procedure EditCPFExit(Sender: TObject);
     procedure EditPhoneExit(Sender: TObject);
+    procedure EditLastNameExit(Sender: TObject);
   protected
     procedure Initialize; override;
     {}
@@ -96,6 +97,14 @@ end;
 procedure TExercise1.EditEmailExit(Sender: TObject);
 const
   Pattern = '\w+@\w+\.[a-z]+';
+begin
+  inherited;
+  RegExValidate(Sender, Pattern);
+end;
+
+procedure TExercise1.EditLastNameExit(Sender: TObject);
+const
+  Pattern = '^[a-zA-Z\s]+$';
 begin
   inherited;
   RegExValidate(Sender, Pattern);
@@ -165,12 +174,12 @@ function TExercise1.DefineRequiredControls: TArray<TWinControl>;
 begin
   Result := [
     EditName,
-    EditLastName//,
-  //  RadioGroupGender,
-  //  EditBirth,
-  //  EditPhone,
-  //  EditEmail,
-  //  EditCPF
+    EditLastName,
+    RadioGroupGender,
+    EditBirth,
+    EditPhone,
+    EditEmail,
+    EditCPF
   ];
 end;
 

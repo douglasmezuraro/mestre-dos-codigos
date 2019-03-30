@@ -60,6 +60,7 @@ inherited Exercise1: TExercise1
         Width = 250
         Height = 21
         TabOrder = 0
+        OnExit = EditNameExit
       end
       object EditLastName: TEdit
         Left = 16
@@ -67,6 +68,7 @@ inherited Exercise1: TExercise1
         Width = 250
         Height = 21
         TabOrder = 1
+        OnExit = EditLastNameExit
       end
       object EditBirth: TDateTimePicker
         Left = 16
@@ -76,6 +78,7 @@ inherited Exercise1: TExercise1
         Date = 43520.000000000000000000
         Time = 0.959959583342424600
         TabOrder = 2
+        OnExit = EditBirthExit
       end
       object EditPhone: TEdit
         Left = 16
@@ -83,6 +86,7 @@ inherited Exercise1: TExercise1
         Width = 250
         Height = 21
         TabOrder = 3
+        OnExit = EditPhoneExit
       end
       object EditEmail: TEdit
         Left = 16
@@ -90,6 +94,7 @@ inherited Exercise1: TExercise1
         Width = 250
         Height = 21
         TabOrder = 4
+        OnExit = EditEmailExit
       end
       object EditCPF: TEdit
         Left = 16
@@ -97,6 +102,7 @@ inherited Exercise1: TExercise1
         Width = 250
         Height = 21
         TabOrder = 5
+        OnExit = EditCPFExit
       end
       object RadioGroupGender: TRadioGroup
         Left = 16
