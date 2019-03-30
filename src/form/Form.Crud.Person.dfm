@@ -1,10 +1,10 @@
-inherited Exercise1: TExercise1
-  Caption = 'Exerc'#237'cio 1'
+inherited CrudPerson: TCrudPerson
+  Caption = 'Cadastro de pessoas'
+  ShowHint = True
   ExplicitTop = -2
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControlLayout: TPageControl
-    ActivePage = TabSheetData
     inherited TabSheetData: TTabSheet
       object LabelName: TLabel
         Left = 16
@@ -59,6 +59,7 @@ inherited Exercise1: TExercise1
         Top = 22
         Width = 250
         Height = 21
+        Hint = 'Apenas letras'
         TabOrder = 0
         OnExit = EditNameExit
       end
@@ -67,6 +68,7 @@ inherited Exercise1: TExercise1
         Top = 68
         Width = 250
         Height = 21
+        Hint = 'Apenas letras'
         TabOrder = 1
         OnExit = EditLastNameExit
       end
@@ -85,6 +87,7 @@ inherited Exercise1: TExercise1
         Top = 160
         Width = 250
         Height = 21
+        Hint = 'Exemplo: (44)3222-9999'
         TabOrder = 3
         OnExit = EditPhoneExit
       end
@@ -93,6 +96,7 @@ inherited Exercise1: TExercise1
         Top = 206
         Width = 250
         Height = 21
+        Hint = 'Exemplo: teste@teste.com'
         TabOrder = 4
         OnExit = EditEmailExit
       end
@@ -101,6 +105,7 @@ inherited Exercise1: TExercise1
         Top = 252
         Width = 250
         Height = 21
+        Hint = 'Exemplo: 101.202.303-40'
         TabOrder = 5
         OnExit = EditCPFExit
       end
@@ -116,6 +121,7 @@ inherited Exercise1: TExercise1
           'Feminino'
           'Masculino')
         TabOrder = 6
+        TabStop = True
       end
     end
   end

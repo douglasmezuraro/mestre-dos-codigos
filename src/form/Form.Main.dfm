@@ -24,16 +24,16 @@ object Main: TMain
         Action = ActionGeometricCalculator
       end
       object MenuItemExerciseOne1: TMenuItem
-        Action = ActionExerciseOne
+        Action = ActionCrudPerson
       end
     end
   end
   object ActionList: TActionList
     Left = 16
     Top = 8
-    object ActionExerciseOne: TAction
-      Caption = 'Exerc'#237'cio 1'
-      OnExecute = ActionExerciseOneExecute
+    object ActionCrudPerson: TAction
+      Caption = 'Cadastro de pessoas'
+      OnExecute = ActionCrudPersonExecute
     end
     object ActionGeometricCalculator: TAction
       Caption = '&Calculadora geom'#233'trica'

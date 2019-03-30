@@ -15,12 +15,12 @@ type
   TMain = class(TForm)
     MainMenu: TMainMenu;
     ActionList: TActionList;
-    ActionExerciseOne: TAction;
+    ActionCrudPerson: TAction;
     MenuItemExerciseOne: TMenuItem;
     MenuItemGeometricCalculator: TMenuItem;
     ActionGeometricCalculator: TAction;
     MenuItemExerciseOne1: TMenuItem;
-    procedure ActionExerciseOneExecute(Sender: TObject);
+    procedure ActionCrudPersonExecute(Sender: TObject);
     procedure ActionGeometricCalculatorExecute(Sender: TObject);
   end;
 
@@ -29,14 +29,14 @@ implementation
 {$R *.dfm}
 
 uses
-  Form.Exercise1,
+  Form.Crud.Person,
   Form.GeometricCalculator;
 
-procedure TMain.ActionExerciseOneExecute(Sender: TObject);
+procedure TMain.ActionCrudPersonExecute(Sender: TObject);
 var
-  View: TExercise1;
+  View: TCrudPerson;
 begin
-  View := TExercise1.Create(Self);
+  View := TCrudPerson.Create(Self);
   try
     View.ShowModal;
   finally

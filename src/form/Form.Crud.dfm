@@ -77,7 +77,7 @@ object Crud: TCrud
     Top = 0
     Width = 800
     Height = 549
-    ActivePage = TabSheetList
+    ActivePage = TabSheetData
     Align = alClient
     TabOrder = 2
     object TabSheetList: TTabSheet

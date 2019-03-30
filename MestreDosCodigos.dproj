@@ -106,8 +106,8 @@
             <Form>Crud</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\form\Form.Exercise1.pas">
-            <Form>Exercise1</Form>
+        <DCCReference Include="src\form\Form.Crud.Person.pas">
+            <Form>CrudPerson</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="src\form\Form.Main.pas">

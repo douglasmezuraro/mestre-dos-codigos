@@ -10,7 +10,7 @@ uses
   Model.Person in 'src\model\Model.Person.pas',
   Util.Messages in 'src\util\Util.Messages.pas',
   Form.Crud in 'src\form\Form.Crud.pas' {Crud},
-  Form.Exercise1 in 'src\form\Form.Exercise1.pas' {Exercise1},
+  Form.Crud.Person in 'src\form\Form.Crud.Person.pas' {CrudPerson},
   Form.Main in 'src\form\Form.Main.pas' {Main},
   Form.GeometricCalculator in 'src\form\Form.GeometricCalculator.pas' {GeometricCalculator},
   GeometricCalculator.API in 'src\3rdParty\GeometricCalculator\src\GeometricCalculator.API.pas',

@@ -310,21 +310,24 @@ end;
 
 procedure TCrud.RegExValidate(Component: TObject; const Pattern: string);
 var
-  Control: TWinControl;
+  Edit: TCustomEdit;
   RegEx: TRegEx;
   Caption: string;
 begin
-  Control := Component as TWinControl;
+  if not (Component is TCustomEdit) then
+    Exit;
+  
+  Edit := Component as TCustomEdit;
 
-  if Control.IsEmpty then
+  if Edit.IsEmpty then
     Exit;
 
   RegEx := TRegEx.Create(Pattern, [roIgnoreCase]);
-  if not RegEx.IsMatch(Control.ToString) then
+  if not RegEx.IsMatch(Edit.Text) then
   begin
     Caption := FRequired.Items[Component as TWinControl];
-    TMessage.Information('Valor não válido para "%s".', [Caption]);
-    Control.TrySetFocus;
+    TMessage.Information('O valor "%s" não é válido para "%s".', [Edit.Text, Caption]);
+    Edit.TrySetFocus;
   end;
 end;
 

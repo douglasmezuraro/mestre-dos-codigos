@@ -128,8 +128,10 @@ begin
       RowCount := Succ(RowCount);
 
     if Insert then
+    begin
       for Column := Pred(RowCount) downto Succ(Row) do
         Rows[Column] := Rows[Pred(Column)];
+    end;
 
     for Column := Low(Values) to High(Values) do
       Cells[Column, Row] := Values[Column];

@@ -1,4 +1,4 @@
-unit Form.Exercise1;
+unit Form.Crud.Person;
 
 interface
 
@@ -23,7 +23,7 @@ uses
   Vcl.StdCtrls;
 
 type
-  TExercise1 = class(TCrud)
+  TCrudPerson = class(TCrud)
     LabelName: TLabel;
     EditName: TEdit;
     LabelLastName: TLabel;
@@ -61,9 +61,9 @@ implementation
 
 {$R *.dfm}
 
-{ TExercise1 }
+{ TCrudPerson }
 
-procedure TExercise1.EditBirthExit(Sender: TObject);
+procedure TCrudPerson.EditBirthExit(Sender: TObject);
 var
   Birth: TDateTime;
 begin
@@ -73,12 +73,12 @@ begin
     TMessage.Warning('Data inválida');
 end;
 
-function TExercise1.CreateModel: TObject;
+function TCrudPerson.CreateModel: TObject;
 begin
   Result := TPerson.Create;
 end;
 
-procedure TExercise1.Initialize;
+procedure TCrudPerson.Initialize;
 const
   Titles: TArray<string> = ['Nome', 'Sobrenome', 'CPF', 'Telefone'];
 begin
@@ -86,7 +86,7 @@ begin
   Grid.AddHeader(Titles);
 end;
 
-procedure TExercise1.EditCPFExit(Sender: TObject);
+procedure TCrudPerson.EditCPFExit(Sender: TObject);
 const
   Pattern = '\d{3}.\d{3}.\d{3}-\d{2}';
 begin
@@ -94,7 +94,7 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.EditEmailExit(Sender: TObject);
+procedure TCrudPerson.EditEmailExit(Sender: TObject);
 const
   Pattern = '\w+@\w+\.[a-z]+';
 begin
@@ -102,7 +102,7 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.EditLastNameExit(Sender: TObject);
+procedure TCrudPerson.EditLastNameExit(Sender: TObject);
 const
   Pattern = '^[a-zA-Z\s]+$';
 begin
@@ -110,7 +110,7 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.EditNameExit(Sender: TObject);
+procedure TCrudPerson.EditNameExit(Sender: TObject);
 const
   Pattern = '^[a-zA-Z\s]+$';
 begin
@@ -118,7 +118,7 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.EditPhoneExit(Sender: TObject);
+procedure TCrudPerson.EditPhoneExit(Sender: TObject);
 const
   Pattern = '\(\d{2}\)(\s|)(\d{4}|\d{5})\-\d{4}';
 begin
@@ -126,7 +126,7 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
-procedure TExercise1.ModelToView;
+procedure TCrudPerson.ModelToView;
 begin
   if GetModel = nil then
     Exit;
@@ -140,7 +140,7 @@ begin
   RadioGroupGender.ItemIndex := Ord(GetModel.Gender);
 end;
 
-function TExercise1.ModelToArray: TArray<string>;
+function TCrudPerson.ModelToArray: TArray<string>;
 type
   TGridColumn = (gcName, gcLastName, gcCPF, gcPhone);
 var
@@ -154,7 +154,7 @@ begin
   Result := TUtil.Methods.ArrayOfToTArray(Values);
 end;
 
-procedure TExercise1.ViewToModel;
+procedure TCrudPerson.ViewToModel;
 begin
   GetModel.Name     := EditName.Text;
   GetModel.LastName := EditLastName.Text;
@@ -165,12 +165,12 @@ begin
   GetModel.CPF      := EditCPF.Text;
 end;
 
-function TExercise1.GetModel: TPerson;
+function TCrudPerson.GetModel: TPerson;
 begin
   Result := TPerson(inherited GetModel);
 end;
 
-function TExercise1.DefineRequiredControls: TArray<TWinControl>;
+function TCrudPerson.DefineRequiredControls: TArray<TWinControl>;
 begin
   Result := [
     EditName,
@@ -179,8 +179,7 @@ begin
     EditBirth,
     EditPhone,
     EditEmail,
-    EditCPF
-  ];
+    EditCPF];
 end;
 
 end.
