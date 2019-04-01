@@ -97,8 +97,7 @@
         </DelphiCompile>
         <DCCReference Include="src\collections\Collections.API.pas"/>
         <DCCReference Include="src\collections\Collections.DynamicArray.pas"/>
-        <DCCReference Include="src\helper\Helper.DateTime.pas"/>
-        <DCCReference Include="src\helper\Vcl.Helpers.pas"/>
+        <DCCReference Include="src\helper\Helper.Vcl.pas"/>
         <DCCReference Include="src\model\Model.Gender.pas"/>
         <DCCReference Include="src\model\Model.Person.pas"/>
         <DCCReference Include="src\util\Util.Messages.pas"/>
@@ -110,18 +109,6 @@
             <Form>CrudPerson</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\form\Form.Main.pas">
-            <Form>Main</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="src\form\Form.GeometricCalculator.pas">
-            <Form>GeometricCalculator</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="src\3rdParty\GeometricCalculator\src\GeometricCalculator.API.pas"/>
-        <DCCReference Include="src\3rdParty\GeometricCalculator\src\GeometricCalculator.GeometricForm.pas"/>
-        <DCCReference Include="src\3rdParty\GeometricCalculator\src\GeometricCalculator.CalculationType.pas"/>
-        <DCCReference Include="src\util\Util.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

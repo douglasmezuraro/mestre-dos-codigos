@@ -5,6 +5,7 @@ interface
 uses
   Collections.API,
   Collections.DynamicArray,
+  Helper.Vcl,
   System.Actions,
   System.Classes,
   System.Generics.Collections,
@@ -18,7 +19,6 @@ uses
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.Grids,
-  Vcl.Helpers,
   Vcl.StdCtrls;
 
 type

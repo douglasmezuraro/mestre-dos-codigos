@@ -1,9 +1,8 @@
-unit Vcl.Helpers;
+unit Helper.Vcl;
 
 interface
 
 uses
-  Helper.DateTime,
   System.Classes,
   System.Math,
   System.SysUtils,
@@ -70,7 +69,7 @@ begin
 
   if Self is TDateTimePicker then
   begin
-    Result := (Self as TDateTimePicker).Date = TDateTime.Null;
+    Result := (Self as TDateTimePicker).Date = 0;
     Exit;
   end;
 
@@ -195,7 +194,7 @@ begin
 
   if Self is TDateTimePicker then
   begin
-    (Self as TDateTimePicker).DateTime := TDateTime.Null;
+    (Self as TDateTimePicker).DateTime := 0;
     Exit;
   end;
 

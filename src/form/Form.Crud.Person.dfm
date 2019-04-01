@@ -1,7 +1,6 @@
 inherited CrudPerson: TCrudPerson
   Caption = 'Cadastro de pessoas'
   ShowHint = True
-  ExplicitTop = -2
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControlLayout: TPageControl

@@ -4,14 +4,14 @@ interface
 
 uses
   Form.Crud,
-  Helper.DateTime,
+  Helper.Vcl,
   Model.Gender,
   Model.Person,
   System.Actions,
   System.Classes,
+  System.DateUtils,
   System.Types,
   Util.Messages,
-  Util,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -19,7 +19,6 @@ uses
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.Grids,
-  Vcl.Helpers,
   Vcl.StdCtrls;
 
 type
@@ -69,7 +68,7 @@ var
 begin
   inherited;
   Birth := (Sender as TDateTimePicker).DateTime;
-  if Birth.Compare(TDateTime.Now) = GreaterThanValue then
+  if CompareDateTime(Birth, Today) = GreaterThanValue then
     TMessage.Warning('Data inválida');
 end;
 
@@ -143,15 +142,13 @@ end;
 function TCrudPerson.ModelToArray: TArray<string>;
 type
   TGridColumn = (gcName, gcLastName, gcCPF, gcPhone);
-var
-  Values: array[TGridColumn] of string;
 begin
-  Values[gcName]     := GetModel.Name;
-  Values[gcLastName] := GetModel.LastName;
-  Values[gcCPF]      := GetModel.CPF;
-  Values[gcPhone]    := GetModel.Phone;
+  SetLength(Result, Ord(High(TGridColumn)));
 
-  Result := TUtil.Methods.ArrayOfToTArray(Values);
+  Result[Ord(gcName)]     := GetModel.Name;
+  Result[Ord(gcLastName)] := GetModel.LastName;
+  Result[Ord(gcCPF)]      := GetModel.CPF;
+  Result[Ord(gcPhone)]    := GetModel.Phone;
 end;
 
 procedure TCrudPerson.ViewToModel;
