@@ -1,4 +1,4 @@
-program MestreDosCodigos;
+program PersonCrud;
 
 uses
   Vcl.Forms,
