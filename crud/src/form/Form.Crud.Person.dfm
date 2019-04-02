@@ -5,13 +5,10 @@ inherited CrudPerson: TCrudPerson
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControlLayout: TPageControl
-    inherited TabSheetList: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 792
-      ExplicitHeight = 521
-    end
+    ActivePage = TabSheetData
     inherited TabSheetData: TTabSheet
+      ExplicitLeft = 1
+      ExplicitTop = 28
       object LabelName: TLabel
         Left = 16
         Top = 3
@@ -54,11 +51,19 @@ inherited CrudPerson: TCrudPerson
       end
       object LabelBirth: TLabel
         Left = 16
-        Top = 233
+        Top = 279
         Width = 95
         Height = 13
         Caption = 'Data de nascimento'
         FocusControl = EditBirth
+      end
+      object LabelRG: TLabel
+        Left = 16
+        Top = 233
+        Width = 14
+        Height = 13
+        Caption = 'RG'
+        FocusControl = EditRG
       end
       object EditName: TEdit
         Left = 16
@@ -92,7 +97,7 @@ inherited CrudPerson: TCrudPerson
         Top = 160
         Width = 350
         Height = 21
-        Hint = 'Exemplo: teste@teste.com'
+        Hint = 'Exemplo: douglas@mezuraro.com'
         TabOrder = 3
         OnExit = EditEmailExit
       end
@@ -107,7 +112,7 @@ inherited CrudPerson: TCrudPerson
       end
       object RadioGroupGender: TRadioGroup
         Left = 16
-        Top = 279
+        Top = 333
         Width = 350
         Height = 50
         Caption = 'G'#234'nero'
@@ -116,18 +121,27 @@ inherited CrudPerson: TCrudPerson
           'Indefinido'
           'Feminino'
           'Masculino')
-        TabOrder = 5
+        TabOrder = 7
         TabStop = True
       end
       object EditBirth: TDateTimePicker
         Left = 16
-        Top = 252
+        Top = 298
         Width = 350
         Height = 21
         Date = 43556.000000000000000000
         Time = 0.950810694441315700
         TabOrder = 6
         OnChange = EditBirthChange
+      end
+      object EditRG: TEdit
+        Left = 16
+        Top = 252
+        Width = 350
+        Height = 21
+        Hint = 'Apenas n'#250'meros (0..999999999)'
+        TabOrder = 5
+        OnExit = EditRGExit
       end
     end
   end

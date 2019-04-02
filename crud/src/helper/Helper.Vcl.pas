@@ -45,7 +45,7 @@ type
     procedure Remove;
     procedure Add(const Values: TArray<string>); overload;
     procedure AddHeader(const Values: TArray<string>);
-    procedure Update(const Values: TArray<string>);
+    procedure Edit(const Values: TArray<string>);
   end;
 
 implementation
@@ -172,12 +172,14 @@ begin
   AutoFitColumns;
 end;
 
-procedure TStringGridHelper.Update(const Values: TArray<string>);
+procedure TStringGridHelper.Edit(const Values: TArray<string>);
 var
   Column: Integer;
 begin
   for Column := 0 to Pred(ColCount) do
     Cells[Column, Row] := Values[Column];
+
+  AutoFitColumns;
 end;
 
 { TComponentHelper }

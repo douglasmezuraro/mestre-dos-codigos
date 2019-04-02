@@ -15,6 +15,7 @@ type
     FCPF: string;
     FEmail: string;
     FDate: TDate;
+    FRG: Integer;
   public
     property Name: string read FName write FName;
     property LastName: string read FLastName write FLastName;
@@ -23,6 +24,7 @@ type
     property CPF: string read FCPF write FCPF;
     property Email: string read FEmail write FEmail;
     property Birth: TDate read FDate write FDate;
+    property RG: Integer read FRG write FRG;
   end;
 
 implementation

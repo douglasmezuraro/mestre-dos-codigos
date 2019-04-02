@@ -77,15 +77,11 @@ object Crud: TCrud
     Top = 0
     Width = 800
     Height = 549
-    ActivePage = TabSheetData
+    ActivePage = TabSheetList
     Align = alClient
     TabOrder = 2
     object TabSheetList: TTabSheet
       Caption = 'Lista'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Grid: TStringGrid
         Left = 0
         Top = 0
@@ -103,10 +99,6 @@ object Crud: TCrud
     object TabSheetData: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object ActionList: TActionList

@@ -37,12 +37,15 @@ type
     RadioGroupGender: TRadioGroup;
     LabelBirth: TLabel;
     EditBirth: TDateTimePicker;
+    EditRG: TEdit;
+    LabelRG: TLabel;
     procedure EditNameExit(Sender: TObject);
     procedure EditEmailExit(Sender: TObject);
     procedure EditCPFExit(Sender: TObject);
     procedure EditPhoneExit(Sender: TObject);
     procedure EditLastNameExit(Sender: TObject);
     procedure EditBirthChange(Sender: TObject);
+    procedure EditRGExit(Sender: TObject);
   protected
     procedure Initialize; override;
 
@@ -123,6 +126,14 @@ begin
   RegExValidate(Sender, Pattern);
 end;
 
+procedure TCrudPerson.EditRGExit(Sender: TObject);
+const
+  Pattern = '^([0-9]{0,9})$';
+begin
+  inherited;
+  RegExValidate(Sender, Pattern);
+end;
+
 procedure TCrudPerson.ModelToView;
 begin
   if GetModel = nil then
@@ -134,6 +145,7 @@ begin
   EditEmail.Text             := GetModel.Email;
   EditCPF.Text               := GetModel.CPF;
   EditBirth.Date             := GetModel.Birth;
+  EditRG.Text                := GetModel.RG.ToString;
   RadioGroupGender.ItemIndex := Ord(GetModel.Gender);
 end;
 
@@ -158,6 +170,7 @@ begin
   GetModel.Gender   := TGender(RadioGroupGender.ItemIndex);
   GetModel.Email    := EditEmail.Text;
   GetModel.CPF      := EditCPF.Text;
+  GetModel.RG       := StrToIntDef(EditRG.Text, 0);
   GetModel.Birth    := EditBirth.Date;
 end;
 
@@ -175,7 +188,8 @@ begin
     EditBirth,
     EditPhone,
     EditEmail,
-    EditCPF];
+    EditCPF,
+    EditRG];
 end;
 
 end.

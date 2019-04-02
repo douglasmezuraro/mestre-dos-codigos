@@ -180,7 +180,7 @@ begin
       end;
     gsEdit:
       begin
-        Grid.Update(ModelToArray);
+        Grid.Edit(ModelToArray);
       end;
   end;
 
@@ -197,7 +197,7 @@ begin
 
   ActionNew.Enabled    := FState <> gsInsert;
   ActionSave.Enabled   := FState in [gsInsert, gsEdit];
-  ActionRemove.Enabled := (FState <> gsInsert) and Assigned(FModel);
+  ActionRemove.Enabled := (FState <> gsInsert) and (Assigned(FModel));
 
   TabSheetData.Enabled := FState in [gsInsert, gsEdit];
 end;
