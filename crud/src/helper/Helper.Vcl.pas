@@ -194,7 +194,7 @@ begin
 
   if Self is TDateTimePicker then
   begin
-    (Self as TDateTimePicker).DateTime := 0;
+    (Self as TDateTimePicker).DateTime := Now;
     Exit;
   end;
 

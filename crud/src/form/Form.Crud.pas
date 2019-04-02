@@ -166,7 +166,7 @@ begin
   if not Validate(Control) then
   begin
     Control.TrySetFocus;
-    TMessage.Information('O campo %s � obrigat�rio.', [FRequired.Items[Control]]);
+    TMessage.Information('O campo %s é obrigatório.', [FRequired.Items[Control]]);
     Exit;
   end;
 
@@ -229,7 +229,7 @@ begin
     end;
   end;
 
-  raise Exception.CreateFmt('N�o foi encontrado label v�nculado ao componente "%s"', [Control]);
+  raise Exception.CreateFmt('Não foi encontrado label vínculado ao componente "%s"', [Control]);
 end;
 
 function TCrud.GetCurrentModel(const Row: Integer): TObject;
@@ -256,7 +256,7 @@ procedure TCrud.Initialize;
 begin
   SetRequiredControls;
   ControlView(gsBrowse, TabSheetList);
-  StatusBarStatus.SimpleText := Format('%s: campos obrigat�rios.', [RequiredChar]);
+  StatusBarStatus.SimpleText := Format('%s: campos obrigatórios.', [RequiredChar]);
 end;
 
 procedure TCrud.SetCaption(Control: TWinControl);

@@ -4,7 +4,18 @@ inherited CrudPerson: TCrudPerson
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControlLayout: TPageControl
+    ActivePage = TabSheetList
+    inherited TabSheetList: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 792
+      ExplicitHeight = 521
+    end
     inherited TabSheetData: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 792
+      ExplicitHeight = 521
       object LabelName: TLabel
         Left = 16
         Top = 3
@@ -56,7 +67,7 @@ inherited CrudPerson: TCrudPerson
       object EditName: TEdit
         Left = 16
         Top = 22
-        Width = 250
+        Width = 350
         Height = 21
         Hint = 'Apenas letras'
         TabOrder = 0
@@ -65,7 +76,7 @@ inherited CrudPerson: TCrudPerson
       object EditLastName: TEdit
         Left = 16
         Top = 68
-        Width = 250
+        Width = 350
         Height = 21
         Hint = 'Apenas letras'
         TabOrder = 1
@@ -74,7 +85,7 @@ inherited CrudPerson: TCrudPerson
       object EditBirth: TDateTimePicker
         Left = 16
         Top = 114
-        Width = 250
+        Width = 350
         Height = 21
         Date = 43520.000000000000000000
         Time = 0.959959583342424600
@@ -84,7 +95,7 @@ inherited CrudPerson: TCrudPerson
       object EditPhone: TEdit
         Left = 16
         Top = 160
-        Width = 250
+        Width = 350
         Height = 21
         Hint = 'Exemplo: (44)3222-9999'
         TabOrder = 3
@@ -93,7 +104,7 @@ inherited CrudPerson: TCrudPerson
       object EditEmail: TEdit
         Left = 16
         Top = 206
-        Width = 250
+        Width = 350
         Height = 21
         Hint = 'Exemplo: teste@teste.com'
         TabOrder = 4
@@ -102,7 +113,7 @@ inherited CrudPerson: TCrudPerson
       object EditCPF: TEdit
         Left = 16
         Top = 252
-        Width = 250
+        Width = 350
         Height = 21
         Hint = 'Exemplo: 101.202.303-40'
         TabOrder = 5
@@ -111,8 +122,8 @@ inherited CrudPerson: TCrudPerson
       object RadioGroupGender: TRadioGroup
         Left = 16
         Top = 279
-        Width = 250
-        Height = 36
+        Width = 350
+        Height = 50
         Caption = 'G'#234'nero'
         Columns = 3
         Items.Strings = (

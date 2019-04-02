@@ -3,10 +3,10 @@ unit Collections.DynamicArray;
 interface
 
 uses
-  System.Math,
-  System.SysUtils,
+  Collections.API,
   System.Generics.Collections,
-  Collections.API;
+  System.Math,
+  System.SysUtils;
 
 type
   TDynamicArray<T: class> = class(TInterfacedObject, ICollection<T>)

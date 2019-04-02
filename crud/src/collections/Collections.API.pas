@@ -5,10 +5,12 @@ interface
 type
   ICollection<T: class> = interface
   ['{560B052B-A3B6-48F8-9169-ED9117A2A9AA}']
+
     { getters and setter methods }
     function GetCount: Integer;
     function GetItem(const Index: Integer): T;
     procedure SetItem(const Index: Integer; const Value: T);
+
     { methods }
     function Add(const Element: T): Integer;
     function Remove(const Element: T): Boolean;
@@ -17,6 +19,7 @@ type
     function IndexOf(const Element: T): Integer;
     function InRange(const Index: Integer): Boolean;
     function ToArray: TArray<T>;
+
     { properties }
     property Count: Integer read GetCount;
     property Item[const Index: Integer]: T read GetItem write SetItem;

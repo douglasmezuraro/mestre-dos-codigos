@@ -44,12 +44,11 @@ type
     procedure EditLastNameExit(Sender: TObject);
   protected
     procedure Initialize; override;
-    {}
+
     procedure ViewToModel; override;
     procedure ModelToView; override;
     function ModelToArray: TArray<string>; override;
 
-    { Other }
     function DefineRequiredControls: TArray<TWinControl>; override;
 
     function CreateModel: TObject; override;
@@ -119,7 +118,7 @@ end;
 
 procedure TCrudPerson.EditPhoneExit(Sender: TObject);
 const
-  Pattern = '\(\d{2}\)(\s|)(\d{4}|\d{5})\-\d{4}';
+  Pattern = '^\(\d{2}\)(\s|)(\d{4}|\d{5})\-\d{4}$';
 begin
   inherited;
   RegExValidate(Sender, Pattern);
