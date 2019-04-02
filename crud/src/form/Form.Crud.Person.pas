@@ -1,4 +1,4 @@
-unit Form.Crud.Person;
+﻿unit Form.Crud.Person;
 
 interface
 
@@ -10,6 +10,7 @@ uses
   System.Actions,
   System.Classes,
   System.DateUtils,
+  System.SysUtils,
   System.Types,
   Util.Messages,
   Vcl.ActnList,
@@ -27,8 +28,6 @@ type
     EditName: TEdit;
     LabelLastName: TLabel;
     EditLastName: TEdit;
-    EditBirth: TDateTimePicker;
-    LabelBirth: TLabel;
     LabelPhone: TLabel;
     EditPhone: TEdit;
     LabelEmail: TLabel;
@@ -36,12 +35,14 @@ type
     LabelCPF: TLabel;
     EditCPF: TEdit;
     RadioGroupGender: TRadioGroup;
-    procedure EditBirthExit(Sender: TObject);
+    LabelBirth: TLabel;
+    EditBirth: TDateTimePicker;
     procedure EditNameExit(Sender: TObject);
     procedure EditEmailExit(Sender: TObject);
     procedure EditCPFExit(Sender: TObject);
     procedure EditPhoneExit(Sender: TObject);
     procedure EditLastNameExit(Sender: TObject);
+    procedure EditBirthChange(Sender: TObject);
   protected
     procedure Initialize; override;
 
@@ -61,16 +62,6 @@ implementation
 
 { TCrudPerson }
 
-procedure TCrudPerson.EditBirthExit(Sender: TObject);
-var
-  Birth: TDateTime;
-begin
-  inherited;
-  Birth := (Sender as TDateTimePicker).DateTime;
-  if CompareDateTime(Birth, Today) = GreaterThanValue then
-    TMessage.Warning('Data inv�lida');
-end;
-
 function TCrudPerson.CreateModel: TObject;
 begin
   Result := TPerson.Create;
@@ -78,10 +69,18 @@ end;
 
 procedure TCrudPerson.Initialize;
 const
-  Titles: TArray<string> = ['Nome', 'Sobrenome', 'CPF', 'Telefone'];
+  Titles: TArray<string> = ['Nome', 'Sobrenome', 'CPF', 'Telefone', 'E-mail'];
 begin
   inherited;
   Grid.AddHeader(Titles);
+end;
+
+procedure TCrudPerson.EditBirthChange(Sender: TObject);
+var
+  Birth: TDateTime;begin  inherited;  Birth := (Sender as TDateTimePicker).Date;  if CompareDateTime(Birth, EndOfTheDay(Today)) = GreaterThanValue then  begin    TMessage.Warning(
+      'Data inválida, a data de nascimento "%s" não pode ser maior que a data atual "%s".',
+      [DateToStr(Birth), DateToStr(Today)]);
+  end;
 end;
 
 procedure TCrudPerson.EditCPFExit(Sender: TObject);
@@ -94,7 +93,7 @@ end;
 
 procedure TCrudPerson.EditEmailExit(Sender: TObject);
 const
-  Pattern = '\w+@\w+\.[a-z]+';
+  Pattern = '(\w+)\@(\w+)((\.[a-z]+){1,2})$';
 begin
   inherited;
   RegExValidate(Sender, Pattern);
@@ -131,34 +130,35 @@ begin
 
   EditName.Text              := GetModel.Name;
   EditLastName.Text          := GetModel.LastName;
-  EditBirth.DateTime         := GetModel.Birth;
   EditPhone.Text             := GetModel.Phone;
   EditEmail.Text             := GetModel.Email;
   EditCPF.Text               := GetModel.CPF;
+  EditBirth.Date             := GetModel.Birth;
   RadioGroupGender.ItemIndex := Ord(GetModel.Gender);
 end;
 
 function TCrudPerson.ModelToArray: TArray<string>;
 type
-  TGridColumn = (gcName, gcLastName, gcCPF, gcPhone);
+  TGridColumn = (gcName, gcLastName, gcCPF, gcPhone, gcEmail);
 begin
-  SetLength(Result, Ord(High(TGridColumn)));
+  SetLength(Result, Succ(Ord(High(TGridColumn))));
 
   Result[Ord(gcName)]     := GetModel.Name;
   Result[Ord(gcLastName)] := GetModel.LastName;
   Result[Ord(gcCPF)]      := GetModel.CPF;
   Result[Ord(gcPhone)]    := GetModel.Phone;
+  Result[Ord(gcEmail)]    := GetModel.Email;
 end;
 
 procedure TCrudPerson.ViewToModel;
 begin
   GetModel.Name     := EditName.Text;
   GetModel.LastName := EditLastName.Text;
-  GetModel.Birth    := EditBirth.DateTime;
   GetModel.Phone    := EditPhone.Text;
   GetModel.Gender   := TGender(RadioGroupGender.ItemIndex);
   GetModel.Email    := EditEmail.Text;
   GetModel.CPF      := EditCPF.Text;
+  GetModel.Birth    := EditBirth.Date;
 end;
 
 function TCrudPerson.GetModel: TPerson;
