@@ -94,11 +94,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="src\GeometricCalculator.API.pas"/>
-        <DCCReference Include="src\GeometricCalculator.GeometricForm.pas"/>
-        <DCCReference Include="src\GeometricCalculator.CalculationType.pas"/>
-        <DCCReference Include="src\Form.GeometricCalculator.pas">
-            <Form>GeometricCalculator</Form>
+        <DCCReference Include="src\API.pas"/>
+        <DCCReference Include="src\GeometricForm.pas"/>
+        <DCCReference Include="src\CalculationType.pas"/>
+        <DCCReference Include="src\Form.pas">
+            <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

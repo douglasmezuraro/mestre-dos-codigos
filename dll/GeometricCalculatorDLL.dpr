@@ -3,7 +3,7 @@ library GeometricCalculatorDLL;
 uses
   System.SysUtils,
   System.Classes,
-  GeometricCalculator.Calculator in 'src\GeometricCalculator.Calculator.pas';
+  Calculator in 'src\Calculator.pas';
 
 {$R *.res}
 

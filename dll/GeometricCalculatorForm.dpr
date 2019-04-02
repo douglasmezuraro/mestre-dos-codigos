@@ -2,19 +2,19 @@ program GeometricCalculatorForm;
 
 uses
   Vcl.Forms,
-  GeometricCalculator.API in 'src\GeometricCalculator.API.pas',
-  GeometricCalculator.GeometricForm in 'src\GeometricCalculator.GeometricForm.pas',
-  GeometricCalculator.CalculationType in 'src\GeometricCalculator.CalculationType.pas',
-  Form.GeometricCalculator in 'src\Form.GeometricCalculator.pas' {GeometricCalculator};
+  API in 'src\API.pas',
+  GeometricForm in 'src\GeometricForm.pas',
+  CalculationType in 'src\CalculationType.pas',
+  Form in 'src\Form.pas' {MainForm};
 
 {$R *.res}
 
 var
-  MainForm: TGeometricCalculator;
+  MainForm: TMainForm;
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TGeometricCalculator, MainForm);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.

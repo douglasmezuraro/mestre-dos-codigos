@@ -1,4 +1,4 @@
-object GeometricCalculator: TGeometricCalculator
+object MainForm: TMainForm
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
@@ -30,7 +30,7 @@ object GeometricCalculator: TGeometricCalculator
     Left = 110
     Top = 128
     Width = 200
-    Height = 25
+    Height = 21
     EditLabel.Width = 39
     EditLabel.Height = 13
     EditLabel.Caption = 'Runtime'
@@ -50,7 +50,7 @@ object GeometricCalculator: TGeometricCalculator
     Left = 110
     Top = 179
     Width = 200
-    Height = 25
+    Height = 21
     EditLabel.Width = 39
     EditLabel.Height = 13
     EditLabel.Caption = 'Runtime'
@@ -61,17 +61,17 @@ object GeometricCalculator: TGeometricCalculator
     Left = 110
     Top = 260
     Width = 200
-    Height = 25
-    EditLabel.Width = 26
+    Height = 21
+    EditLabel.Width = 48
     EditLabel.Height = 13
-    EditLabel.Caption = 'Sa'#237'da'
+    EditLabel.Caption = 'Resultado'
     NumbersOnly = True
     ReadOnly = True
     TabOrder = 5
   end
   object ButtonCalculate: TButton
     Left = 155
-    Top = 221
+    Top = 213
     Width = 100
     Height = 25
     Action = ActionCalculate

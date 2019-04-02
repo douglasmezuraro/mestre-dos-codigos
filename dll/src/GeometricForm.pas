@@ -1,4 +1,4 @@
-unit GeometricCalculator.GeometricForm;
+unit GeometricForm;
 
 interface
 

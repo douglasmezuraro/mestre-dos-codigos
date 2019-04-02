@@ -1,4 +1,4 @@
-unit GeometricCalculator.API;
+unit API;
 
 interface
 

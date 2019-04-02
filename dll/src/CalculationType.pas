@@ -1,4 +1,4 @@
-unit GeometricCalculator.CalculationType;
+unit CalculationType;
 
 interface
 

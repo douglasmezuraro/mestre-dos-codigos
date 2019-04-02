@@ -1,11 +1,11 @@
-unit Form.GeometricCalculator;
+unit Form;
 
 interface
 
 uses
-  GeometricCalculator.API,
-  GeometricCalculator.CalculationType,
-  GeometricCalculator.GeometricForm,
+  API,
+  CalculationType,
+  GeometricForm,
   System.Actions,
   System.Classes,
   System.SysUtils,
@@ -16,7 +16,7 @@ uses
   Vcl.StdCtrls;
 
 type
-  TGeometricCalculator = class(TForm)
+  TMainForm = class(TForm)
     ActionCalculate: TAction;
     ActionList: TActionList;
     EditInputA: TLabeledEdit;
@@ -55,12 +55,12 @@ implementation
 
 {$R *.dfm}
 
-procedure TGeometricCalculator.ActionCalculateExecute(Sender: TObject);
+procedure TMainForm.ActionCalculateExecute(Sender: TObject);
 begin
   Output := Calculate;
 end;
 
-function TGeometricCalculator.ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
+function TMainForm.ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
 var
   Index: Integer;
   Size: Integer;
@@ -73,7 +73,7 @@ begin
   end;
 end;
 
-function TGeometricCalculator.Calculate: Extended;
+function TMainForm.Calculate: Extended;
 begin
   Result := 0;
   case CalculationType of
@@ -98,37 +98,37 @@ begin
   end;
 end;
 
-procedure TGeometricCalculator.FormShow(Sender: TObject);
+procedure TMainForm.FormShow(Sender: TObject);
 begin
   Initialize;
 end;
 
-function TGeometricCalculator.GetCalculationType: TCalculationType;
+function TMainForm.GetCalculationType: TCalculationType;
 begin
   Result := TCalculationType(RadioGroupCalculationType.ItemIndex);
 end;
 
-function TGeometricCalculator.GetGeometricForm: TGeometricForm;
+function TMainForm.GetGeometricForm: TGeometricForm;
 begin
   Result := TGeometricForm(RadioGroupGeometricFigure.ItemIndex);
 end;
 
-function TGeometricCalculator.GetInputA: Extended;
+function TMainForm.GetInputA: Extended;
 begin
   Result := StrToFloatDef(EditInputA.Text, 0);
 end;
 
-function TGeometricCalculator.GetInputB: Extended;
+function TMainForm.GetInputB: Extended;
 begin
   Result := StrToFloatDef(EditInputB.Text, 0);
 end;
 
-function TGeometricCalculator.GetOutput: Extended;
+function TMainForm.GetOutput: Extended;
 begin
   Result := StrToFloatDef(EditOutput.Text, 0);
 end;
 
-procedure TGeometricCalculator.Initialize;
+procedure TMainForm.Initialize;
 begin
   RadioGroupGeometricFigure.Items.AddStrings(ArrayOfToTArray(GeometricFormMap));
   RadioGroupCalculationType.Items.AddStrings(ArrayOfToTArray(CalculationTypeMap));
@@ -137,34 +137,34 @@ begin
   RadioGroupCalculationType.ItemIndex := Ord(TCalculationType.ctArea);
 end;
 
-procedure TGeometricCalculator.RadioGroupGeometricFigureClick(Sender: TObject);
+procedure TMainForm.RadioGroupGeometricFigureClick(Sender: TObject);
 begin
   EditInputA.EditLabel.Caption := GeometricInputCaptionMap[GeometricForm];
   EditInputB.EditLabel.Caption := EditInputA.EditLabel.Caption;
   EditInputB.Visible := GeometricForm in [gfRectangle];
 end;
 
-procedure TGeometricCalculator.SetCalculationType(const Value: TCalculationType);
+procedure TMainForm.SetCalculationType(const Value: TCalculationType);
 begin
   RadioGroupCalculationType.ItemIndex := Ord(Value);
 end;
 
-procedure TGeometricCalculator.SetGeometricForm(const Value: TGeometricForm);
+procedure TMainForm.SetGeometricForm(const Value: TGeometricForm);
 begin
   RadioGroupGeometricFigure.ItemIndex := Ord(Value);
 end;
 
-procedure TGeometricCalculator.SetInputA(const Value: Extended);
+procedure TMainForm.SetInputA(const Value: Extended);
 begin
   EditInputA.Text := Value.ToString;
 end;
 
-procedure TGeometricCalculator.SetInputB(const Value: Extended);
+procedure TMainForm.SetInputB(const Value: Extended);
 begin
   EditInputB.Text := Value.ToString;
 end;
 
-procedure TGeometricCalculator.SetOutput(const Value: Extended);
+procedure TMainForm.SetOutput(const Value: Extended);
 begin
   EditOutput.Text := Value.ToString;
 end;
