@@ -8,7 +8,7 @@ type
 const
   CalculationTypeMap: array[TCalculationType] of string = (
     'Área',
-    'Perimetro');
+    'Perímetro');
 
 implementation
 

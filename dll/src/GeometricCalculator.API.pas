@@ -13,9 +13,9 @@ function SquarePerimeter(const Side: Extended): Extended; stdcall; external DLLN
 function CircleArea(const Radius: Extended): Extended; stdcall; external DLLName;
 function CirclePerimeter(const Radius: Extended): Extended; stdcall; external DLLName;
 
-{ Rhombus }
-function RhombusArea(const DiagonalA, DiagonalB: Extended): Extended; stdcall; external DLLName;
-function RhombusPerimeter(const DiagonalA, DiagonalB: Extended): Extended; stdcall; external DLLName;
+{ Rectangle }
+function RectangleArea(const SideA, SideB: Extended): Extended; stdcall; external DLLName;
+function RectanglePerimeter(const SideA, SideB: Extended): Extended; stdcall; external DLLName;
 
 { Equilateral Triangle }
 function EquilateralTriangleArea(const Side: Extended): Extended; stdcall; external DLLName;

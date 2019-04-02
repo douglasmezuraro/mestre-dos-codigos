@@ -19,12 +19,12 @@ type
   TGeometricCalculator = class(TForm)
     ActionCalculate: TAction;
     ActionList: TActionList;
-    ButtonCalculate: TButton;
     EditInputA: TLabeledEdit;
     EditInputB: TLabeledEdit;
-    EditOutput: TLabeledEdit;
     RadioGroupCalculationType: TRadioGroup;
     RadioGroupGeometricFigure: TRadioGroup;
+    EditOutput: TLabeledEdit;
+    ButtonCalculate: TButton;
     procedure FormShow(Sender: TObject);
     procedure ActionCalculateExecute(Sender: TObject);
     procedure RadioGroupGeometricFigureClick(Sender: TObject);
@@ -82,7 +82,7 @@ begin
         case GeometricForm of
           gfSquare: Result := SquareArea(InputA) ;
           gfCircle: Result := CircleArea(InputA);
-          gfRhombus: Result := RhombusArea(InputA, InputB);
+          gfRectangle: Result := RectangleArea(InputA, InputB);
           gfEquilateralTriangle: Result := EquilateralTriangleArea(InputA);
         end;
       end;
@@ -91,7 +91,7 @@ begin
         case GeometricForm of
           gfSquare: Result := SquarePerimeter(InputA);
           gfCircle: Result := CirclePerimeter(InputA);
-          gfRhombus: Result := RhombusPerimeter(InputA, InputB);
+          gfRectangle: Result := RectanglePerimeter(InputA, InputB);
           gfEquilateralTriangle: Result := EquilateralTrianglePerimeter(InputA);
         end;
       end;
@@ -141,7 +141,7 @@ procedure TGeometricCalculator.RadioGroupGeometricFigureClick(Sender: TObject);
 begin
   EditInputA.EditLabel.Caption := GeometricInputCaptionMap[GeometricForm];
   EditInputB.EditLabel.Caption := EditInputA.EditLabel.Caption;
-  EditInputB.Visible := GeometricForm in [gfRhombus];
+  EditInputB.Visible := GeometricForm in [gfRectangle];
 end;
 
 procedure TGeometricCalculator.SetCalculationType(const Value: TCalculationType);

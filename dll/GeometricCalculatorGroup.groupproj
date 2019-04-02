@@ -3,7 +3,7 @@
         <ProjectGuid>{08909D96-05C3-4247-8D40-8268864176E6}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="GeometricCalculator.dproj">
+        <Projects Include="GeometricCalculatorDLL.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="GeometricCalculatorForm.dproj">
@@ -17,14 +17,14 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="GeometricCalculator">
-        <MSBuild Projects="GeometricCalculator.dproj"/>
+    <Target Name="GeometricCalculatorDLL">
+        <MSBuild Projects="GeometricCalculatorDLL.dproj"/>
     </Target>
-    <Target Name="GeometricCalculator:Clean">
-        <MSBuild Projects="GeometricCalculator.dproj" Targets="Clean"/>
+    <Target Name="GeometricCalculatorDLL:Clean">
+        <MSBuild Projects="GeometricCalculatorDLL.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="GeometricCalculator:Make">
-        <MSBuild Projects="GeometricCalculator.dproj" Targets="Make"/>
+    <Target Name="GeometricCalculatorDLL:Make">
+        <MSBuild Projects="GeometricCalculatorDLL.dproj" Targets="Make"/>
     </Target>
     <Target Name="GeometricCalculatorForm">
         <MSBuild Projects="GeometricCalculatorForm.dproj"/>
@@ -36,13 +36,13 @@
         <MSBuild Projects="GeometricCalculatorForm.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="GeometricCalculator;GeometricCalculatorForm"/>
+        <CallTarget Targets="GeometricCalculatorDLL;GeometricCalculatorForm"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="GeometricCalculator:Clean;GeometricCalculatorForm:Clean"/>
+        <CallTarget Targets="GeometricCalculatorDLL:Clean;GeometricCalculatorForm:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="GeometricCalculator:Make;GeometricCalculatorForm:Make"/>
+        <CallTarget Targets="GeometricCalculatorDLL:Make;GeometricCalculatorForm:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

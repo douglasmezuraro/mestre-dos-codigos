@@ -10,9 +10,9 @@ function SquarePerimeter(const Side: Extended): Extended; stdcall;
 function CircleArea(const Radius: Extended): Extended; stdcall;
 function CirclePerimeter(const Radius: Extended): Extended; stdcall;
 
-{ Rhombus }
-function RhombusArea(const DiagonalA, DiagonalB: Extended): Extended; stdcall;
-function RhombusPerimeter(const DiagonalA, DiagonalB: Extended): Extended; stdcall;
+{ Rectangle }
+function RectangleArea(const SideA, SideB: Extended): Extended; stdcall;
+function RectanglePerimeter(const SideA, SideB: Extended): Extended; stdcall;
 
 { Equilateral Triangle }
 function EquilateralTriangleArea(const Side: Extended): Extended; stdcall;
@@ -27,9 +27,9 @@ end;
 
 function SquarePerimeter(const Side: Extended): Extended;
 const
-  NumberOfSides = 4;
+  Sides = 4;
 begin
-  Result := Side * NumberOfSides;
+  Result := Side * Sides;
 end;
 
 function CircleArea(const Radius: Extended): Extended;
@@ -38,32 +38,37 @@ begin
 end;
 
 function CirclePerimeter(const Radius: Extended): Extended;
+var
+  Diameter: Extended;
 begin
-  Result := 2 * Radius * Pi ;
+  Diameter := 2 * Radius;
+  Result := Pi * Diameter;
 end;
 
-function RhombusArea(const DiagonalA, DiagonalB: Extended): Extended;
+function RectangleArea(const SideA, SideB: Extended): Extended;
 begin
-  Result := (DiagonalA * DiagonalB) / 2;
+  Result := SideA * SideB;
 end;
 
-function RhombusPerimeter(const DiagonalA, DiagonalB: Extended): Extended;
+function RectanglePerimeter(const SideA, SideB: Extended): Extended;
+const
+  Sides = 2;
 begin
-  Result := DiagonalA * 4;
+  Result := Sides * (SideA + SideB);
 end;
 
 function EquilateralTriangleArea(const Side: Extended): Extended;
 const
-  NumberOfSides = 3;
+  Sides = 3;
 begin
-  Result := Sqr(Side) / Sqrt(NumberOfSides);
+  Result := (Sqr(Side) * Sqrt(Sides)) / 4;
 end;
 
 function EquilateralTrianglePerimeter(const Side: Extended): Extended;
 const
-  NumberOfSides = 3;
+  Sides = 3;
 begin
-  Result := NumberOfSides * ((2 * Side) / Sqrt(NumberOfSides));
+  Result := Side * Sides;
 end;
 
 exports
@@ -71,8 +76,8 @@ exports
   SquarePerimeter,
   CircleArea,
   CirclePerimeter,
-  RhombusArea,
-  RhombusPerimeter,
+  RectangleArea,
+  RectanglePerimeter,
   EquilateralTriangleArea,
   EquilateralTrianglePerimeter;
 
