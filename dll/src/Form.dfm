@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Calculadora geom'#233'trica'
-  ClientHeight = 297
+  ClientHeight = 424
   ClientWidth = 420
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -76,6 +76,14 @@ object MainForm: TMainForm
     Height = 25
     Action = ActionCalculate
     TabOrder = 4
+  end
+  object MemoOutput: TMemo
+    Left = 0
+    Top = 296
+    Width = 420
+    Height = 128
+    Align = alBottom
+    TabOrder = 6
   end
   object ActionList: TActionList
     Left = 32

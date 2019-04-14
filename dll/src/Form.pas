@@ -5,6 +5,7 @@ interface
 uses
   API,
   CalculationType,
+  ExtensiveNumber,
   GeometricForm,
   System.Actions,
   System.Classes,
@@ -25,6 +26,7 @@ type
     RadioGroupGeometricFigure: TRadioGroup;
     EditOutput: TLabeledEdit;
     ButtonCalculate: TButton;
+    MemoOutput: TMemo;
     procedure FormShow(Sender: TObject);
     procedure ActionCalculateExecute(Sender: TObject);
     procedure RadioGroupGeometricFigureClick(Sender: TObject);
@@ -43,6 +45,8 @@ type
     function Calculate: Extended;
     procedure Initialize;
     function ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
+
+    function Foo: string;
   public
     property GeometricForm: TGeometricForm read GetGeometricForm write SetGeometricForm;
     property CalculationType: TCalculationType read GetCalculationType write SetCalculationType;
@@ -58,6 +62,8 @@ implementation
 procedure TMainForm.ActionCalculateExecute(Sender: TObject);
 begin
   Output := Calculate;
+  MemoOutput.Clear;
+  MemoOutput.Lines.Add(Foo);
 end;
 
 function TMainForm.ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
@@ -95,6 +101,18 @@ begin
           gfEquilateralTriangle: Result := EquilateralTrianglePerimeter(InputA);
         end;
       end;
+  end;
+end;
+
+function TMainForm.Foo: string;
+var
+  ExtensiveNumber: TExtensiveNumber;
+begin
+  ExtensiveNumber := TExtensiveNumber.Create(Output);
+  try
+    Result := ExtensiveNumber.Make();
+  finally
+    ExtensiveNumber.Free;
   end;
 end;
 

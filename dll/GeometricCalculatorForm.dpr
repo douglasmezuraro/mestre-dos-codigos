@@ -5,7 +5,8 @@ uses
   API in 'src\API.pas',
   GeometricForm in 'src\GeometricForm.pas',
   CalculationType in 'src\CalculationType.pas',
-  Form in 'src\Form.pas' {MainForm};
+  Form in 'src\Form.pas' {MainForm},
+  ExtensiveNumber in 'src\ExtensiveNumber.pas';
 
 {$R *.res}
 
