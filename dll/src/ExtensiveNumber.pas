@@ -36,11 +36,9 @@ type
     function GetThousand: string;
     function GetTensOfThousand: string;
     function GetHundredOfThousand: string;
-
-    function FormatNumber: string;
   public
     constructor Create(const Number: Extended);
-    function Make: string;
+    function FormatNumber: string;
   end;
 
 implementation
@@ -51,11 +49,6 @@ constructor TExtensiveNumber.Create(const Number: Extended);
 begin
   FNumber := Number.ToString;
   SplitNumber;
-end;
-
-function TExtensiveNumber.Make: string;
-begin
-  Result := FormatNumber;
 end;
 
 function TExtensiveNumber.GetUnit: string;
