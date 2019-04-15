@@ -7,34 +7,36 @@ uses
   System.SysUtils;
 
 const
-  Unidades: array[0..9] of string = ('zero', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove');
-  DezenasEspeciais: array[0..9] of string = ('dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove');
-  Dezenas: array[2..9] of string = ('vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa');
-  Centenas: array[1..9] of string = ('cento', 'duzentos', 'trezentos', 'quatrocentos', 'quintenhos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos');
+  Units: array[0..9] of string = ('zero', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove');
+  UnitsBetweenElevenAndNineteen: array[0..9] of string = ('dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove');
+  Tens: array[2..9] of string = ('vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa');
+  Hundreds: array[1..9] of string = ('cento', 'duzentos', 'trezentos', 'quatrocentos', 'quintenhos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos');
 
 type
-  TDecimalSystem = (nlUnidade, nlDezena, nlCentena, nlMilhar, nlDezenaMilhar, nlCentenaMilhar);
+  TDecimalSystem = (dsUnit, dsTens, dsHundred, dsThousand, dsTensOfThousand, dsHundredOfThousand);
 
   TExtensiveNumber = class
   private
     FNumber: string;
 
-    FUnidade: Integer;
-    FDezena: Integer;
-    FCentena: Integer;
-    FMilhar: Integer;
-    FDezenaMilhar: Integer;
-    FCentenaMilhar: Integer;
+    FUnit: Integer;
+    FTens: Integer;
+    FHundred: Integer;
+    FThousand: Integer;
+    FTensOfThousand: Integer;
+    FHundredOfThounsand: Integer;
 
     procedure Split;
     function GetValue(const Enum: TDecimalSystem): Byte;
 
-    function Unidade: string;
-    function Dezena: string;
-    function Centena: string;
-    function Milhar: string;
-    function DezenaMilhar: string;
-    function CentenaMilhar: string;
+    function GetUnit: string;
+    function GetTens: string;
+    function GetHundred: string;
+    function GetThousand: string;
+    function GetTensOfThousand: string;
+    function GetHundredOfThousand: string;
+
+    function FormatNumber: string;
   public
     constructor Create(const Number: Extended);
     function Make: string;
@@ -58,12 +60,12 @@ begin
   Decimal := TDecimalSystem(Pred(FNumber.Length));
 
   case Decimal of
-    nlUnidade       : Parse := Format('%s', [Unidade]);
-    nlDezena        : Parse := Format('%s %s', [Dezena, Unidade]);
-    nlCentena       : Parse := Format('%s %s %s', [Centena, Dezena, Unidade]);
-    nlMilhar        : Parse := Format('%s %s %s %s', [Milhar, Centena, Dezena, Unidade]);
-    nlDezenaMilhar  : Parse := Format('%s %s %s %s %s', [DezenaMilhar, Milhar, Centena, Dezena, Unidade]);
-    nlCentenaMilhar : Parse := Format('%s %s %s %s %s %s', [CentenaMilhar, DezenaMilhar, Milhar, Centena, Dezena, Unidade])
+    dsUnit              : Parse := Format('%s', [GetUnit]);
+    dsTens              : Parse := Format('%s %s', [GetTens, GetUnit]);
+    dsHundred           : Parse := Format('%s %s %s', [GetHundred, GetTens, GetUnit]);
+    dsThousand          : Parse := Format('%s %s %s %s', [GetThousand, GetHundred, GetTens, GetUnit]);
+    dsTensOfThousand    : Parse := Format('%s %s %s %s %s', [GetTensOfThousand, GetThousand, GetHundred, GetTens, GetUnit]);
+    dsHundredOfThousand : Parse := Format('%s %s %s %s %s %s', [GetHundredOfThousand, GetTensOfThousand, GetThousand, GetHundred, GetTens, GetUnit])
   else
     Parse := 'zero';
   end;
@@ -71,77 +73,77 @@ begin
   Result := Parse.Replace('  ', ' ');
 end;
 
-function TExtensiveNumber.Unidade: string;
+function TExtensiveNumber.GetUnit: string;
 begin
-  if FDezena = 1 then
+  if FTens = 1 then
     Exit;
 
-  Result := Unidades[FUnidade];
+  Result := Units[FUnit];
 end;
 
-function TExtensiveNumber.Dezena: string;
+function TExtensiveNumber.GetTens: string;
 begin
-  if FDezena = 0 then
+  if FTens = 0 then
     Exit;
 
-  if FDezena = 1 then
-    Exit(DezenasEspeciais[FUnidade]);
+  if FTens = 1 then
+    Exit(UnitsBetweenElevenAndNineteen[FUnit]);
 
-  Result := Dezenas[FDezena];
+  Result := Tens[FTens];
 end;
 
-function TExtensiveNumber.Centena: string;
+function TExtensiveNumber.GetHundred: string;
 begin
-  if FCentena = 0 then
+  if FHundred = 0 then
     Exit;
 
-  if (FUnidade = 0) and (FDezena = 0) then
+  if (FUnit = 0) and (FTens = 0) then
     Exit('cem');
 
-  Result := Centenas[FCentena];
+  Result := Hundreds[FHundred];
 end;
 
-function TExtensiveNumber.Milhar: string;
+function TExtensiveNumber.GetThousand: string;
 begin
-  if (FMilhar = 1) or (FDezenaMilhar <> 0) or (FCentenaMilhar <> 0) then
+  if (FThousand = 1) or (FTensOfThousand <> 0) or (FHundredOfThounsand <> 0) then
     Exit('mil');
 
-  if FMilhar = 0 then
+  if FThousand = 0 then
     Exit;
 
-  Result := Unidades[FMilhar] + ' mil';
+  Result := Units[FThousand] + ' mil';
 end;
 
-function TExtensiveNumber.DezenaMilhar: string;
+function TExtensiveNumber.GetTensOfThousand: string;
 begin
-  if FDezenaMilhar = 0 then
+  if FTensOfThousand = 0 then
     Exit;
 
-  if FDezenaMilhar = 1 then
-    Exit(DezenasEspeciais[FMilhar]);
+  if FTensOfThousand = 1 then
+    Exit(UnitsBetweenElevenAndNineteen[FThousand]);
 
-  Result := Dezenas[FDezenaMilhar];
+  Result := Tens[FTensOfThousand];
 end;
 
-function TExtensiveNumber.CentenaMilhar: string;
+function TExtensiveNumber.GetHundredOfThousand: string;
 begin
-  if FCentenaMilhar = 0 then
+  if FHundredOfThounsand = 0 then
     Exit;
 
-  if (FMilhar = 0) and (FDezenaMilhar = 0) then
+  if (FThousand = 0) and (FTensOfThousand = 0) then
     Exit('cem');
 
-  Result := Centenas[FCentenaMilhar];
+  Result := Hundreds[FHundredOfThounsand];
 end;
 
 procedure TExtensiveNumber.Split;
 begin
-  FUnidade       := GetValue(nlUnidade);
-  FDezena        := GetValue(nlDezena);
-  FCentena       := GetValue(nlCentena);
-  FMilhar        := GetValue(nlMilhar);
-  FDezenaMilhar  := GetValue(nlDezenaMilhar);
-  FCentenaMilhar := GetValue(nlCentenaMilhar);
+  FUnit               := GetValue(dsUnit);
+  FTens               := GetValue(dsTens);
+  FHundred            := GetValue(dsHundred);
+  FThousand           := GetValue(dsThousand);
+  FTensOfThousand     := GetValue(dsTensOfThousand);
+  FHundredOfThounsand := GetValue(dsHundredOfThousand);
 end;
 
 function TExtensiveNumber.GetValue(const Enum: TDecimalSystem): Byte;
@@ -156,6 +158,11 @@ begin
   Value := FNumber.PadLeft(Succ(Ord(High(TDecimalSystem))), '0');
 
   Result := string(Value.Chars[Index]).ToInteger
+end;
+
+function TExtensiveNumber.FormatNumber: string;
+begin
+
 end;
 
 end.
