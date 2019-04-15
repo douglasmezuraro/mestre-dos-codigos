@@ -26,8 +26,9 @@ type
     FTensOfThousand: Integer;
     FHundredOfThounsand: Integer;
 
-    procedure Split;
-    function GetValue(const Enum: TDecimalSystem): Byte;
+    procedure SplitNumber;
+    function GetValueAsNumber(const Enum: TDecimalSystem): Byte;
+    function GetValueAsString(const Enum: TDecimalSystem): string;
 
     function GetUnit: string;
     function GetTens: string;
@@ -49,28 +50,12 @@ implementation
 constructor TExtensiveNumber.Create(const Number: Extended);
 begin
   FNumber := Number.ToString;
-  Split;
+  SplitNumber;
 end;
 
 function TExtensiveNumber.Make: string;
-var
-  Parse: string;
-  Decimal: TDecimalSystem;
 begin
-  Decimal := TDecimalSystem(Pred(FNumber.Length));
-
-  case Decimal of
-    dsUnit              : Parse := Format('%s', [GetUnit]);
-    dsTens              : Parse := Format('%s %s', [GetTens, GetUnit]);
-    dsHundred           : Parse := Format('%s %s %s', [GetHundred, GetTens, GetUnit]);
-    dsThousand          : Parse := Format('%s %s %s %s', [GetThousand, GetHundred, GetTens, GetUnit]);
-    dsTensOfThousand    : Parse := Format('%s %s %s %s %s', [GetTensOfThousand, GetThousand, GetHundred, GetTens, GetUnit]);
-    dsHundredOfThousand : Parse := Format('%s %s %s %s %s %s', [GetHundredOfThousand, GetTensOfThousand, GetThousand, GetHundred, GetTens, GetUnit])
-  else
-    Parse := 'zero';
-  end;
-
-  Result := Parse.Replace('  ', ' ');
+  Result := FormatNumber;
 end;
 
 function TExtensiveNumber.GetUnit: string;
@@ -136,17 +121,31 @@ begin
   Result := Hundreds[FHundredOfThounsand];
 end;
 
-procedure TExtensiveNumber.Split;
+procedure TExtensiveNumber.SplitNumber;
 begin
-  FUnit               := GetValue(dsUnit);
-  FTens               := GetValue(dsTens);
-  FHundred            := GetValue(dsHundred);
-  FThousand           := GetValue(dsThousand);
-  FTensOfThousand     := GetValue(dsTensOfThousand);
-  FHundredOfThounsand := GetValue(dsHundredOfThousand);
+  FUnit               := GetValueAsNumber(dsUnit);
+  FTens               := GetValueAsNumber(dsTens);
+  FHundred            := GetValueAsNumber(dsHundred);
+  FThousand           := GetValueAsNumber(dsThousand);
+  FTensOfThousand     := GetValueAsNumber(dsTensOfThousand);
+  FHundredOfThounsand := GetValueAsNumber(dsHundredOfThousand);
 end;
 
-function TExtensiveNumber.GetValue(const Enum: TDecimalSystem): Byte;
+function TExtensiveNumber.FormatNumber: string;
+var
+  Enum: TDecimalSystem;
+begin
+  Result := string.empty;
+  for Enum := High(TDecimalSystem) downto Low(TDecimalSystem) do
+  begin
+    if Result.IsEmpty then
+      Result := GetValueAsString(Enum)
+    else
+      Result := Result + ' ' + GetValueAsString(Enum);
+  end;
+end;
+
+function TExtensiveNumber.GetValueAsNumber(const Enum: TDecimalSystem): Byte;
 var
   Value: string;
   Index, Min, Max: Integer;
@@ -160,9 +159,18 @@ begin
   Result := string(Value.Chars[Index]).ToInteger
 end;
 
-function TExtensiveNumber.FormatNumber: string;
+function TExtensiveNumber.GetValueAsString(const Enum: TDecimalSystem): string;
 begin
-
+  case Enum of
+    dsUnit              : Result := GetUnit;
+    dsTens              : Result := GetTens;
+    dsHundred           : Result := GetHundred;
+    dsThousand          : Result := GetThousand;
+    dsTensOfThousand    : Result := GetTensOfThousand;
+    dsHundredOfThousand : Result := GetHundredOfThousand;
+  else
+    Result := 'NaN';
+  end;
 end;
 
 end.

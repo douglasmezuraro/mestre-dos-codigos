@@ -110,7 +110,7 @@ var
 begin
   ExtensiveNumber := TExtensiveNumber.Create(Output);
   try
-    Result := ExtensiveNumber.Make();
+    Result := ExtensiveNumber.FormatNumber();
   finally
     ExtensiveNumber.Free;
   end;
