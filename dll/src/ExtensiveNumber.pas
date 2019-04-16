@@ -18,7 +18,7 @@ const
   Thousand = 'mil';
   
 type
-  TDecimalSystem = (dsUnit, dsTens, dsHundred, dsThousand, dsTensOfThousand, dsHundredOfThousand);
+  TDecimalSystem = (dsHundredOfThousand, dsTensOfThousand, dsThousand, dsHundred, dsTens, dsUnit);
 
   TExtensiveNumber = class
   private
@@ -75,7 +75,7 @@ begin
   if FNumber = 0 then
     Exit(Zero);
 
-  for Enum := High(TDecimalSystem) downto Low(TDecimalSystem) do
+  for Enum := Low(TDecimalSystem) to High(TDecimalSystem) do
   begin
     Parse := GetValue(Enum);
     if Result.IsEmpty then
@@ -182,18 +182,13 @@ end;
 function TExtensiveNumber.Split(const Enum: TDecimalSystem): Byte;
 var
   Value: string;
-  Index, Min, Max, Elements: Integer;
+  Index, Count: Integer;
 begin
-  Min := Ord(Enum);
-  Max := Ord(High(TDecimalSystem));
-  Index := Max - Min;
+  Count := Succ(Ord(High(TDecimalSystem)));
+  Index := Ord(Enum);
+  Value := FNumber.ToString.PadLeft(Count, '0');
 
-  Elements := Succ(Ord(High(TDecimalSystem)));
-
-  Value := FNumber.ToString.PadLeft(Elements, '0');
-  Value := Value.Chars[Index];
-
-  Result := Value.ToInteger
+  Result := StrToIntDef(Value.Chars[Index], 0);
 end;
 
 function TExtensiveNumber.GetValue(const Enum: TDecimalSystem): string;

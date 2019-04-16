@@ -108,9 +108,9 @@ function TMainForm.Foo: string;
 var
   ExtensiveNumber: TExtensiveNumber;
 begin
-  ExtensiveNumber := TExtensiveNumber.Create(Output);
+  ExtensiveNumber := TExtensiveNumber.Create;
   try
-    Result := ExtensiveNumber.FormatNumber();
+    Result := ExtensiveNumber.FormatNumber(InputA);
   finally
     ExtensiveNumber.Free;
   end;
