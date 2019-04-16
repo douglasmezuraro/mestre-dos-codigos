@@ -5,8 +5,7 @@ interface
 uses
   System.Math,
   System.StrUtils,
-  System.SysUtils,
-  System.Types;
+  System.SysUtils;
 
 const
   Units: array[1..9] of string = ('um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove');
@@ -23,7 +22,7 @@ type
 
   TExtensiveNumber = class
   private
-    FNumber: string;
+    FNumber: Extended;
 
     FUnit: Byte;
     FTens: Byte;
@@ -32,10 +31,12 @@ type
     FTensOfThousand: Byte;
     FHundredOfThousand: Byte;
 
+    { Split Methods }
+    procedure Split; overload;
+    function Split(const Enum: TDecimalSystem): Byte; overload;
+
     { Useful Methods }
-    procedure SplitNumber;
-    function GetValueAsNumber(const Enum: TDecimalSystem): Byte;
-    function GetValueAsString(const Enum: TDecimalSystem): string;
+    function GetValue(const Enum: TDecimalSystem): string;
     function NeedsSeparator(const Enum: TDecimalSystem): Boolean;
 
     { Extensive number functions }
@@ -45,28 +46,55 @@ type
     function GetThousand: string;
     function GetTensOfThousand: string;
     function GetHundredOfThousand: string;
+
+    function InternalFormat: string;
   public
-    constructor Create(const Number: Extended);
-    function FormatNumber: string;
+    function FormatNumber(const Number: Extended): string;
   end;
 
 implementation
 
 { TExtensiveNumber }
 
-constructor TExtensiveNumber.Create(const Number: Extended);
+function TExtensiveNumber.FormatNumber(const Number: Extended): string;
 begin
-  FNumber := Number.ToString;
-  SplitNumber;
+  FNumber := Number;
+
+  Split;
+
+  Result := InternalFormat;
+end;
+
+function TExtensiveNumber.InternalFormat: string;
+const
+  Separator: array[Boolean] of string = (' ', ' e ');
+var
+  Enum: TDecimalSystem;
+  Parse: string;
+begin
+  if FNumber = 0 then
+    Exit(Zero);
+
+  for Enum := High(TDecimalSystem) downto Low(TDecimalSystem) do
+  begin
+    Parse := GetValue(Enum);
+    if Result.IsEmpty then
+      Result := Parse
+    else
+    begin
+      if not Parse.IsEmpty then
+        Result := Result + Separator[NeedsSeparator(Enum)] + Parse;
+    end;
+  end;
 end;
 
 function TExtensiveNumber.GetUnit: string;
 begin
   Result := string.Empty;
-  
+
   if FUnit = 0 then
     Exit;
-    
+
   if FTens = 1 then
     Exit;
 
@@ -89,11 +117,11 @@ end;
 function TExtensiveNumber.GetHundred: string;
 begin
   Result := string.Empty;
-  
+
   if FHundred = 0 then
     Exit;
 
-  if FNumber.ToInteger = 100 then
+  if FNumber = 100 then
     Exit(OneHundred);
 
   Result := Hundreds[FHundred];
@@ -103,17 +131,16 @@ function TExtensiveNumber.GetThousand: string;
 begin
   Result := string.Empty;
 
-  case CompareValue(FNumber.ToInteger, 1000) of
-    LessThanValue    : Result := string.Empty;
-    EqualsValue      : Result := Thousand;
-    GreaterThanValue :
-      begin 
-        if (FTensOfThousand > 0) or (FHundredOfThousand > 0) then
-          Exit( ' ' + Thousand);
+  if FNumber < 1000 then
+    Exit;
 
-        Result := Units[FThousand] + ' ' + Thousand;
-      end;      
-  end;
+  if FThousand = 1 then
+    Exit(Thousand);
+
+  if FTensOfThousand = 1 then
+    Exit(Thousand);
+
+  Result := Units[FThousand] + ' ' + Thousand;
 end;
 
 function TExtensiveNumber.GetTensOfThousand: string;
@@ -132,7 +159,7 @@ end;
 function TExtensiveNumber.GetHundredOfThousand: string;
 begin
   Result := string.Empty;
-    
+
   if FHundredOfThousand = 0 then
     Exit;
 
@@ -142,52 +169,36 @@ begin
   Result := Hundreds[FHundredOfThousand];
 end;
 
-procedure TExtensiveNumber.SplitNumber;
+procedure TExtensiveNumber.Split;
 begin
-  FUnit               := GetValueAsNumber(dsUnit);
-  FTens               := GetValueAsNumber(dsTens);
-  FHundred            := GetValueAsNumber(dsHundred);
-  FThousand           := GetValueAsNumber(dsThousand);
-  FTensOfThousand     := GetValueAsNumber(dsTensOfThousand);
-  FHundredOfThousand := GetValueAsNumber(dsHundredOfThousand);
+  FUnit              := Split(dsUnit);
+  FTens              := Split(dsTens);
+  FHundred           := Split(dsHundred);
+  FThousand          := Split(dsThousand);
+  FTensOfThousand    := Split(dsTensOfThousand);
+  FHundredOfThousand := Split(dsHundredOfThousand);
 end;
 
-function TExtensiveNumber.FormatNumber: string;
-const
-  Separator: array[Boolean] of string = (' ', ' e ');
-var
-  Enum: TDecimalSystem;
-begin
-  Result := string.empty;
-
-  if FNumber.ToInteger = 0 then
-    Exit(Zero);
-  
-  for Enum := High(TDecimalSystem) downto Low(TDecimalSystem) do
-  begin
-    if Result.IsEmpty then
-      Result := GetValueAsString(Enum)
-    else
-      Result := Result + Separator[NeedsSeparator(Enum)] + GetValueAsString(Enum);                                                  
-  end;
-end;
-
-function TExtensiveNumber.GetValueAsNumber(const Enum: TDecimalSystem): Byte;
+function TExtensiveNumber.Split(const Enum: TDecimalSystem): Byte;
 var
   Value: string;
-  Index, Min, Max: Integer;
+  Index, Min, Max, Elements: Integer;
 begin
   Min := Ord(Enum);
   Max := Ord(High(TDecimalSystem));
   Index := Max - Min;
 
-  Value := FNumber.PadLeft(Succ(Ord(High(TDecimalSystem))), '0');
+  Elements := Succ(Ord(High(TDecimalSystem)));
 
-  Result := string(Value.Chars[Index]).ToInteger
+  Value := FNumber.ToString.PadLeft(Elements, '0');
+  Value := Value.Chars[Index];
+
+  Result := Value.ToInteger
 end;
 
-function TExtensiveNumber.GetValueAsString(const Enum: TDecimalSystem): string;
+function TExtensiveNumber.GetValue(const Enum: TDecimalSystem): string;
 begin
+  Result := string.Empty;
   case Enum of
     dsUnit              : Result := GetUnit;
     dsTens              : Result := GetTens;
@@ -195,20 +206,13 @@ begin
     dsThousand          : Result := GetThousand;
     dsTensOfThousand    : Result := GetTensOfThousand;
     dsHundredOfThousand : Result := GetHundredOfThousand;
-  else
-    Result := 'NaN';
   end;
 end;
 
 function TExtensiveNumber.NeedsSeparator(const Enum: TDecimalSystem): Boolean;
 begin
   case Enum of
-    dsUnit              : Result := (FTens > 1) and (FUnit > 0);
-    dsTens              : Result := (FTens > 1) and (FUnit > 0);
-    dsHundred           : Result := False;
-    dsThousand          : Result := False;
-    dsTensOfThousand    : Result := False;
-    dsHundredOfThousand : Result := False;
+    dsUnit, dsTens: Result := (FTens <> 1) and (FUnit > 0);
   else
     Result := False;
   end;
