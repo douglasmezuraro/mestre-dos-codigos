@@ -31,6 +31,7 @@ type
     procedure ActionCalculateExecute(Sender: TObject);
     procedure RadioGroupGeometricFigureClick(Sender: TObject);
   private
+    FExtensiveNumber: TExtensiveNumber;
     function GetGeometricForm: TGeometricForm;
     procedure SetGeometricForm(const Value: TGeometricForm);
     function GetInputA: Extended;
@@ -39,31 +40,46 @@ type
     procedure SetInputB(const Value: Extended);
     function GetCalculationType: TCalculationType;
     procedure SetCalculationType(const Value: TCalculationType);
-    function GetOutput: Extended;
-    procedure SetOutput(const Value: Extended);
+    function GetNumberOutput: Extended;
+    procedure SetNumberOutput(const Value: Extended);
 
     function Calculate: Extended;
     procedure Initialize;
     function ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
-
-    function Foo: string;
+    function GetStringOutput: string;
+    procedure SetStringOutput(const Value: string);
   public
+    constructor Create(Owner: TComponent); override;
+    destructor Destroy; override;
+
     property GeometricForm: TGeometricForm read GetGeometricForm write SetGeometricForm;
     property CalculationType: TCalculationType read GetCalculationType write SetCalculationType;
     property InputA: Extended read GetInputA write SetInputA;
     property InputB: Extended read GetInputB write SetInputB;
-    property Output: Extended read GetOutput write SetOutput;
+    property NumberOutput: Extended read GetNumberOutput write SetNumberOutput;
+    property StringOutput: string read GetStringOutput write SetStringOutput;
   end;
 
 implementation
 
 {$R *.dfm}
 
+constructor TMainForm.Create(Owner: TComponent);
+begin
+  inherited Create(Owner);
+  FExtensiveNumber := TExtensiveNumber.Create;
+end;
+
+destructor TMainForm.Destroy;
+begin
+  FExtensiveNumber.Free;
+  inherited;
+end;
+
 procedure TMainForm.ActionCalculateExecute(Sender: TObject);
 begin
-  Output := Calculate;
-  MemoOutput.Clear;
-  MemoOutput.Lines.Add(Foo);
+  NumberOutput := Calculate;
+  StringOutput := FExtensiveNumber.Format(InputA);
 end;
 
 function TMainForm.ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
@@ -104,18 +120,6 @@ begin
   end;
 end;
 
-function TMainForm.Foo: string;
-var
-  ExtensiveNumber: TExtensiveNumber;
-begin
-  ExtensiveNumber := TExtensiveNumber.Create;
-  try
-    Result := ExtensiveNumber.FormatNumber(InputA);
-  finally
-    ExtensiveNumber.Free;
-  end;
-end;
-
 procedure TMainForm.FormShow(Sender: TObject);
 begin
   Initialize;
@@ -141,9 +145,14 @@ begin
   Result := StrToFloatDef(EditInputB.Text, 0);
 end;
 
-function TMainForm.GetOutput: Extended;
+function TMainForm.GetNumberOutput: Extended;
 begin
   Result := StrToFloatDef(EditOutput.Text, 0);
+end;
+
+function TMainForm.GetStringOutput: string;
+begin
+  Result := MemoOutput.Lines.CommaText;
 end;
 
 procedure TMainForm.Initialize;
@@ -182,9 +191,15 @@ begin
   EditInputB.Text := Value.ToString;
 end;
 
-procedure TMainForm.SetOutput(const Value: Extended);
+procedure TMainForm.SetNumberOutput(const Value: Extended);
 begin
   EditOutput.Text := Value.ToString;
+end;
+
+procedure TMainForm.SetStringOutput(const Value: string);
+begin
+  MemoOutput.Lines.Clear;
+  MemoOutput.Lines.Add(Value);
 end;
 
 end.

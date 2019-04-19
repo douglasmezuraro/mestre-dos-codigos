@@ -52,14 +52,14 @@ type
 
     function InternalFormat(const Number: Extended; const Enum: TTierces): string;
   public
-    function FormatNumber(const Number: Extended): string;
+    function Format(const Number: Extended): string;
   end;
 
 implementation
 
 { TExtensiveNumber }
 
-function TExtensiveNumber.FormatNumber(const Number: Extended): string;
+function TExtensiveNumber.Format(const Number: Extended): string;
 var
   Enum: TTierces;
   Value: string;
