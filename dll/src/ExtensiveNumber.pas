@@ -11,7 +11,7 @@ const
   Units: array[1..9] of string = ('um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove');
   UnitsBetweenElevenAndNineteen: array[0..9] of string = ('dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove');
   Tens: array[2..9] of string = ('vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa');
-  Hundreds: array[1..9] of string = ('cento', 'duzentos', 'trezentos', 'quatrocentos', 'quintenhos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos');
+  Hundreds: array[1..9] of string = ('cem', 'duzentos', 'trezentos', 'quatrocentos', 'quintenhos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos');
 
   Zero = 'zero';
   OneHundred = 'cem';
@@ -72,8 +72,7 @@ var
   Enum: TDecimalSystem;
   Parse: string;
 begin
-  if FNumber = 0 then
-    Exit(Zero);
+
 
   for Enum := Low(TDecimalSystem) to High(TDecimalSystem) do
   begin
@@ -91,6 +90,9 @@ end;
 function TExtensiveNumber.GetUnit: string;
 begin
   Result := string.Empty;
+
+  if FNumber = 0 then
+    Exit(Zero);
 
   if FUnit = 0 then
     Exit;
@@ -121,10 +123,10 @@ begin
   if FHundred = 0 then
     Exit;
 
-  if FNumber = 100 then
-    Exit(OneHundred);
+  if FNumber.ToString.EndsWith('100') or (FHundred > 1) then
+    Exit(Hundreds[FHundred]);
 
-  Result := Hundreds[FHundred];
+  Result := 'cento';
 end;
 
 function TExtensiveNumber.GetThousand: string;
@@ -139,6 +141,9 @@ begin
 
   if FTensOfThousand = 1 then
     Exit(Thousand);
+
+  if FThousand = 0 then
+    Exit;
 
   Result := Units[FThousand] + ' ' + Thousand;
 end;
@@ -207,7 +212,12 @@ end;
 function TExtensiveNumber.NeedsSeparator(const Enum: TDecimalSystem): Boolean;
 begin
   case Enum of
-    dsUnit, dsTens: Result := (FTens <> 1) and (FUnit > 0);
+    dsUnit              : Result := FUnit <> 0;
+    dsTens              : Result := FUnit <> 0;
+    dsHundred           : Result := FTens <> 0;
+    dsThousand          : Result := FHundred <> 0;
+    dsTensOfThousand    : Result := FTHousand <> 0;
+    dsHundredOfThousand : Result := FTensOfThousand <> 0;
   else
     Result := False;
   end;
