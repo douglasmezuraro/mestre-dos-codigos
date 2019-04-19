@@ -19,6 +19,7 @@ const
 
   SingularSuffix: array[TTierces] of string = ('um milhão', 'mil', '');
   PluralSuffix: array[TTierces] of string = ('milhões', 'mil', '');
+  Separator: array[Boolean] of string = (' ', ' e ');
 
   Zero = 'zero';
   OneHundred = 'cem';
@@ -60,23 +61,27 @@ implementation
 
 function TExtensiveNumber.FormatNumber(const Number: Extended): string;
 var
-  Tierce: TTierces;
+  Enum: TTierces;
+  Value: string;
 begin
   if Number = 0 then
     Exit(Zero);
 
-  for Tierce := Low(TTierces) to High(TTierces) do
+  for Enum := Low(TTierces) to High(TTierces) do
   begin
+    Value := InternalFormat(Number, Enum);
     if Result.IsEmpty then
-      Result := InternalFormat(Number, Tierce)
+      Result := Value
     else
-      Result := Result + ' ' + InternalFormat(Number, Tierce);
+      Result := Result + Separator[not Value.IsEmpty] + Value;
   end;
 end;
 
 function TExtensiveNumber.InternalFormat(const Number: Extended;
   const Enum: TTierces): string;
 begin
+  Result := String.empty;
+
   FNumber  := Split(Number, Enum);
   FUnit    := Split(dsUnit);
   FTens    := Split(dsTens);
@@ -91,9 +96,9 @@ begin
     tThousands:
       begin
         if FNumber = 1 then
-          Result := 'mil'
+          Result := Thousand
         else
-          Result := Result + ' mil';
+          Result := Result + ' ' + Thousand;
       end;
     tMillions:
       begin
@@ -155,8 +160,6 @@ begin
 end;
 
 function TExtensiveNumber.GetValue(const Number: Extended): string;
-const
-  Separator: array[Boolean] of string = (' ', ' e ');
 var
   Enum: TUnit;
   Value: string;
