@@ -10,6 +10,7 @@ uses
   System.Actions,
   System.Classes,
   System.SysUtils,
+  System.UITypes,
   Vcl.ActnList,
   Vcl.Controls,
   Vcl.Dialogs,
@@ -50,7 +51,7 @@ type
     function Calculate: Extended;
     procedure Initialize;
     function ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
-    procedure ValidateInput;
+    function ValidateInput(out Message: string): Boolean;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
@@ -99,10 +100,13 @@ begin
 end;
 
 function TMainForm.Calculate: Extended;
+var
+  Message: string;
 begin
   Result := 0;
 
-  ValidateInput;
+  if not ValidateInput(Message) then
+    MessageDlg(Message, mtWarning, [mbOK], 0);
 
   case CalculationType of
     ctArea:
@@ -208,32 +212,24 @@ begin
   MemoOutput.Lines.Add(Value);
 end;
 
-procedure TMainForm.ValidateInput;
+function TMainForm.ValidateInput(out Message: string): Boolean;
 const
   MaxValue = 9999;
-var
-  Error: Boolean;
-  Message: string;
+  ErrorMessage = 'O valor do %s deve ser menor ou igual a %d!';
 begin
-  Error := False;
+  Result := True;
 
   if InputA > MaxValue then
   begin
-    Message := Format('O valor do %s deve ser menor ou igual a %d', [EditInputA.EditLabel.Caption, MaxValue]);
-    Error := True;
+    Message := Format(ErrorMessage, [EditInputA.EditLabel.Caption, MaxValue]);
+    Result := False;
   end;
 
   if InputB > MaxValue then
   begin
-    Message := Format('O valor do %s deve ser menor ou igual a %d', [EditInputB.EditLabel.Caption, MaxValue]);
-    Error := True;
+    Message := Format(ErrorMessage, [EditInputB.EditLabel.Caption, MaxValue]);
+    Result := False;
   end;
-
-  if not Error then
-    Exit;
-
-  MessageDlg(Message, TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
-  Abort;
 end;
 
 end.
