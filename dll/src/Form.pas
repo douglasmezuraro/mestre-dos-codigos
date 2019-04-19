@@ -12,6 +12,7 @@ uses
   System.SysUtils,
   Vcl.ActnList,
   Vcl.Controls,
+  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.Forms,
   Vcl.StdCtrls;
@@ -32,6 +33,7 @@ type
     procedure RadioGroupGeometricFigureClick(Sender: TObject);
   private
     FExtensiveNumber: TExtensiveNumber;
+
     function GetGeometricForm: TGeometricForm;
     procedure SetGeometricForm(const Value: TGeometricForm);
     function GetInputA: Extended;
@@ -42,12 +44,13 @@ type
     procedure SetCalculationType(const Value: TCalculationType);
     function GetNumberOutput: Extended;
     procedure SetNumberOutput(const Value: Extended);
+    function GetStringOutput: string;
+    procedure SetStringOutput(const Value: string);
 
     function Calculate: Extended;
     procedure Initialize;
     function ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
-    function GetStringOutput: string;
-    procedure SetStringOutput(const Value: string);
+    procedure ValidateInput;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
@@ -98,6 +101,9 @@ end;
 function TMainForm.Calculate: Extended;
 begin
   Result := 0;
+
+  ValidateInput;
+
   case CalculationType of
     ctArea:
       begin
@@ -200,6 +206,34 @@ procedure TMainForm.SetStringOutput(const Value: string);
 begin
   MemoOutput.Lines.Clear;
   MemoOutput.Lines.Add(Value);
+end;
+
+procedure TMainForm.ValidateInput;
+const
+  MaxValue = 9999;
+var
+  Error: Boolean;
+  Message: string;
+begin
+  Error := False;
+
+  if InputA > MaxValue then
+  begin
+    Message := Format('O valor do %s deve ser menor ou igual a %d', [EditInputA.EditLabel.Caption, MaxValue]);
+    Error := True;
+  end;
+
+  if InputB > MaxValue then
+  begin
+    Message := Format('O valor do %s deve ser menor ou igual a %d', [EditInputB.EditLabel.Caption, MaxValue]);
+    Error := True;
+  end;
+
+  if not Error then
+    Exit;
+
+  MessageDlg(Message, TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
+  Abort;
 end;
 
 end.
