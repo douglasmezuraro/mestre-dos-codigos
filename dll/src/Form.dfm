@@ -34,7 +34,6 @@ object MainForm: TMainForm
     EditLabel.Width = 39
     EditLabel.Height = 13
     EditLabel.Caption = 'Runtime'
-    NumbersOnly = True
     TabOrder = 2
   end
   object RadioGroupCalculationType: TRadioGroup

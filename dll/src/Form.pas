@@ -83,7 +83,7 @@ end;
 procedure TMainForm.ActionCalculateExecute(Sender: TObject);
 begin
   NumberOutput := Calculate;
-  StringOutput := FExtensiveNumber.Format(InputA);
+  StringOutput := FExtensiveNumber.Format(NumberOutput);
 end;
 
 function TMainForm.ArrayOfToTArray<T>(const Values: array of T): TArray<T>;
@@ -106,7 +106,10 @@ begin
   Result := 0;
 
   if not ValidateInput(Message) then
+  begin
     MessageDlg(Message, mtWarning, [mbOK], 0);
+    Exit;
+  end;
 
   case CalculationType of
     ctArea:
@@ -193,17 +196,17 @@ end;
 
 procedure TMainForm.SetInputA(const Value: Extended);
 begin
-  EditInputA.Text := Value.ToString;
+  EditInputA.Text := FormatFloat('0.00', Value);
 end;
 
 procedure TMainForm.SetInputB(const Value: Extended);
 begin
-  EditInputB.Text := Value.ToString;
+  EditInputB.Text := FormatFloat('0.00', Value);
 end;
 
 procedure TMainForm.SetNumberOutput(const Value: Extended);
 begin
-  EditOutput.Text := Value.ToString;
+  EditOutput.Text := FormatFloat('0.00', Value);
 end;
 
 procedure TMainForm.SetStringOutput(const Value: string);
