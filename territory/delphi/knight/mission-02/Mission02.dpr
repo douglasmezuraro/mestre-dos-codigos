@@ -1,7 +1,10 @@
 program Mission02;
 
+// Author: Douglas Mezuraro
+// Last modification: 16/02/2020
+// Level: Knight
 // Mission: 02
-// Objective: build a VCL application that lists the data of the installed programs in a TDBGrid.
+// Objective: Build a VCL application that lists the data of the installed programs in a TDBGrid.
 // The grid must contain the name, version and company of the program.
 
 uses
