@@ -73,7 +73,7 @@ begin
   Dialog := TSaveDialog.Create(Self);
   try
     Dialog.Filter := '|*.zip';
-    Dialog.DefaultExt := 'zip';
+    Dialog.DefaultExt := '.zip';
 
     if not Dialog.Execute then
       Exit(False);
