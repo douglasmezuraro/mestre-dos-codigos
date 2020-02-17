@@ -30,7 +30,6 @@ type
     MemoFilesC: TMemo;
     ButtonListFiles: TButton;
     ActionListFiles: TAction;
-    Button1: TButton;
     procedure ActionSelectPathAExecute(Sender: TObject);
     procedure ActionSelectPathBExecute(Sender: TObject);
     procedure ActionSelectPathCExecute(Sender: TObject);

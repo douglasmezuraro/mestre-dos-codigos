@@ -83,14 +83,6 @@ object Main: TMain
       Action = ActionListFiles
       TabOrder = 6
     end
-    object Button1: TButton
-      Left = 674
-      Top = 96
-      Width = 75
-      Height = 25
-      Caption = 'Button1'
-      TabOrder = 7
-    end
   end
   object MemoFilesA: TMemo
     Left = 0
