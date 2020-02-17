@@ -3,42 +3,38 @@ unit Form.Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Actions, Vcl.ActnList,
-
-  //
-
-  System.Threading, System.IOUtils, System.Types;
+  System.SysUtils, System.Classes, Vcl.Buttons, System.ImageList, Vcl.ImgList, System.Actions,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnList, System.Threading,
+  System.IOUtils, System.Types;
 
 type
-  TPath = (A, B, C);
-
   TMain = class(TForm)
-    GroupBoxPaths: TGroupBox;
-    EditPathA: TLabeledEdit;
-    EditPathB: TLabeledEdit;
-    EditPathC: TLabeledEdit;
-    ButtonPathA: TButton;
-    ButtonPathB: TButton;
-    ButtonPathC: TButton;
     ActionList: TActionList;
     ActionSelectPathA: TAction;
     ActionSelectPathB: TAction;
     ActionSelectPathC: TAction;
+    ActionListFiles: TAction;
     MemoFilesA: TMemo;
     MemoFilesB: TMemo;
     MemoFilesC: TMemo;
+    ImageList: TImageList;
+    PanelPaths: TPanel;
+    EditPathA: TLabeledEdit;
+    ButtonPathA: TSpeedButton;
+    EditPathB: TLabeledEdit;
+    ButtonPathB: TSpeedButton;
+    EditPathC: TLabeledEdit;
+    ButtonPathC: TSpeedButton;
     ButtonListFiles: TButton;
-    ActionListFiles: TAction;
     procedure ActionSelectPathAExecute(Sender: TObject);
     procedure ActionSelectPathBExecute(Sender: TObject);
     procedure ActionSelectPathCExecute(Sender: TObject);
     procedure ActionListFilesExecute(Sender: TObject);
   private
+    type TPath = (A, B, C);
+    procedure ClearMemos;
     procedure SelectFolder(const Path: TPath);
     procedure ListFiles;
-    function GetPath(const Path: TPath): TFileName;
-    procedure SetFiles(const Path: TPath; const Files: TArray<string>);
   public
     procedure AfterConstruction; override;
   end;
@@ -52,6 +48,7 @@ implementation
 
 procedure TMain.ActionListFilesExecute(Sender: TObject);
 begin
+  ClearMemos;
   ListFiles;
 end;
 
@@ -74,17 +71,15 @@ procedure TMain.AfterConstruction;
 begin
   inherited;
   EditPathA.Text := 'C:\Windows\System32';
-  EditPathB.Text := 'C:\Windows\System32';
-  EditPathC.Text := 'C:\Windows\System32';
+  EditPathB.Text := 'C:\Windows\';
+  EditPathC.Text := 'C:\Windows\SysWOW64';
 end;
 
-function TMain.GetPath(const Path: TPath): TFileName;
+procedure TMain.ClearMemos;
 begin
-  case Path of
-    TPath.A : Result := EditPathA.Text;
-    TPath.B : Result := EditPathB.Text;
-    TPath.C : Result := EditPathC.Text;
-  end;
+  MemoFilesA.Lines.Clear;
+  MemoFilesB.Lines.Clear;
+  MemoFilesC.Lines.Clear;
 end;
 
 procedure TMain.ListFiles;
@@ -94,21 +89,21 @@ begin
   Tasks[TPath.A] := TTask.Create(
     procedure
     begin
-      SetFiles(TPath.A, TArray<string>(TDirectory.GetFiles(EditPathA.Text)));
+      MemoFilesA.Lines.AddStrings(TArray<string>(TDirectory.GetFiles(EditPathA.Text)));
     end);
   Tasks[TPath.A].Start;
 
   Tasks[TPath.B] := TTask.Create(
     procedure
     begin
-      SetFiles(TPath.B, TArray<string>(TDirectory.GetFiles(EditPathB.Text)));
+      MemoFilesB.Lines.AddStrings(TArray<string>(TDirectory.GetFiles(EditPathB.Text)));
     end);
   Tasks[TPath.B].Start;
 
   Tasks[TPath.C] := TTask.Create(
     procedure
     begin
-      SetFiles(TPath.C, TArray<string>(TDirectory.GetFiles(EditPathC.Text)));
+      MemoFilesC.Lines.AddStrings(TArray<string>(TDirectory.GetFiles(EditPathC.Text)));
     end);
   Tasks[TPath.C].Start;
 end;
@@ -134,28 +129,6 @@ begin
     Dialog.Free;
   end;
 end;
-
-procedure TMain.SetFiles(const Path: TPath; const Files: TArray<string>);
-
-  function GetMemo: TMemo;
-  begin
-    case Path of
-      TPath.A : Result := MemoFilesA;
-      TPath.B : Result := MemoFilesB;
-      TPath.C : Result := MemoFilesC;
-    else
-      raise EArgumentException.Create('Erro');
-    end;
-  end;
-
-var
-  Memo: TMemo;
-begin
-  Memo := GetMemo;
-  Memo.Lines.Clear;
-  Memo.Lines.AddStrings(Files);
-end;
-
 {$WARN SYMBOL_PLATFORM ON}
 
 end.

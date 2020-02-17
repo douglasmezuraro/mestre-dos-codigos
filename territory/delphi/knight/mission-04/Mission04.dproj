@@ -93,7 +93,6 @@
         </DelphiCompile>
         <DCCReference Include="Form.Main.pas">
             <Form>Main</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Impl.Utils.pas"/>
         <BuildConfiguration Include="Release">
