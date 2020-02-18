@@ -3,7 +3,7 @@ object Main: TMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'Main'
+  Caption = 'Delphi Knight - Mission 4'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace
@@ -22,8 +22,7 @@ object Main: TMain
     Width = 267
     Height = 449
     Align = alLeft
-    Lines.Strings = (
-      '')
+    ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 0
     ExplicitLeft = 132
@@ -36,8 +35,7 @@ object Main: TMain
     Width = 266
     Height = 449
     Align = alLeft
-    Lines.Strings = (
-      '')
+    ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 1
     ExplicitTop = 276
@@ -49,8 +47,7 @@ object Main: TMain
     Width = 267
     Height = 449
     Align = alLeft
-    Lines.Strings = (
-      '')
+    ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 2
     ExplicitTop = 149
@@ -89,9 +86,9 @@ object Main: TMain
       Top = 28
       Width = 601
       Height = 22
-      EditLabel.Width = 31
+      EditLabel.Width = 32
       EditLabel.Height = 13
-      EditLabel.Caption = 'Path 1'
+      EditLabel.Caption = 'Path A'
       TabOrder = 0
     end
     object EditPathB: TLabeledEdit
@@ -101,7 +98,7 @@ object Main: TMain
       Height = 22
       EditLabel.Width = 31
       EditLabel.Height = 13
-      EditLabel.Caption = 'Path 2'
+      EditLabel.Caption = 'Path B'
       TabOrder = 1
     end
     object EditPathC: TLabeledEdit
@@ -109,15 +106,15 @@ object Main: TMain
       Top = 110
       Width = 601
       Height = 22
-      EditLabel.Width = 31
+      EditLabel.Width = 32
       EditLabel.Height = 13
-      EditLabel.Caption = 'Path 3'
+      EditLabel.Caption = 'Path C'
       TabOrder = 2
     end
     object ButtonListFiles: TButton
-      Left = 714
-      Top = 110
-      Width = 75
+      Left = 690
+      Top = 108
+      Width = 100
       Height = 25
       Action = ActionListFiles
       TabOrder = 3
@@ -125,8 +122,8 @@ object Main: TMain
   end
   object ActionList: TActionList
     Images = ImageList
-    Left = 436
-    Top = 212
+    Left = 658
+    Top = 40
     object ActionSelectPathA: TAction
       ImageIndex = 0
       OnExecute = ActionSelectPathAExecute
@@ -146,8 +143,8 @@ object Main: TMain
   end
   object ImageList: TImageList
     ColorDepth = cd32Bit
-    Left = 612
-    Top = 240
+    Left = 714
+    Top = 40
     Bitmap = {
       494C010101000500040010001000FFFFFFFF2100FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010

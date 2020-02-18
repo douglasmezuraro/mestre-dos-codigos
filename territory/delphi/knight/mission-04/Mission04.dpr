@@ -1,7 +1,7 @@
 program Mission04;
 
 // Author: Douglas Mezuraro
-// Last modification: 17/02/2020
+// Last modification: 18/02/2020
 // Level: Knight
 // Mission: 04
 // Objective: Build a VCL application where you list all files contained in three directories
@@ -9,8 +9,7 @@ program Mission04;
 
 uses
   Vcl.Forms,
-  Form.Main in 'Form.Main.pas' {Main},
-  Impl.Utils in 'Impl.Utils.pas';
+  Form.Main in 'Form.Main.pas' {Main};
 
 {$R *.res}
 

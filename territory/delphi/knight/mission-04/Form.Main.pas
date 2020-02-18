@@ -3,38 +3,37 @@ unit Form.Main;
 interface
 
 uses
-  System.SysUtils, System.Classes, Vcl.Buttons, System.ImageList, Vcl.ImgList, System.Actions,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnList, System.Threading,
-  System.IOUtils, System.Types;
+  System.Actions, System.Classes, System.ImageList, System.IOUtils, System.SysUtils, System.Threading,
+  System.Types, Vcl.ActnList, Vcl.Buttons, Vcl.Controls, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Forms, Vcl.ImgList,
+  Vcl.StdCtrls;
 
 type
-  TMain = class(TForm)
+  TMain = class sealed(TForm)
     ActionList: TActionList;
+    ActionListFiles: TAction;
     ActionSelectPathA: TAction;
     ActionSelectPathB: TAction;
     ActionSelectPathC: TAction;
-    ActionListFiles: TAction;
+    ButtonListFiles: TButton;
+    ButtonPathA: TSpeedButton;
+    ButtonPathB: TSpeedButton;
+    ButtonPathC: TSpeedButton;
+    EditPathA: TLabeledEdit;
+    EditPathB: TLabeledEdit;
+    EditPathC: TLabeledEdit;
+    ImageList: TImageList;
     MemoFilesA: TMemo;
     MemoFilesB: TMemo;
     MemoFilesC: TMemo;
-    ImageList: TImageList;
     PanelPaths: TPanel;
-    EditPathA: TLabeledEdit;
-    ButtonPathA: TSpeedButton;
-    EditPathB: TLabeledEdit;
-    ButtonPathB: TSpeedButton;
-    EditPathC: TLabeledEdit;
-    ButtonPathC: TSpeedButton;
-    ButtonListFiles: TButton;
+    procedure ActionListFilesExecute(Sender: TObject);
     procedure ActionSelectPathAExecute(Sender: TObject);
     procedure ActionSelectPathBExecute(Sender: TObject);
     procedure ActionSelectPathCExecute(Sender: TObject);
-    procedure ActionListFilesExecute(Sender: TObject);
   private
-    type TPath = (A, B, C);
     procedure ClearMemos;
-    procedure SelectFolder(const Path: TPath);
     procedure ListFiles;
+    function SelectFolder: TFileName;
   public
     procedure AfterConstruction; override;
   end;
@@ -54,25 +53,25 @@ end;
 
 procedure TMain.ActionSelectPathAExecute(Sender: TObject);
 begin
-  SelectFolder(TPath.A);
+  EditPathA.Text := SelectFolder;
 end;
 
 procedure TMain.ActionSelectPathBExecute(Sender: TObject);
 begin
-  SelectFolder(TPath.B);
+  EditPathB.Text := SelectFolder;
 end;
 
 procedure TMain.ActionSelectPathCExecute(Sender: TObject);
 begin
-  SelectFolder(TPath.C);
+  EditPathC.Text := SelectFolder;
 end;
 
 procedure TMain.AfterConstruction;
 begin
   inherited;
-  EditPathA.Text := 'C:\Windows\System32';
-  EditPathB.Text := 'C:\Windows\';
-  EditPathC.Text := 'C:\Windows\SysWOW64';
+  EditPathA.Text := 'C:\Windows\System32\';
+  EditPathB.Text := 'Q:\Lib\';
+  EditPathC.Text := 'C:\Windows\SysWOW64\';
 end;
 
 procedure TMain.ClearMemos;
@@ -83,52 +82,53 @@ begin
 end;
 
 procedure TMain.ListFiles;
+type
+  TPath = (A, B, C);
 var
   Tasks: array[TPath] of ITask;
 begin
-  Tasks[TPath.A] := TTask.Create(
+  Tasks[A] := TTask.Create(
     procedure
     begin
       MemoFilesA.Lines.AddStrings(TArray<string>(TDirectory.GetFiles(EditPathA.Text)));
     end);
-  Tasks[TPath.A].Start;
+  Tasks[A].Start;
 
-  Tasks[TPath.B] := TTask.Create(
+  Tasks[B] := TTask.Create(
     procedure
     begin
       MemoFilesB.Lines.AddStrings(TArray<string>(TDirectory.GetFiles(EditPathB.Text)));
     end);
-  Tasks[TPath.B].Start;
+  Tasks[B].Start;
 
-  Tasks[TPath.C] := TTask.Create(
+  Tasks[C] := TTask.Create(
     procedure
     begin
       MemoFilesC.Lines.AddStrings(TArray<string>(TDirectory.GetFiles(EditPathC.Text)));
     end);
-  Tasks[TPath.C].Start;
+  Tasks[C].Start;
 end;
 
 {$WARN SYMBOL_PLATFORM OFF}
-procedure TMain.SelectFolder(const Path: TPath);
+function TMain.SelectFolder: TFileName;
 var
   Dialog: TFileOpenDialog;
 begin
   Dialog := TFileOpenDialog.Create(Self);
   try
-    Dialog.Options := [fdoPickFolders];
+    Dialog.Options := Dialog.Options + [fdoPickFolders];
 
     if Dialog.Execute then
     begin
-      case Path of
-        TPath.A : EditPathA.Text := Dialog.FileName;
-        TPath.B : EditPathB.Text := Dialog.FileName;
-        TPath.C : EditPathC.Text := Dialog.FileName;
-      end;
+      Exit(Dialog.FileName);
     end;
   finally
     Dialog.Free;
   end;
+
+  Result := string.Empty;
 end;
 {$WARN SYMBOL_PLATFORM ON}
 
 end.
+
