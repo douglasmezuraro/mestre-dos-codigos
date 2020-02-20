@@ -13,14 +13,14 @@ object Main: TMain
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object EditURL: TLabeledEdit
+  object EditSource: TLabeledEdit
     Left = 54
-    Top = 58
+    Top = 48
     Width = 385
     Height = 21
-    EditLabel.Width = 19
+    EditLabel.Width = 33
     EditLabel.Height = 13
-    EditLabel.Caption = 'URL'
+    EditLabel.Caption = 'Source'
     TabOrder = 0
   end
   object ButtonDownload: TButton
@@ -32,11 +32,21 @@ object Main: TMain
     TabOrder = 1
   end
   object ProgressBar: TProgressBar
-    Left = 54
-    Top = 104
+    Left = 50
+    Top = 130
     Width = 475
     Height = 25
     TabOrder = 2
+  end
+  object EditTarget: TLabeledEdit
+    Left = 54
+    Top = 90
+    Width = 385
+    Height = 21
+    EditLabel.Width = 32
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Target'
+    TabOrder = 3
   end
   object ActionList: TActionList
     Left = 514

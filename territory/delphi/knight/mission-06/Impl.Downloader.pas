@@ -3,34 +3,33 @@ unit Impl.Downloader;
 interface
 
 uses
-  IdComponent, IdHTTP, System.Classes, System.Threading;
+  IdComponent, IdHTTP, System.Classes, System.SysUtils;
 
 type
   TDownloader = class sealed(TThread)
   private
     FIdHTTP: TIdHTTP;
-    FSource: string;
-    FTarget: string;
+    FSource: TFileName;
+    FTarget: TFileName;
     function GetOnWorkBegin: TWorkBeginEvent;
     function GetOnWork: TWorkEvent;
     procedure SetOnWork(const Value: TWorkEvent);
     procedure SetOnWorkBegin(const Value: TWorkBeginEvent);
   public
-    constructor Create(const Suspended: Boolean); reintroduce;
+    constructor Create(const CreateSuspended: Boolean); reintroduce;
     destructor Destroy; override;
     procedure Execute; override;
-    property Source: string read FSource write FSource;
-    property Target: string read FTarget write FTarget;
+    property Source: TFileName read FSource write FSource;
+    property Target: TFileName read FTarget write FTarget;
     property OnWorkBegin: TWorkBeginEvent read GetOnWorkBegin write SetOnWorkBegin;
     property OnWork: TWorkEvent read GetOnWork write SetOnWork;
   end;
 
 implementation
 
-constructor TDownloader.Create(const Suspended: Boolean);
+constructor TDownloader.Create(const CreateSuspended: Boolean);
 begin
-  inherited Create(Suspended);
- FreeOnTerminate := True;
+  inherited Create(CreateSuspended);
   FIdHTTP := TIdHTTP.Create;
 end;
 
@@ -74,3 +73,4 @@ begin
 end;
 
 end.
+

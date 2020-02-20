@@ -3,34 +3,30 @@ unit Form.Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.ComCtrls, System.Threading,
-
-  {}
-
-  Impl.Downloader, IdCOmponent;
+  System.SysUtils, System.Classes, System.Actions, Vcl.Controls, Vcl.Forms, Vcl.ActnList, Vcl.StdCtrls,
+  Vcl.ExtCtrls, Vcl.ComCtrls, Impl.Downloader, IdCOmponent;
 
 type
   TMain = class sealed(TForm)
-    EditURL: TLabeledEdit;
+    EditSource: TLabeledEdit;
     ButtonDownload: TButton;
     ActionList: TActionList;
     ActionDownload: TAction;
     ProgressBar: TProgressBar;
+    EditTarget: TLabeledEdit;
     procedure ActionDownloadExecute(Sender: TObject);
     procedure OnWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
     procedure OnWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
   private
     procedure Download;
-    function GetSource: string;
-    function GetTarget: string;
-    procedure SetSource(const Value: string);
-    procedure SetTarget(const Value: string);
+    function GetSource: TFileName;
+    function GetTarget: TFileName;
+    procedure SetSource(const Value: TFileName);
+    procedure SetTarget(const Value: TFileName);
   public
     procedure AfterConstruction; override;
-    property Source: string read GetSource write SetSource;
-    property Target: string read GetTarget write SetTarget;
+    property Source: TFileName read GetSource write SetSource;
+    property Target: TFileName read GetTarget write SetTarget;
   end;
 
 var
@@ -48,7 +44,8 @@ end;
 procedure TMain.AfterConstruction;
 begin
   inherited;
-  EditURL.Text := 'https://speed.hetzner.de/100MB.bin';
+  Source := 'https://speed.hetzner.de/100MB.bin';
+  Target := 'C:\100MB.bin';
 end;
 
 procedure TMain.Download;
@@ -68,19 +65,20 @@ begin
   end;
 end;
 
-function TMain.GetSource: string;
+function TMain.GetSource: TFileName;
 begin
-  Result := EditURL.Text;
+  Result := EditSource.Text;
 end;
 
-function TMain.GetTarget: string;
+function TMain.GetTarget: TFileName;
 begin
-  Result := 'C:\100MB.bin';
+  Result := EditTarget.Text;
 end;
 
 procedure TMain.OnWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
 begin
   ProgressBar.Position := AWorkCount;
+  Application.ProcessMessages;
 end;
 
 procedure TMain.OnWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
@@ -89,14 +87,15 @@ begin
   ProgressBar.Position := 0;
 end;
 
-procedure TMain.SetSource(const Value: string);
+procedure TMain.SetSource(const Value: TFileName);
 begin
-  EditURL.Text := Value;
+  EditSource.Text := Value;
 end;
 
-procedure TMain.SetTarget(const Value: string);
+procedure TMain.SetTarget(const Value: TFileName);
 begin
-
+  EditTarget.Text := Value;
 end;
 
 end.
+
