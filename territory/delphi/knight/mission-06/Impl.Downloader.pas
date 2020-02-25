@@ -3,73 +3,52 @@ unit Impl.Downloader;
 interface
 
 uses
-  IdComponent, IdHTTP, System.Classes, System.SysUtils;
+  IdComponent, IdHTTP, System.Classes, System.SysUtils, Vcl.ComCtrls;
 
 type
   TDownloader = class sealed(TThread)
   private
     FIdHTTP: TIdHTTP;
+    FStream: TMemoryStream;
     FSource: TFileName;
     FTarget: TFileName;
-    function GetOnWorkBegin: TWorkBeginEvent;
-    function GetOnWork: TWorkEvent;
-    procedure SetOnWork(const Value: TWorkEvent);
-    procedure SetOnWorkBegin(const Value: TWorkBeginEvent);
-  public
-    constructor Create(const CreateSuspended: Boolean); reintroduce;
-    destructor Destroy; override;
+    FProgressBar: TProgressBar;
+  protected
     procedure Execute; override;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
     property Source: TFileName read FSource write FSource;
     property Target: TFileName read FTarget write FTarget;
-    property OnWorkBegin: TWorkBeginEvent read GetOnWorkBegin write SetOnWorkBegin;
-    property OnWork: TWorkEvent read GetOnWork write SetOnWork;
+    property ProgressBar: TProgressBar read FProgressBar write FProgressBar;
   end;
 
 implementation
 
-constructor TDownloader.Create(const CreateSuspended: Boolean);
+constructor TDownloader.Create;
 begin
-  inherited Create(CreateSuspended);
+  inherited Create(True);
+  FreeOnTerminate := True;
   FIdHTTP := TIdHTTP.Create;
+  FStream := TMemoryStream.Create;
 end;
 
 destructor TDownloader.Destroy;
 begin
+  FStream.Free;
   FIdHTTP.Free;
   inherited;
 end;
 
 procedure TDownloader.Execute;
-var
-  Stream: TMemoryStream;
 begin
-  Stream := TMemoryStream.Create;
-  try
-    FIdHttp.Get(FSource, Stream);
-    Stream.SaveToFile(FTarget);
-  finally
-    Stream.Free;
-  end;
-end;
+  FIdHttp.Get(FSource, FStream);
+  FStream.SaveToFile(FTarget);
 
-function TDownloader.GetOnWorkBegin: TWorkBeginEvent;
-begin
-  Result := FIdHTTP.OnWorkBegin;
-end;
-
-function TDownloader.GetOnWork: TWorkEvent;
-begin
-  Result := FIdHTTP.OnWork;
-end;
-
-procedure TDownloader.SetOnWorkBegin(const Value: TWorkBeginEvent);
-begin
-  FIdHTTP.OnWorkBegin := Value;
-end;
-
-procedure TDownloader.SetOnWork(const Value: TWorkEvent);
-begin
-  FIdHTTP.OnWork := Value;
+  Synchronize(procedure
+              begin
+                FProgressBar.Position := FStream.Position;
+              end);
 end;
 
 end.

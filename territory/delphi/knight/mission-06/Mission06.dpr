@@ -2,7 +2,8 @@ program Mission06;
 
 uses
   Vcl.Forms,
-  Form.Main in 'Form.Main.pas' {Main};
+  Form.Main in 'Form.Main.pas' {Main},
+  Impl.Downloader in 'Impl.Downloader.pas';
 
 {$R *.res}
 

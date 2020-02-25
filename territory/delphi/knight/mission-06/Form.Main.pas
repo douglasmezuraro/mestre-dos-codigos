@@ -52,17 +52,12 @@ procedure TMain.Download;
 var
   Downloader: TDownloader;
 begin
-  Downloader := TDownloader.Create(True);
-  try
-    Downloader.OnWorkBegin := OnWorkBegin;
-    Downloader.OnWork := OnWork;
-    Downloader.Source := Source;
-    Downloader.Target := Target;
+  Downloader := TDownloader.Create;
+  Downloader.Source := Source;
+  Downloader.Target := Target;
+  Downloader.ProgressBar := ProgressBar;
 
-    Downloader.Execute;
-  finally
-    Downloader.Free;
-  end;
+  Downloader.Start;
 end;
 
 function TMain.GetSource: TFileName;
