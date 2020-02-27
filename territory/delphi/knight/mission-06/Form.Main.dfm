@@ -1,9 +1,10 @@
 object Main: TMain
   Left = 0
   Top = 0
-  Caption = 'Main'
-  ClientHeight = 177
-  ClientWidth = 584
+  BorderStyle = bsDialog
+  Caption = 'Downloader'
+  ClientHeight = 194
+  ClientWidth = 430
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,11 +12,13 @@ object Main: TMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
+  Visible = True
   PixelsPerInch = 96
   TextHeight = 13
   object EditSource: TLabeledEdit
-    Left = 54
-    Top = 48
+    Left = 20
+    Top = 30
     Width = 385
     Height = 21
     EditLabel.Width = 33
@@ -24,23 +27,23 @@ object Main: TMain
     TabOrder = 0
   end
   object ButtonDownload: TButton
-    Left = 454
-    Top = 56
+    Left = 170
+    Top = 111
     Width = 75
     Height = 25
     Action = ActionDownload
     TabOrder = 1
   end
   object ProgressBar: TProgressBar
-    Left = 50
-    Top = 130
-    Width = 475
+    Left = 20
+    Top = 156
+    Width = 385
     Height = 25
     TabOrder = 2
   end
   object EditTarget: TLabeledEdit
-    Left = 54
-    Top = 90
+    Left = 20
+    Top = 71
     Width = 385
     Height = 21
     EditLabel.Width = 32
