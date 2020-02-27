@@ -6,6 +6,8 @@ uses
   System.Generics.Collections, System.SysUtils, System.Character;
 
 type
+  EInvalidCharacter = class(EArgumentException);
+
   TOperations = class sealed
   private
     function Join(const Value: TArray<Char>): string;
@@ -19,36 +21,43 @@ implementation
 
 function TOperations.CountOccurrences(const Text: string; const Value: Char): Word;
 var
-  LValue: Char;
+  Character: Char;
 begin
-  if Text.IsEmpty then
-    raise EArgumentException.Create('The "text" argument cannot be empty.');
-
-  if not LValue.IsDefined then
-    raise EArgumentException.Create('The "value" argument cannot be empty.');
-
-  Result := Result.MinValue;
-  for LValue in Text do
+  if (Text.Trim.IsEmpty) or (Value = ' ') then
   begin
-    if LValue = Value then
+    raise EArgumentException.Create('The "text" argument cannot be empty.');
+  end;
+
+  Result := 0;
+  for Character in Text do
+  begin
+    if Character = Value then
       Inc(Result);
   end;
 end;
 
 function TOperations.Join(const Value: TArray<Char>): string;
 var
-  LValue: Char;
+  Character: Char;
 begin
-  for LValue in Value do
-    Result := Result + LValue;
+  for Character in Value do
+    Result := Result + Character;
 end;
 
 function TOperations.RemoveAccents(const Text: string): string;
-const
-  ASCII_CODE_PAGE = 20127;
 type
-  USASCII = type AnsiString(ASCII_CODE_PAGE);
+  USASCII = type AnsiString(20127);
+var
+  Character: Char;
 begin
+  for Character in Text do
+  begin
+    if not Character.IsLetterOrDigit then
+    begin
+      raise EInvalidCharacter.CreateFmt('The character "%s" is not alphanumeric.', [Character]);
+    end;
+  end;
+
   Result := string(USASCII(Text));
 end;
 
