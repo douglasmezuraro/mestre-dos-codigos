@@ -8,6 +8,7 @@ uses
   IdSSLOpenSSL,
   IdExplicitTLSClientServerBase,
   Impl.Cryptography,
+  Impl.EmailSender.Types,
   System.Classes,
   System.SysUtils;
 
@@ -32,13 +33,13 @@ type
     function GetRecipients: TArray<string>;
     procedure SetRecipients(const Value: TArray<string>);
     function GetMethod: TIdSSLVersion;
-    function GetMode: TIdSSLMode;
+    function GetMode: TSSLMode;
     procedure SetMethod(const Value: TIdSSLVersion);
-    procedure SetMode(const Value: TIdSSLMode);
-    function GetUseTLS: TIdUseTLS;
-    procedure SetUseTLS(const Value: TIdUseTLS);
-    function GetAuthType: TIdSMTPAuthenticationType;
-    procedure SetAuthType(const Value: TIdSMTPAuthenticationType);
+    procedure SetMode(const Value: TSSLMode);
+    function GetUseTLS: TUseTLS;
+    procedure SetUseTLS(const Value: TUseTLS);
+    function GetAuthType: TAuthType;
+    procedure SetAuthType(const Value: TAuthType);
   public
     constructor Create;
     destructor Destroy; override;
@@ -54,9 +55,9 @@ type
     property Recipients: TArray<string> read GetRecipients write SetRecipients;
     property Body: TArray<string> read GetBody write SetBody;
     property Method: TIdSSLVersion read GetMethod write SetMethod;
-    property Mode: TIdSSLMode read GetMode write SetMode;
-    property UseTLS: TIdUseTLS read GetUseTLS write SetUseTLS;
-    property AuthType: TIdSMTPAuthenticationType read GetAuthType write SetAuthType;
+    property Mode: TSSLMode read GetMode write SetMode;
+    property UseTLS: TUseTLS read GetUseTLS write SetUseTLS;
+    property AuthType: TAuthType read GetAuthType write SetAuthType;
   end;
 
 implementation
@@ -83,7 +84,7 @@ begin
   FMessage.Encoding := meMIME;
 end;
 
-function TEmailSender.GetAuthType: TIdSMTPAuthenticationType;
+function TEmailSender.GetAuthType: TAuthType;
 begin
   Result := FSMTP.AuthType;
 end;
@@ -103,7 +104,7 @@ begin
   Result := FIOHandler.SSLOptions.Method;
 end;
 
-function TEmailSender.GetMode: TIdSSLMode;
+function TEmailSender.GetMode: TSSLMode;
 begin
   Result := FIOHandler.SSLOptions.Mode;
 end;
@@ -133,7 +134,7 @@ begin
   Result := FSMTP.Username;
 end;
 
-function TEmailSender.GetUseTLS: TIdUseTLS;
+function TEmailSender.GetUseTLS: TUseTLS;
 begin
   Result := FSMTP.UseTLS;
 end;
@@ -151,7 +152,7 @@ begin
   end;
 end;
 
-procedure TEmailSender.SetAuthType(const Value: TIdSMTPAuthenticationType);
+procedure TEmailSender.SetAuthType(const Value: TAuthType);
 begin
   FSMTP.AuthType := Value;
 end;
@@ -171,7 +172,7 @@ begin
   FIOHandler.SSLOptions.Method := Value;
 end;
 
-procedure TEmailSender.SetMode(const Value: TIdSSLMode);
+procedure TEmailSender.SetMode(const Value: TSSLMode);
 begin
   FIOHandler.SSLOptions.Mode := Value;
 end;
@@ -202,7 +203,7 @@ begin
   FMessage.From.Address := Value;
 end;
 
-procedure TEmailSender.SetUseTLS(const Value: TIdUseTLS);
+procedure TEmailSender.SetUseTLS(const Value: TUseTLS);
 begin
   FSMTP.UseTLS := Value;
 end;

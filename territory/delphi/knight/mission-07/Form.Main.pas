@@ -3,36 +3,45 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Actions, Vcl.ActnList,
-  Impl.EmailSender, Impl.Cryptography, Vcl.ComCtrls, Impl.Types;
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.ActnList,
+  Vcl.ComCtrls,
+  System.Actions,
+  Impl.EmailSender,
+  Impl.EmailSender.Types,
+  Impl.Cryptography;
 
 type
   TMain = class sealed(TForm)
     ActionList: TActionList;
     ActionSendEmail: TAction;
-    PageControl: TPageControl;
-    TabSheetMessage: TTabSheet;
-    TabSheetConfiguration: TTabSheet;
-    EditHost: TLabeledEdit;
-    EditUsername: TLabeledEdit;
-    EditPassword: TLabeledEdit;
-    EditPort: TLabeledEdit;
-    MemoBody: TMemo;
-    Panel: TPanel;
     ButtonSendEmail: TButton;
-    EditSubject: TLabeledEdit;
-    EditRecepients: TLabeledEdit;
-    GroupBoxSSL: TGroupBox;
+    ComboBoxAuthType: TComboBox;
     ComboBoxMethod: TComboBox;
     ComboBoxMode: TComboBox;
+    ComboBoxUseTLS: TComboBox;
+    EditHost: TLabeledEdit;
+    EditPassword: TLabeledEdit;
+    EditPort: TLabeledEdit;
+    EditRecepients: TLabeledEdit;
+    EditSubject: TLabeledEdit;
+    EditUsername: TLabeledEdit;
+    GroupBoxSSL: TGroupBox;
+    LabelAuthType: TLabel;
+    LabelBody: TLabel;
     LabelSSLMethod: TLabel;
     LabelSSLMode: TLabel;
-    LabelBody: TLabel;
-    ComboBoxUseTLS: TComboBox;
     LabelUseTLS: TLabel;
-    ComboBoxAuthType: TComboBox;
-    LabelAuthType: TLabel;
+    MemoBody: TMemo;
+    PageControl: TPageControl;
+    Panel: TPanel;
+    TabSheetConfiguration: TTabSheet;
+    TabSheetMessage: TTabSheet;
     procedure ActionSendEmailExecute(Sender: TObject);
   strict private
     function GetHost: string;
@@ -51,14 +60,14 @@ type
     procedure SetRecipients(const Value: TArray<string>);
     function GetMethod: TSSLMethod;
     procedure SetMethod(const Value: TSSLMethod);
-  private
-    procedure SendEmail;
     function GetMode: TSSLMode;
     procedure SetMode(const Value: TSSLMode);
     function GetUseTLS: TUseTLS;
     procedure SetUseTLS(const Value: TUseTLS);
     function GetAuthType: TAuthType;
     procedure SetAuthType(const Value: TAuthType);
+  private
+    procedure SendEmail;
   public
     procedure AfterConstruction; override;
 
@@ -152,6 +161,31 @@ begin
   InitialConfig;
 end;
 
+procedure TMain.SendEmail;
+var
+  Sender: TEmailSender;
+begin
+  Sender := TEmailSender.Create;
+  try
+    Sender.Host := Host;
+    Sender.Username := Username;
+    Sender.Password := TCryptography.EnDeCrypt(Password);
+    Sender.Port := Port;
+    Sender.Subject := Subject;
+    Sender.Recipients := Recipients;
+    Sender.Body := Body;
+
+    Sender.Method := Method;
+    Sender.Mode := Mode;
+    Sender.UseTLS := UseTLS;
+    Sender.AuthType := AuthType;
+
+    Sender.Send;
+  finally
+    Sender.Free;
+  end;
+end;
+
 function TMain.GetAuthType: TAuthType;
 begin
   Result.Parse(ComboBoxAuthType.ItemIndex);
@@ -205,31 +239,6 @@ end;
 function TMain.GetUseTLS: TUseTLS;
 begin
   Result.Parse(ComboBoxUseTLS.ItemIndex);
-end;
-
-procedure TMain.SendEmail;
-var
-  Sender: TEmailSender;
-begin
-  Sender := TEmailSender.Create;
-  try
-    Sender.Host := Host;
-    Sender.Username := Username;
-    Sender.Password := TCryptography.EnDeCrypt(Password);
-    Sender.Port := Port;
-    Sender.Subject := Subject;
-    Sender.Recipients := Recipients;
-    Sender.Body := Body;
-
-    Sender.Method := Method;
-    Sender.Mode := Mode;
-    Sender.UseTLS := UseTLS;
-    Sender.AuthType := AuthType;
-
-    Sender.Send;
-  finally
-    Sender.Free;
-  end;
 end;
 
 procedure TMain.SetAuthType(const Value: TAuthType);

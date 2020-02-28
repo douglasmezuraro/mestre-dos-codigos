@@ -5,7 +5,7 @@ uses
   Form.Main in 'Form.Main.pas' {Main},
   Impl.EmailSender in 'Impl.EmailSender.pas',
   Impl.Cryptography in 'Impl.Cryptography.pas',
-  Impl.Types in 'Impl.Types.pas';
+  Impl.EmailSender.Types in 'Impl.EmailSender.Types.pas';
 
 {$R *.res}
 

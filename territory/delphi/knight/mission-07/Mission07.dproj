@@ -97,7 +97,7 @@
         </DCCReference>
         <DCCReference Include="Impl.EmailSender.pas"/>
         <DCCReference Include="Impl.Cryptography.pas"/>
-        <DCCReference Include="Impl.Types.pas"/>
+        <DCCReference Include="Impl.EmailSender.Types.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
