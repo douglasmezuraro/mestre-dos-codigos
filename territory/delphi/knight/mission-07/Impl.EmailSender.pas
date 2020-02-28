@@ -47,17 +47,22 @@ type
 
     procedure Send;
 
+    { Message }
+    property Subject: string read GetSubject write SetSubject;
+    property Recipients: TArray<string> read GetRecipients write SetRecipients;
+    property Body: TArray<string> read GetBody write SetBody;
+
+    { STMP Configuration}
     property Host: string read GetHost write SetHost;
     property Username: string read GetUsername write SetUsername;
     property Password: string read GetPassword write SetPassword;
     property Port: Word read GetPort write SetPort;
-    property Subject: string read GetSubject write SetSubject;
-    property Recipients: TArray<string> read GetRecipients write SetRecipients;
-    property Body: TArray<string> read GetBody write SetBody;
-    property Method: TIdSSLVersion read GetMethod write SetMethod;
-    property Mode: TSSLMode read GetMode write SetMode;
     property UseTLS: TUseTLS read GetUseTLS write SetUseTLS;
     property AuthType: TAuthType read GetAuthType write SetAuthType;
+
+    { SSL Configuration }
+    property Method: TIdSSLVersion read GetMethod write SetMethod;
+    property Mode: TSSLMode read GetMode write SetMode;
   end;
 
 implementation
@@ -121,7 +126,7 @@ end;
 
 function TEmailSender.GetRecipients: TArray<string>;
 begin
-  Result := FMessage.Recipients.EMailAddresses.Split([',']);
+  Result := FMessage.Recipients.EMailAddresses.Split([', ']);
 end;
 
 function TEmailSender.GetSubject: string;
@@ -189,7 +194,7 @@ end;
 
 procedure TEmailSender.SetRecipients(const Value: TArray<string>);
 begin
-  FMessage.Recipients.EMailAddresses := string.Join(',', Value);
+  FMessage.Recipients.EMailAddresses := string.Join(', ', Value);
 end;
 
 procedure TEmailSender.SetSubject(const Value: string);

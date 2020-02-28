@@ -188,7 +188,7 @@ end;
 
 function TMain.GetAuthType: TAuthType;
 begin
-  Result.Parse(ComboBoxAuthType.ItemIndex);
+  Result := TAuthType(ComboBoxAuthType.ItemIndex);
 end;
 
 function TMain.GetBody: TArray<string>;
@@ -203,12 +203,12 @@ end;
 
 function TMain.GetMethod: TSSLMethod;
 begin
-  Result.Parse(ComboBoxMethod.ItemIndex);
+  Result := TSSLMethod(ComboBoxMethod.ItemIndex);
 end;
 
 function TMain.GetMode: TSSLMode;
 begin
-  Result.Parse(ComboBoxMode.ItemIndex);
+  Result := TSSLMode(ComboBoxMode.ItemIndex);
 end;
 
 function TMain.GetPassword: string;
@@ -238,7 +238,7 @@ end;
 
 function TMain.GetUseTLS: TUseTLS;
 begin
-  Result.Parse(ComboBoxUseTLS.ItemIndex);
+  Result := TUseTLS(ComboBoxUseTLS.ItemIndex);
 end;
 
 procedure TMain.SetAuthType(const Value: TAuthType);
