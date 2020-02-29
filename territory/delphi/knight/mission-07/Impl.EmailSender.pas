@@ -146,14 +146,17 @@ end;
 
 procedure TEmailSender.Send;
 begin
-  //TODO: Colocar dentro de uma anonymous thread
-
-  FSMTP.Connect;
   try
-    if FSMTP.Authenticate then
-      FSMTP.SendMsg(FMessage);
-  finally
-    FSMTP.Disconnect;
+    FSMTP.Connect;
+    try
+      if FSMTP.Authenticate then
+        FSMTP.SendMsg(FMessage);
+    finally
+      FSMTP.Disconnect;
+    end;
+  except
+    on E: Exception do
+      raise;
   end;
 end;
 

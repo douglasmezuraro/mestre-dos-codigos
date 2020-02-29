@@ -137,9 +137,9 @@ procedure TMain.AfterConstruction;
 
   procedure InitialConfig;
   begin
-    Host       := 'smtp.office365.com';
-    Username   := 'douglas.mezuraro@db1.com.br';
-    Port       := 587;
+    Host       := 'smtp.gmail.com';
+    Username   := 'douglasmez@gmail.com';
+    Port       := 465;
     Subject    := 'E-mail test';
     Recipients := ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com'];
     Body       := ['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020'];
@@ -162,28 +162,33 @@ begin
 end;
 
 procedure TMain.SendEmail;
-var
-  Sender: TEmailSender;
 begin
-  Sender := TEmailSender.Create;
-  try
-    Sender.Host := Host;
-    Sender.Username := Username;
-    Sender.Password := TCryptography.EnDeCrypt(Password);
-    Sender.Port := Port;
-    Sender.Subject := Subject;
-    Sender.Recipients := Recipients;
-    Sender.Body := Body;
+  TThread.CreateAnonymousThread(
+    procedure
+    var
+      Sender: TEmailSender;
+    begin
+      Sender := TEmailSender.Create;
+      try
+        Sender.Host := Host;
+        Sender.Username := Username;
+        Sender.Password := TCryptography.EnDeCrypt(Password);
+        Sender.Port := Port;
+        Sender.UseTLS := UseTLS;
+        Sender.AuthType := AuthType;
 
-    Sender.Method := Method;
-    Sender.Mode := Mode;
-    Sender.UseTLS := UseTLS;
-    Sender.AuthType := AuthType;
+        Sender.Subject := Subject;
+        Sender.Recipients := Recipients;
+        Sender.Body := Body;
 
-    Sender.Send;
-  finally
-    Sender.Free;
-  end;
+        Sender.Method := Method;
+        Sender.Mode := Mode;
+
+        Sender.Send;
+      finally
+        Sender.Free;
+      end;
+    end).Start;
 end;
 
 function TMain.GetAuthType: TAuthType;
