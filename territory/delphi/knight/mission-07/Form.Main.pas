@@ -67,6 +67,7 @@ type
     function GetAuthType: TAuthType;
     procedure SetAuthType(const Value: TAuthType);
   private
+    procedure Init;
     procedure SendEmail;
   public
     procedure AfterConstruction; override;
@@ -102,63 +103,16 @@ begin
 end;
 
 procedure TMain.AfterConstruction;
-
-  procedure FillMethodComboBox;
-  var
-    Enum: TSSLMethod;
-  begin
-    for Enum := Low(TSSLMethod) to High(TSSLMethod) do
-      ComboBoxMethod.Items.Add(Enum.ToString);
-  end;
-
-  procedure FillModeComboBox;
-  var
-    Enum: TSSLMode;
-  begin
-    for Enum := Low(TSSLMode) to High(TSSLMode) do
-      ComboBoxMode.Items.Add(Enum.ToString);
-  end;
-
-  procedure FillUseTLSComboBox;
-  var
-    Enum: TUseTLS;
-  begin
-    for Enum := Low(TUseTLS) to High(TUseTLS) do
-      ComboBoxUseTLS.Items.Add(Enum.ToString);
-  end;
-
-  procedure FillAuthTypeComboBox;
-  var
-    Enum: TAuthType;
-  begin
-    for Enum := Low(TAuthType) to High(TAuthType) do
-      ComboBoxAuthType.Items.Add(Enum.ToString);
-  end;
-
-  procedure InitialConfig;
-  begin
-    Host       := 'smtp.gmail.com';
-    Username   := 'douglasmez@gmail.com';
-    Port       := 465;
-    Subject    := 'E-mail test';
-    Recipients := ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com'];
-    Body       := ['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020'];
-    Method     := TSSLMethod.sslvSSLv23;
-    Mode       := TSSLMode.sslmClient;
-    UseTLS     := TUseTLS.utUseImplicitTLS;
-    AuthType   := TAuthType.satDefault;
-  end;
-
 begin
   inherited;
   PageControl.ActivePage := TabSheetMessage;
 
-  FillMethodComboBox;
-  FillModeComboBox;
-  FillUseTLSComboBox;
-  FillAuthTypeComboBox;
+  ComboBoxMethod.Items.AddStrings(TSSLMethod.ToStringArray);
+  ComboBoxMode.Items.AddStrings(TSSLMode.ToStringArray);
+  ComboBoxUseTLS.Items.AddStrings(TUseTLS.ToStringArray);
+  ComboBoxAuthType.Items.AddStrings(TAuthType.ToStringArray);
 
-  InitialConfig;
+  Init;
 end;
 
 procedure TMain.SendEmail;
@@ -244,6 +198,20 @@ end;
 function TMain.GetUseTLS: TUseTLS;
 begin
   Result := TUseTLS(ComboBoxUseTLS.ItemIndex);
+end;
+
+procedure TMain.Init;
+begin
+  Host       := 'smtp.gmail.com';
+  Username   := 'douglasmez@gmail.com';
+  Port       := 465;
+  Subject    := 'E-mail test';
+  Recipients := ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com'];
+  Body       := ['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020'];
+  Method     := TSSLMethod.sslvSSLv23;
+  Mode       := TSSLMode.sslmClient;
+  UseTLS     := TUseTLS.utUseImplicitTLS;
+  AuthType   := TAuthType.satDefault;
 end;
 
 procedure TMain.SetAuthType(const Value: TAuthType);
