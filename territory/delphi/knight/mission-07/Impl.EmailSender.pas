@@ -4,6 +4,7 @@ interface
 
 uses
   IdMessage,
+  IdText,
   IdSMTP,
   IdSSLOpenSSL,
   IdExplicitTLSClientServerBase,
@@ -16,6 +17,7 @@ type
   TEmailSender = class sealed
   private
     FSMTP: TIdSMTP;
+    FText: TIdText;
     FMessage: TIdMessage;
     FIOHandler: TIdSSLIOHandlerSocketOpenSSL;
     function GetHost: string;
@@ -71,12 +73,14 @@ constructor TEmailSender.Create;
 begin
   FSMTP := TIdSMTP.Create(nil);
   FMessage := TIdMessage.Create(nil);
+  FText := TIdText.Create(FMessage.MessageParts);
   FIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create;
 end;
 
 destructor TEmailSender.Destroy;
 begin
   FIOHandler.Free;
+  FText.Free;
   FMessage.Free;
   FSMTP.Free;
   inherited;
@@ -85,8 +89,10 @@ end;
 procedure TEmailSender.AfterConstruction;
 begin
   inherited;
+  FSMTP.ConnectTimeout := 30000;
   FSMTP.IOHandler := FIOHandler;
   FMessage.Encoding := meMIME;
+  FText.ContentType := 'text/plain; charset=iso-8859-1';
 end;
 
 function TEmailSender.GetAuthType: TAuthType;
@@ -96,7 +102,7 @@ end;
 
 function TEmailSender.GetBody: TArray<string>;
 begin
-  Result := FMessage.Body.ToStringArray;
+  Result := FText.Body.ToStringArray;
 end;
 
 function TEmailSender.GetHost: string;
@@ -146,17 +152,12 @@ end;
 
 procedure TEmailSender.Send;
 begin
+  FSMTP.Connect;
   try
-    FSMTP.Connect;
-    try
-      if FSMTP.Authenticate then
-        FSMTP.SendMsg(FMessage);
-    finally
-      FSMTP.Disconnect;
-    end;
-  except
-    on E: Exception do
-      raise;
+    if FSMTP.Authenticate then
+      FSMTP.SendMsg(FMessage);
+  finally
+    FSMTP.Disconnect;
   end;
 end;
 
@@ -167,7 +168,7 @@ end;
 
 procedure TEmailSender.SetBody(const Value: TArray<string>);
 begin
-  FMessage.Body.AddStrings(Value);
+  FText.Body.AddStrings(Value);
 end;
 
 procedure TEmailSender.SetHost(const Value: string);
