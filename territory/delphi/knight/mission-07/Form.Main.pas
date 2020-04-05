@@ -14,7 +14,8 @@ uses
   System.Actions,
   Impl.EmailSender,
   Impl.EmailSender.Types,
-  Impl.Cryptography;
+  Impl.Cryptography, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
+  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP;
 
 type
   TMain = class sealed(TForm)
@@ -42,6 +43,7 @@ type
     Panel: TPanel;
     TabSheetConfiguration: TTabSheet;
     TabSheetMessage: TTabSheet;
+    idsmtp2: TIdSMTP;
     procedure ActionSendEmailExecute(Sender: TObject);
   strict private
     function GetHost: string;
@@ -116,33 +118,29 @@ begin
 end;
 
 procedure TMain.SendEmail;
+var
+  Sender: TEmailSender;
 begin
-  TThread.CreateAnonymousThread(
-    procedure
-    var
-      Sender: TEmailSender;
-    begin
-      Sender := TEmailSender.Create;
-      try
-        Sender.Host := Host;
-        Sender.Username := Username;
-        Sender.Password := TCryptography.EnDeCrypt(Password);
-        Sender.Port := Port;
-        Sender.UseTLS := UseTLS;
-        Sender.AuthType := AuthType;
+  Sender := TEmailSender.Create;
+  try
+    Sender.Host := Host;
+    Sender.Username := Username;
+    Sender.Password := TCryptography.EnDeCrypt(Password);
+    Sender.Port := Port;
+    Sender.UseTLS := UseTLS;
+    Sender.AuthType := AuthType;
 
-        Sender.Subject := Subject;
-        Sender.Recipients := Recipients;
-        Sender.Body := Body;
+    Sender.Subject := Subject;
+    Sender.Recipients := Recipients;
+    Sender.Body := Body;
 
-        Sender.Method := Method;
-        Sender.Mode := Mode;
+    Sender.Method := Method;
+    Sender.Mode := Mode;
 
-        Sender.Send;
-      finally
-        Sender.Free;
-      end;
-    end).Start;
+    Sender.Send;
+  finally
+    Sender.Free;
+  end;
 end;
 
 function TMain.GetAuthType: TAuthType;

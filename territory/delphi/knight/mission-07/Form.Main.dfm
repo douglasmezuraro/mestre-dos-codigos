@@ -19,15 +19,11 @@ object Main: TMain
     Top = 0
     Width = 600
     Height = 456
-    ActivePage = TabSheetMessage
+    ActivePage = TabSheetConfiguration
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 635
-    ExplicitHeight = 421
     object TabSheetMessage: TTabSheet
       Caption = 'Message'
-      ExplicitWidth = 627
-      ExplicitHeight = 393
       object LabelBody: TLabel
         Left = 15
         Top = 99
@@ -66,8 +62,6 @@ object Main: TMain
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
-      ExplicitWidth = 627
-      ExplicitHeight = 393
       object LabelUseTLS: TLabel
         Left = 15
         Top = 188
@@ -190,8 +184,6 @@ object Main: TMain
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 421
-    ExplicitWidth = 635
     object ButtonSendEmail: TButton
       Left = 1
       Top = 1
@@ -209,5 +201,10 @@ object Main: TMain
       Caption = '&Send e-mail'
       OnExecute = ActionSendEmailExecute
     end
+  end
+  object idsmtp2: TIdSMTP
+    SASLMechanisms = <>
+    Left = 316
+    Top = 262
   end
 end

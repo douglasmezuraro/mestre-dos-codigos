@@ -11,10 +11,11 @@ uses
   Impl.Cryptography,
   Impl.EmailSender.Types,
   System.Classes,
-  System.SysUtils;
+  System.SysUtils,
+  Vcl.Forms;
 
 type
-  TEmailSender = class sealed
+  TEmailSender = class sealed(TObject)
   private
     FSMTP: TIdSMTP;
     FText: TIdText;
@@ -42,6 +43,9 @@ type
     procedure SetUseTLS(const Value: TUseTLS);
     function GetAuthType: TAuthType;
     procedure SetAuthType(const Value: TAuthType);
+    procedure OnFailedRecipient(Sender: TObject; const AAddress, ACode, AText: String;
+      var VContinue: Boolean);
+    procedure OnTLSNotAvailable(Asender: TObject; var VContinue: Boolean);
   public
     constructor Create;
     destructor Destroy; override;
@@ -75,6 +79,8 @@ begin
   FMessage := TIdMessage.Create(nil);
   FText := TIdText.Create(FMessage.MessageParts);
   FIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create;
+  FSMTP.OnFailedRecipient := OnFailedRecipient;
+  FSMTP.OnTLSNotAvailable := OnTLSNotAvailable;
 end;
 
 destructor TEmailSender.Destroy;
@@ -91,7 +97,7 @@ begin
   inherited;
   FSMTP.ConnectTimeout := 30000;
   FSMTP.IOHandler := FIOHandler;
-  FMessage.Encoding := meMIME;
+  FMessage.Encoding := TIdMessageEncoding.meMIME;
   FText.ContentType := 'text/plain; charset=iso-8859-1';
 end;
 
@@ -150,6 +156,12 @@ begin
   Result := FSMTP.UseTLS;
 end;
 
+procedure TEmailSender.OnFailedRecipient(Sender: TObject; const AAddress, ACode, AText: String;
+  var VContinue: Boolean);
+begin
+  raise Exception.Create('Error Message');
+end;
+
 procedure TEmailSender.Send;
 begin
   FSMTP.Connect;
@@ -199,6 +211,8 @@ end;
 procedure TEmailSender.SetRecipients(const Value: TArray<string>);
 begin
   FMessage.Recipients.EMailAddresses := string.Join(', ', Value);
+  FMessage.CCList.EMailAddresses := string.Join(', ', Value);
+  FMessage.BccList.EMailAddresses := string.Join(', ', Value);
 end;
 
 procedure TEmailSender.SetSubject(const Value: string);
@@ -215,6 +229,11 @@ end;
 procedure TEmailSender.SetUseTLS(const Value: TUseTLS);
 begin
   FSMTP.UseTLS := Value;
+end;
+
+procedure TEmailSender.OnTLSNotAvailable(Asender: TObject; var VContinue: Boolean);
+begin
+  raise Exception.Create('siodioasd');
 end;
 
 end.
