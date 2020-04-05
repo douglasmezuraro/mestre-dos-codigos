@@ -6,6 +6,7 @@ uses
   System.Actions,
   System.Classes,
   System.RegularExpressions,
+  System.UITypes,
   Vcl.ActnList,
   Vcl.Controls,
   Vcl.Dialogs,
@@ -22,7 +23,7 @@ type
     ButtonValidate: TButton;
     procedure ActionValidateExecute(Sender: TObject);
   strict private
-    FRegExpDetails: RegExpDetails;
+    FEmailRegEx: RegExpDetails;
     function GetEmail: string;
     procedure SetEmail(const Value: string);
   private
@@ -44,21 +45,20 @@ procedure TMain.ActionValidateExecute(Sender: TObject);
 const
   VALIDATE_MESSAGE: array[Boolean] of string = ('E-mail inválido.', 'E-mail válido.');
 begin
-  ShowMessage(VALIDATE_MESSAGE[Validate]);
+  MessageDlg(VALIDATE_MESSAGE[Validate], TMsgDlgType.mtInformation, [mbYes], 0);
 end;
 
 constructor TMain.Create(AOwner: TComponent);
 const
-  REGEX_LIB_URL = 'http://regexlib.com/WebServices.asmx?WSDL';
   EMAIL_PATTERN = 3122;
 begin
   inherited;
-  FRegExpDetails := WebServices.GetWebservicesSoap(True, REGEX_LIB_URL).getRegExpDetails(EMAIL_PATTERN);
+  FEmailRegEx := WebServices.GetWebServicesSoap.GetRegExpDetails(EMAIL_PATTERN);
 end;
 
 destructor TMain.Destroy;
 begin
-  FRegExpDetails.Free;
+  FEmailRegEx.Free;
   inherited;
 end;
 
@@ -74,7 +74,8 @@ end;
 
 function TMain.Validate: Boolean;
 begin
-  Result := TRegEx.Create(FRegExpDetails.regular_expression).IsMatch(Email);
+  Result := TRegEx.Create(FEmailRegEx.Regular_Expression).IsMatch(Email);
 end;
 
 end.
+
