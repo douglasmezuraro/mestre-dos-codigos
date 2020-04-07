@@ -61,7 +61,7 @@ implementation
 constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
-  FWebService := WebServices.GetAtendeCliente;
+  FWebService := WebServices.GetAtendeCliente(True);
 end;
 
 procedure TMain.ActionSearchExecute(Sender: TObject);
@@ -140,3 +140,4 @@ begin
 end;
 
 end.
+
