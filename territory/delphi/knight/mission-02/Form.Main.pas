@@ -15,10 +15,11 @@ uses
 
 type
   TMain = class sealed(TForm)
-    GridPrograms: TDBGrid;
-  private
+    Grid: TDBGrid;
+  strict private
     FDataSet: TClientDataSet;
     FDataSource: TDataSource;
+  private
     procedure ListPrograms;
     procedure LinkComponents;
     procedure CreateDataSet;
@@ -61,7 +62,7 @@ end;
 procedure TMain.LinkComponents;
 begin
   FDataSource.DataSet := FDataSet;
-  GridPrograms.DataSource := FDataSource;
+  Grid.DataSource := FDataSource;
 end;
 
 procedure TMain.ListPrograms;
@@ -69,6 +70,7 @@ var
   Prog: TProgramInfo;
   ProgramList: TProgramList;
 begin
+  FDataSet.DisableControls;
   ProgramList := TProgramList.Create;
   try
     for Prog in ProgramList.List do
@@ -81,6 +83,7 @@ begin
     end;
   finally
     ProgramList.Free;
+    FDataSet.EnableControls;
   end;
 end;
 
