@@ -3,7 +3,8 @@ unit Impl.Config;
 interface
 
 uses
-  Impl.Config.API, System.IniFiles;
+  Impl.Config.API,
+  System.IniFiles;
 
 type
   TConfig = class(TInterfacedObject, IServer, IDatabase)
@@ -63,3 +64,4 @@ begin
 end;
 
 end.
+

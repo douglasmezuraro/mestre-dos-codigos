@@ -51,5 +51,7 @@ begin
   PrintHeader;
   SaveData;
 
-  ReportMemoryLeaksOnShutdown := True;
+{$WARN SYMBOL_PLATFORM OFF}
+  ReportMemoryLeaksOnShutdown := WordBool(DebugHook);
+{$WARN SYMBOL_PLATFORM DEFAULT}
 end.
