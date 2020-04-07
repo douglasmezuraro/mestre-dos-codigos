@@ -3,7 +3,12 @@ unit Impl.ProgramList;
 interface
 
 uses
-  Impl.ProgramInfo, System.Classes, System.Generics.Collections, System.SysUtils, System.Win.Registry, Winapi.Windows;
+  Impl.ProgramInfo,
+  System.Classes,
+  System.Generics.Collections,
+  System.SysUtils,
+  System.Win.Registry,
+  Winapi.Windows;
 
 type
   TProgramList = class sealed
@@ -81,3 +86,4 @@ begin
 end;
 
 end.
+

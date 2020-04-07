@@ -20,6 +20,7 @@ object Main: TMain
     Width = 600
     Height = 749
     Align = alClient
+    ReadOnly = True
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText

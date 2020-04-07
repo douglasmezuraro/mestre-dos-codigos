@@ -21,5 +21,8 @@ begin
   Application.CreateForm(TMain, Main);
   Application.Run;
 
-  ReportMemoryLeaksOnShutdown := True;
+{$WARN SYMBOL_PLATFORM OFF}
+  ReportMemoryLeaksOnShutdown := WordBool(DebugHook);
+{$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+
