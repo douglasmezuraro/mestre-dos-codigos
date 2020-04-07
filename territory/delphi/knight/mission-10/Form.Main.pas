@@ -45,7 +45,7 @@ procedure TMain.ActionValidateExecute(Sender: TObject);
 const
   VALIDATE_MESSAGE: array[Boolean] of string = ('E-mail inválido.', 'E-mail válido.');
 begin
-  MessageDlg(VALIDATE_MESSAGE[Validate], TMsgDlgType.mtInformation, [mbYes], 0);
+  MessageDlg(VALIDATE_MESSAGE[Validate], TMsgDlgType.mtInformation, [TMsgDlgBtn.mbYes], 0);
 end;
 
 constructor TMain.Create(AOwner: TComponent);
@@ -53,7 +53,7 @@ const
   EMAIL_PATTERN = 3122;
 begin
   inherited;
-  FEmailRegEx := WebServices.GetWebServicesSoap.GetRegExpDetails(EMAIL_PATTERN);
+  FEmailRegEx := WebServices.GetWebServicesSoap(True).GetRegExpDetails(EMAIL_PATTERN);
 end;
 
 destructor TMain.Destroy;
