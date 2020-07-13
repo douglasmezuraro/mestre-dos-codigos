@@ -3,8 +3,7 @@ unit Impl.Config;
 interface
 
 uses
-  Impl.Config.API,
-  System.IniFiles;
+  Impl.Config.API, System.IniFiles, System.IOUtils, System.SysUtils;
 
 type
   TConfig = class(TInterfacedObject, IServer, IDatabase)
@@ -17,20 +16,25 @@ type
     destructor Destroy; override;
     procedure SaveDataServer;
     procedure SaveDataDatabase;
-    const FILE_PATH = 'C:\Config.ini';
+    class function FilePath: TFileName;
   end;
 
 implementation
 
 constructor TConfig.Create;
 begin
-  FIniFile := TIniFile.Create(FILE_PATH);
+  FIniFile := TIniFile.Create(FilePath);
 end;
 
 destructor TConfig.Destroy;
 begin
   FIniFile.Free;
   inherited;
+end;
+
+class function TConfig.FilePath: TFileName;
+begin
+  Result := TPath.Combine(TPath.GetDirectoryName(ParamStr(0)), 'Config.ini');
 end;
 
 procedure TConfig.SaveDataDatabase;

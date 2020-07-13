@@ -1,7 +1,7 @@
 program Mission01;
 
 // Author: Douglas Mezuraro
-// Last modification: 16/02/2020
+// Last modification: 12/07/2020
 // Level: Knight
 // Mission: 01
 // Objective: Build a console application where a concrete class implements two interfaces that have
@@ -32,7 +32,7 @@ var
 begin
   Config := TConfig.Create;
   try
-    WriteLn('The path of the file is "', Config.FILE_PATH, '".');
+    WriteLn('The path of the file is "', Config.FilePath, '".');
 
     Config.SaveDataServer;
     Writeln('The "Server" section was successfully saved.');
