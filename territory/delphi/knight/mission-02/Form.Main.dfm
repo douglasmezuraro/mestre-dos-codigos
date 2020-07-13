@@ -22,6 +22,7 @@ object Main: TMain
     Width = 800
     Height = 600
     Align = alClient
+    DataSource = DataSource
     ReadOnly = True
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -29,5 +30,28 @@ object Main: TMain
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+  end
+  object DataSet: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 214
+    Top = 198
+    object FieldName: TStringField
+      FieldName = 'Name'
+      Size = 60
+    end
+    object FieldVersion: TStringField
+      FieldName = 'Version'
+      Size = 40
+    end
+    object FieldPublisher: TStringField
+      FieldName = 'Publisher'
+      Size = 60
+    end
+  end
+  object DataSource: TDataSource
+    DataSet = DataSet
+    Left = 278
+    Top = 200
   end
 end

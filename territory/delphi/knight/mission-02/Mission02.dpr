@@ -1,7 +1,7 @@
 program Mission02;
 
 // Author: Douglas Mezuraro
-// Last modification: 16/02/2020
+// Last modification: 12/07/2020
 // Level: Knight
 // Mission: 02
 // Objective: Build a VCL application that lists the data of the installed programs in a TDBGrid.
@@ -9,6 +9,7 @@ program Mission02;
 
 uses
   Vcl.Forms,
+  System.SysUtils,
   Form.Main in 'Form.Main.pas' {Main},
   Impl.ProgramList in 'Impl.ProgramList.pas',
   Impl.ProgramInfo in 'Impl.ProgramInfo.pas';
@@ -22,7 +23,7 @@ begin
   Application.Run;
 
 {$WARN SYMBOL_PLATFORM OFF}
-  ReportMemoryLeaksOnShutdown := WordBool(DebugHook);
+  ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
 

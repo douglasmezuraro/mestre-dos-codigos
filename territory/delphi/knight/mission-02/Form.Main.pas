@@ -3,28 +3,25 @@ unit Form.Main;
 interface
 
 uses
-  Data.DB,
-  Datasnap.DBClient,
-  Impl.ProgramInfo,
-  Impl.ProgramList,
-  System.Classes,
-  Vcl.Controls,
-  Vcl.DBGrids,
-  Vcl.Forms,
-  Vcl.Grids;
+  Data.DB, Datasnap.DBClient, Impl.ProgramInfo, Impl.ProgramList, System.Classes, Vcl.Controls,
+  Vcl.DBGrids, Vcl.Forms, Vcl.Grids;
 
 type
   TMain = class sealed(TForm)
+  {$REGION 'Visual Components'}
     Grid: TDBGrid;
-  strict private
-    FDataSet: TClientDataSet;
-    FDataSource: TDataSource;
+    DataSet: TClientDataSet;
+    DataSource: TDataSource;
+    FieldName: TStringField;
+    FieldVersion: TStringField;
+    FieldPublisher: TStringField;
+  {$ENDREGION}
   private
+    FPrograms: TProgramList;
     procedure ListPrograms;
-    procedure LinkComponents;
-    procedure CreateDataSet;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure AfterConstruction; override;
   end;
 
@@ -38,52 +35,41 @@ implementation
 constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
-  FDataSource := TDataSource.Create(AOwner);
-  FDataSet := TClientDataSet.Create(AOwner);
+  DataSet.CreateDataSet;
+  FPrograms := TProgramList.Create;
+end;
+
+destructor TMain.Destroy;
+begin
+  FPrograms.Free;
+  inherited;
 end;
 
 procedure TMain.AfterConstruction;
 begin
   inherited;
-  CreateDataSet;
-  LinkComponents;
   ListPrograms;
-end;
-
-procedure TMain.CreateDataSet;
-begin
-  FDataSet.FieldDefs.Add('Name', TFieldType.ftString, 60);
-  FDataSet.FieldDefs.Add('Version', TFieldType.ftString, 40);
-  FDataSet.FieldDefs.Add('Publisher', TFieldType.ftString, 60);
-
-  FDataSet.CreateDataSet;
-end;
-
-procedure TMain.LinkComponents;
-begin
-  FDataSource.DataSet := FDataSet;
-  Grid.DataSource := FDataSource;
 end;
 
 procedure TMain.ListPrograms;
 var
-  Prog: TProgramInfo;
-  ProgramList: TProgramList;
+  Info: TProgramInfo;
 begin
-  FDataSet.DisableControls;
-  ProgramList := TProgramList.Create;
+  DataSet.DisableControls;
   try
-    for Prog in ProgramList.List do
+    for Info in FPrograms.ToArray do
     begin
-      FDataSet.Insert;
-      FDataSet.FieldByName('Name').AsString := Prog.Name;
-      FDataSet.FieldByName('Version').AsString := Prog.Version;
-      FDataSet.FieldByName('Publisher').AsString := Prog.Publisher;
-      FDataSet.Post;
+      if not Info.IsEmpty then
+      begin
+        DataSet.Insert;
+        FieldName.AsString := Info.Name;
+        FieldVersion.AsString := Info.Version;
+        FieldPublisher.AsString := info.Publisher;
+        DataSet.Post;
+      end;
     end;
   finally
-    ProgramList.Free;
-    FDataSet.EnableControls;
+    DataSet.EnableControls;
   end;
 end;
 

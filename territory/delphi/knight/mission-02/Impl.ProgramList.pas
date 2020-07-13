@@ -3,11 +3,7 @@ unit Impl.ProgramList;
 interface
 
 uses
-  Impl.ProgramInfo,
-  System.Classes,
-  System.Generics.Collections,
-  System.SysUtils,
-  System.Win.Registry,
+  Impl.ProgramInfo, System.Classes, System.Generics.Collections, System.SysUtils, System.Win.Registry,
   Winapi.Windows;
 
 type
@@ -15,13 +11,12 @@ type
   private
     FRegistry: TRegistry;
     FPrograms: TList<TProgramInfo>;
-    const PATH = 'Software\Microsoft\Windows\CurrentVersion\Uninstall';
+    function Path: string;
     function GetPrograms: TArray<string>;
   public
     constructor Create;
     destructor Destroy; override;
-  public
-    function List: TArray<TProgramInfo>;
+    function ToArray: TArray<TProgramInfo>;
   end;
 
 implementation
@@ -29,7 +24,7 @@ implementation
 constructor TProgramList.Create;
 begin
   FRegistry := TRegistry.Create;
-  FPrograms := TList<TProgramInfo>.Create;
+  FPrograms := TObjectList<TProgramInfo>.Create;
 end;
 
 destructor TProgramList.Destroy;
@@ -41,42 +36,38 @@ end;
 
 function TProgramList.GetPrograms: TArray<string>;
 var
-  List: TStringList;
+  Programs: TStringList;
 begin
-  List := TStringList.Create;
+  Programs := TStringList.Create;
   try
     FRegistry.RootKey := HKEY_LOCAL_MACHINE;
-    FRegistry.OpenKeyReadOnly(PATH);
-    FRegistry.GetKeyNames(List);
+    FRegistry.OpenKeyReadOnly(Path);
+    FRegistry.GetKeyNames(Programs);
 
-    Result := List.ToStringArray;
+    Result := Programs.ToStringArray;
   finally
     FRegistry.CloseKey;
-    List.Free;
+    Programs.Free;
   end;
 end;
 
-function TProgramList.List: TArray<TProgramInfo>;
+function TProgramList.Path: string;
+begin
+  Result := 'Software\Microsoft\Windows\CurrentVersion\Uninstall';
+end;
+
+function TProgramList.ToArray: TArray<TProgramInfo>;
 var
   Name: string;
-  ProgramInfo: TProgramInfo;
 begin
   for Name in GetPrograms do
   begin
-    FRegistry.OpenKeyReadOnly(PATH + '\' + Name);
+    FRegistry.OpenKeyReadOnly(Path + '\' + Name);
     try
-      ProgramInfo.Name := FRegistry.GetDataAsString('DisplayName');
-      ProgramInfo.Version := FRegistry.GetDataAsString('DisplayVersion');
-      ProgramInfo.Publisher := FRegistry.GetDataAsString('Publisher');
-
-      if ProgramInfo.Name.IsEmpty and
-         ProgramInfo.Version.IsEmpty and
-         ProgramInfo.Publisher.IsEmpty then
-      begin
-        Continue;
-      end;
-
-      FPrograms.Add(ProgramInfo);
+      FPrograms.Add(TProgramInfo.Create(
+        FRegistry.GetDataAsString('DisplayName'),
+        FRegistry.GetDataAsString('DisplayVersion'),
+        FRegistry.GetDataAsString('Publisher')));
     finally
       FRegistry.CloseKey;
     end;
