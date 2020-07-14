@@ -12,7 +12,8 @@ program Mission03;
 uses
   Vcl.Forms,
   Form.Main in 'Form.Main.pas' {Main},
-  Helper.ZipFile in 'Helper.ZipFile.pas';
+  Helper.ZipFile in 'Helper.ZipFile.pas',
+  Impl.Zip in 'Impl.Zip.pas';
 
 {$R *.res}
 

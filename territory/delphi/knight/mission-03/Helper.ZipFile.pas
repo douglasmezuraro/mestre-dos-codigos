@@ -18,7 +18,9 @@ var
   FileName: string;
 begin
   for FileName in Files do
+  begin
     Add(FileName);
+  end;
 end;
 
 end.

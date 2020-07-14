@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList, Vcl.StdCtrls,
-  System.Zip, Vcl.ComCtrls, System.IOUtils, System.UITypes, System.Actions, Helper.ZipFile;
+  System.Zip, Vcl.ComCtrls, System.Generics.Collections, System.UITypes, System.Actions, System.IOUtils, Impl.Zip;
 
 type
   TMain = class sealed(TForm)
@@ -12,15 +12,24 @@ type
     ActionCompress: TAction;
     ButtonCompress: TButton;
     ProgressBarCompression: TProgressBar;
-    procedure ActionSelectFileExecute(Sender: TObject);
+    MemoFiles: TMemo;
+    ButtonSelectFiles: TButton;
+    ActionSelectFiles: TAction;
+    ActionSelectFileName: TAction;
+    EditFileName: TEdit;
+    ButtonSelectFileName: TButton;
     procedure ActionCompressExecute(Sender: TObject);
     procedure OnProgress(Sender: TObject; FileName: string; Header: TZipHeader; Position: Int64);
+    procedure ActionSelectFilesExecute(Sender: TObject);
+    procedure ActionSelectFileNameExecute(Sender: TObject);
   private
-    FSourceFiles: TArray<string>;
-    FTargetFile: TFileName;
-    function SelectSourceFiles: Boolean;
-    function SelectTargetFile: Boolean;
-    procedure CompressFiles;
+    FZip: TZip;
+    function SelectFiles: TArray<string>;
+    function SelectFileName: string;
+    function Validate(out Message: string): Boolean;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
   end;
 
 var
@@ -31,34 +40,41 @@ implementation
 {$R *.dfm}
 
 procedure TMain.ActionCompressExecute(Sender: TObject);
-begin
-  if not SelectSourceFiles then
-    Exit;
-
-  if not SelectTargetFile then
-    Exit;
-
-  CompressFiles;
-end;
-
-procedure TMain.ActionSelectFileExecute(Sender: TObject);
-begin
-  SelectSourceFiles;
-end;
-
-procedure TMain.CompressFiles;
 var
-  ZipFile: TZipFile;
+  Message: string;
 begin
-  ZipFile := TZipFile.Create;
-  try
-    ZipFile.OnProgress := OnProgress;
-    ZipFile.Open(FTargetFile, TZipMode.zmWrite);
-    ZipFile.Add(FSourceFiles);
-    ZipFile.Close;
-  finally
-    ZipFile.Free;
+  if Validate(Message) then
+  begin
+    FZip.Compress;
+    Exit;
   end;
+
+  MessageDlg(Message, TmsgDlgType.mtWarning, [mbOk], 0);
+end;
+
+procedure TMain.ActionSelectFileNameExecute(Sender: TObject);
+begin
+  FZip.FileName := SelectFileName;
+  EditFileName.Text := FZip.FileName;
+end;
+
+procedure TMain.ActionSelectFilesExecute(Sender: TObject);
+begin
+  FZip.Files := SelectFiles;
+  MemoFiles.Lines.AddStrings(FZip.Files);
+end;
+
+constructor TMain.Create(AOwner: TComponent);
+begin
+  inherited;
+  FZip := TZip.Create;
+  FZip.OnProgress := OnProgress;
+end;
+
+destructor TMain.Destroy;
+begin
+  FZip.Free;
+  inherited;
 end;
 
 procedure TMain.OnProgress(Sender: TObject; FileName: string; Header: TZipHeader; Position: Int64);
@@ -66,7 +82,7 @@ begin
   ProgressBarCompression.Position := (Position * 100) div Header.UncompressedSize;
 end;
 
-function TMain.SelectTargetFile: Boolean;
+function TMain.SelectFileName: string;
 var
   Dialog: TSaveDialog;
 begin
@@ -75,42 +91,63 @@ begin
     Dialog.Filter := '|*.zip';
     Dialog.DefaultExt := '.zip';
 
-    if not Dialog.Execute then
-      Exit(False);
+    if Dialog.Execute then
+    begin
+      Exit(Dialog.FileName);
+    end;
 
-    FTargetFile := Dialog.FileName;
-    Result := True;
+    Result := string.Empty;
   finally
     Dialog.Free;
   end;
 end;
 
-function TMain.SelectSourceFiles: Boolean;
+function TMain.SelectFiles: TArray<string>;
 var
   Dialog: TOpenDialog;
-  FileName: string;
 begin
   Dialog := TOpenDialog.Create(Self);
   try
     Dialog.Options := [ofFileMustExist, ofAllowMultiSelect];
 
-    if not Dialog.Execute then
-      Exit(False);
-
-    for FileName in Dialog.Files.ToStringArray do
+    if Dialog.Execute then
     begin
-      if TPath.GetExtension(FileName).Equals('.exe') then
-      begin
-        MessageDlg('Selecting files with ".exe" extension is not allowed.', TMsgDlgType.mtWarning, [mbOk], 0);
-        Exit(False);
-      end;
+      Exit(Dialog.Files.ToStringArray);
     end;
 
-    FSourceFiles := Dialog.Files.ToStringArray;
-    Result := True;
+    Result := nil;
   finally
     Dialog.Free;
   end;
 end;
 
+function TMain.Validate(out Message: string): Boolean;
+var
+  FileName: string;
+begin
+  if FZip.Files = nil then
+  begin
+    Message := 'You must select at least one file.';
+    Exit(False);
+  end;
+
+  if FZip.FileName.Trim.IsEmpty then
+  begin
+    Message := 'It is necessary to select the file to be saved.';
+    Exit(False);
+  end;
+
+  for FileName in FZip.Files do
+  begin
+    if TPath.GetExtension(FileName).Equals('.exe') then
+    begin
+      Message := 'Files with the extension ".exe" are not allowed.';
+      Exit(False);
+    end;
+  end;
+
+  Result := True;
+end;
+
 end.
+
