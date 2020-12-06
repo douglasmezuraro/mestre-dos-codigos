@@ -1,7 +1,7 @@
 program Mission01;
 
 // Author: Douglas Mezuraro
-// Last modification: 12/07/2020
+// Last modification: 06/12/2020
 // Level: Knight
 // Mission: 01
 // Objective: Build a console application where a concrete class implements two interfaces that have
@@ -13,13 +13,14 @@ program Mission01;
 
 uses
   System.SysUtils,
-  Impl.Config.API in 'Impl.Config.API.pas',
-  Impl.Config in 'Impl.Config.pas';
+  API.CloudRepository in 'src\API.CloudRepository.pas',
+  API.FileRepository in 'src\API.FileRepository.pas',
+  Impl.Data in 'src\Impl.Data.pas';
 
 procedure PrintHeader;
 begin
   Writeln('Author: Douglas Mezuraro');
-  Writeln('Modification date: 16/02/2020');
+  Writeln('Modification date: 06/12/2020');
   WriteLn('Level: Knight');
   Writeln('Mission: 01');
 
@@ -28,30 +29,24 @@ end;
 
 procedure SaveData;
 var
-  Config: TConfig;
+  LData: TData;
 begin
-  Config := TConfig.Create;
+  LData := TData.Create;
   try
-    WriteLn('The path of the file is "', Config.FilePath, '".');
-
-    Config.SaveDataServer;
-    Writeln('The "Server" section was successfully saved.');
-
-    Config.SaveDataDatabase;
-    Writeln('The "Database" section was sucessfully saved.');
-
-    Writeln('Press any key to exit.');
-    Readln;
+    LData.Save;
   finally
-    Config.Free;
+    LData.Free;
   end;
 end;
 
 begin
   PrintHeader;
   SaveData;
+  Writeln('The data was successfully saved.');
+  Writeln('Press any key to exit.');
+  Readln;
 
 {$WARN SYMBOL_PLATFORM OFF}
-  ReportMemoryLeaksOnShutdown := WordBool(DebugHook);
+  ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
