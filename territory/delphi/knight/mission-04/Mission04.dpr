@@ -9,7 +9,7 @@ program Mission04;
 
 uses
   Vcl.Forms,
-  Form.Main in 'Form.Main.pas' {Main};
+  Form.Main in 'src\Form\Form.Main.pas' {Main};
 
 {$R *.res}
 
