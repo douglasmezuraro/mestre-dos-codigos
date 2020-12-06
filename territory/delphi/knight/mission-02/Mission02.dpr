@@ -8,11 +8,12 @@ program Mission02;
 // The grid must contain the name, version and company of the program.
 
 uses
+  MidasLib,
   Vcl.Forms,
   System.SysUtils,
-  Form.Main in 'Form.Main.pas' {Main},
-  Impl.ProgramList in 'Impl.ProgramList.pas',
-  Impl.ProgramInfo in 'Impl.ProgramInfo.pas';
+  Form.Main in 'src\Form\Form.Main.pas' {Main},
+  Impl.ProgramInfo in 'src\Impl\Impl.ProgramInfo.pas',
+  Impl.ProgramList in 'src\Impl\Impl.ProgramList.pas';
 
 {$R *.res}
 
