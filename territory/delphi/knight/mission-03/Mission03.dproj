@@ -91,12 +91,12 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Form.Main.pas">
+        <DCCReference Include="src\Form\Form.Main.pas">
             <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Helper.ZipFile.pas"/>
-        <DCCReference Include="Impl.Zip.pas"/>
+        <DCCReference Include="src\Helper\Helper.ZipFile.pas"/>
+        <DCCReference Include="src\Impl\Impl.Zip.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
