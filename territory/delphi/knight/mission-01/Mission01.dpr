@@ -33,7 +33,8 @@ var
 begin
   LData := TData.Create;
   try
-    LData.Save;
+    LData.SaveCloudData;
+    LData.SaveFileData;
   finally
     LData.Free;
   end;
@@ -42,7 +43,8 @@ end;
 begin
   PrintHeader;
   SaveData;
-  Writeln('The data was successfully saved.');
+
+  Writeln(string.Empty);
   Writeln('Press any key to exit.');
   Readln;
 
