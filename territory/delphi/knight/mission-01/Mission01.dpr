@@ -4,14 +4,17 @@ program Mission01;
 // Last modification: 06/12/2020
 // Level: Knight
 // Mission: 01
-// Objective: Build a console application where a concrete class implements two interfaces that have
-// a method with the same name using the "method resolution clause" concept to resolve the conflict.
+// Objective: Em uma aplicação console, defina duas Interfaces, chamadas IRepositorioNuvem e
+// IRepositorioArquivo. Ambas devem declarar o método "SalvarDados". Em seguida, declare uma classe
+// que implemente as duas Interfaces e codifique o método "SalvarDados" de cada Interface. Use o
+// conceito de Method Resolution Clause para tratar o conflito de nomes de métodos iguais.
 
 {$APPTYPE CONSOLE}
 
 {$R *.res}
 
 uses
+  MidasLib,
   System.SysUtils,
   API.CloudRepository in 'src\API.CloudRepository.pas',
   API.FileRepository in 'src\API.FileRepository.pas',
