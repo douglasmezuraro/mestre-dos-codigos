@@ -1,18 +1,20 @@
 program Mission02;
 
 // Author: Douglas Mezuraro
-// Last modification: 12/07/2020
+// Last modification: 06/12/2020
 // Level: Knight
 // Mission: 02
-// Objective: Build a VCL application that lists the data of the installed programs in a TDBGrid.
-// The grid must contain the name, version and company of the program.
+// Objective: Desenvolva uma aplicação VCL capaz de listar os programas instalados no computador
+// através da leitura do registro do Windows. Para isso, utilize a classe TRegistry e apresente,
+// em uma TDBGrid, o nome do programa, versão e a empresa.
 
 uses
+  MidasLib,
   Vcl.Forms,
   System.SysUtils,
-  Form.Main in 'Form.Main.pas' {Main},
-  Impl.ProgramList in 'Impl.ProgramList.pas',
-  Impl.ProgramInfo in 'Impl.ProgramInfo.pas';
+  Form.Main in 'src\Form\Form.Main.pas' {Main},
+  Impl.ProgramInfo in 'src\Impl\Impl.ProgramInfo.pas',
+  Impl.ProgramList in 'src\Impl\Impl.ProgramList.pas';
 
 {$R *.res}
 
