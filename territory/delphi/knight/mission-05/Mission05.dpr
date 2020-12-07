@@ -1,49 +1,39 @@
 program Mission05;
 
-// Author: Douglas Mezuraro
-// Last modification: 18/02/2020
-// Level: Knight
-// Mission: 05
-// Objective: Build a console or VCL application that finds prime numbers up to one million using
-// the "TParellel" class.
+//       Author : Douglas Mezuraro
+// Modification : 07/12/2020
+//        Level : Knight
+//      Mission : 05
+//    Objective : Em uma aplicação console ou VCL, faça um laço de repetição de 1 até 1 milhão
+//                listando os números primos encontrados, utilizando o TParallel da biblioteca 
+//                System.Threading para paralelizar as iterações.
 
 {$APPTYPE CONSOLE}
 
 {$R *.res}
 
 uses
-  System.SysUtils, System.Threading;
+  MidasLib,
+  System.SysUtils,
+  Impl.Methods in 'src\Impl.Methods.pas';
 
-function Prime(const Value: Int64): Boolean;
+procedure PrintPrimeNumbers;
 var
-  Index: Int64;
-  Count: Byte;
-begin
-  Count := 0;
-
-  for Index := 1 to Value do
+  LNumber: Int64;
+begin  
+  for LNumber in TMethods.ListPrimeNumbers(1, 1000000) do
   begin
-    if Count > 2 then
-      Exit(False);
-
-    if Value mod Index = 0 then
-      Inc(Count);
+    Writeln(LNumber);
   end;
-
-  Result := True;
 end;
 
-begin
-  TParallel.For(1, 1000000,
-    procedure(Index: Int64)
-    begin
-      if Prime(Index) then
-      begin
-        Writeln(string.Format('The number %d is prime.', [Index]));
-      end;
-    end);
-
+begin  
+  WriteLn('Processing prime numbers');
+  PrintPrimeNumbers;
   Readln;
 
-  ReportMemoryLeaksOnShutdown := True;
+{$WARN SYMBOL_PLATFORM OFF}
+  ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
+{$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+
