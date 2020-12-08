@@ -27,6 +27,9 @@
         <Projects Include="mission-08\Mission08.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="mission-09\Mission09.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="mission-10\Mission10.dproj">
             <Dependencies/>
         </Projects>
@@ -116,6 +119,15 @@
     <Target Name="Mission08:Make">
         <MSBuild Projects="mission-08\Mission08.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Mission09">
+        <MSBuild Projects="mission-09\Mission09.dproj"/>
+    </Target>
+    <Target Name="Mission09:Clean">
+        <MSBuild Projects="mission-09\Mission09.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission09:Make">
+        <MSBuild Projects="mission-09\Mission09.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Mission10">
         <MSBuild Projects="mission-10\Mission10.dproj"/>
     </Target>
@@ -144,13 +156,13 @@
         <MSBuild Projects="mission-12\Mission12.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="Mission01;Mission02;Mission03;Mission04;Mission05;Mission06;Mission07;Mission08;Mission10;Mission11;Mission12"/>
+        <CallTarget Targets="Mission01;Mission02;Mission03;Mission04;Mission05;Mission06;Mission07;Mission08;Mission09;Mission10;Mission11;Mission12"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Mission01:Clean;Mission02:Clean;Mission03:Clean;Mission04:Clean;Mission05:Clean;Mission06:Clean;Mission07:Clean;Mission08:Clean;Mission10:Clean;Mission11:Clean;Mission12:Clean"/>
+        <CallTarget Targets="Mission01:Clean;Mission02:Clean;Mission03:Clean;Mission04:Clean;Mission05:Clean;Mission06:Clean;Mission07:Clean;Mission08:Clean;Mission09:Clean;Mission10:Clean;Mission11:Clean;Mission12:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Mission01:Make;Mission02:Make;Mission03:Make;Mission04:Make;Mission05:Make;Mission06:Make;Mission07:Make;Mission08:Make;Mission10:Make;Mission11:Make;Mission12:Make"/>
+        <CallTarget Targets="Mission01:Make;Mission02:Make;Mission03:Make;Mission04:Make;Mission05:Make;Mission06:Make;Mission07:Make;Mission08:Make;Mission09:Make;Mission10:Make;Mission11:Make;Mission12:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
