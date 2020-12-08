@@ -44,7 +44,7 @@ end;
 
 procedure TMain.Search;
 begin
-  Request.Resource := EditUser.Text;
+  Request.ResourceSuffix := EditUser.Text;
   Request.Execute;
 
   Grid.FitColumns;

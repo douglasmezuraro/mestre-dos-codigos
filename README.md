@@ -5,7 +5,7 @@
  - [x] Missão 5
  - [x] Missão 6
  - [ ] Missão 7
- - [ ] Missão 8
+ - [x] Missão 8
  - [ ] Missão 9
  - [x] Missão 10
  - [x] Missão 11

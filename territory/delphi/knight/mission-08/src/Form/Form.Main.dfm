@@ -66,7 +66,8 @@ object Main: TMain
     Authenticator = Authenticator
     Accept = 'application/json, text/plain; q=0.9, text/html;q=0.8,'
     AcceptCharset = 'UTF-8, *;q=0.8'
-    BaseURL = 'https://api.github.com/users'
+    BaseURL = 'https://api.github.com'
+    ContentType = 'application/json'
     Params = <>
     HandleRedirects = True
     Left = 30
@@ -94,6 +95,7 @@ object Main: TMain
     Top = 176
   end
   object Response: TRESTResponse
+    ContentType = 'application/json'
     Left = 30
     Top = 368
   end
@@ -104,6 +106,7 @@ object Main: TMain
   object Request: TRESTRequest
     Client = RestClient
     Params = <>
+    Resource = 'users'
     Response = Response
     SynchronizedEvents = False
     Left = 30
