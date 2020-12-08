@@ -41,8 +41,8 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_DcuOutput>.\bin\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_ExeOutput>.\bin\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
         <DCC_S>false</DCC_S>
@@ -54,6 +54,8 @@
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <SanitizedProjectName>Mission11</SanitizedProjectName>
+        <VerInfo_Locale>1046</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;addictdb;dxExRw;smdCompletoDT;vclactnband;tb2k;vclFireDAC;RaveVCL;tethering;spFundamentals;FireDACADSDriver;SAXKWR;EQGrid;OXml_R;VarianWorkshop;FireDACMSSQLDriver;vcltouch;sppCompleto;PKIPDFBBox;vcldb;dxsb;PGPMIMEBBox;SFTPBBoxSrv;svn;spOrpheus;spVCL;spCommonAPI;pg5Completo;PGPBBox;rbRTL1617;sp4D5ViolacoesDependencia;sgcCompleto;ASiCBBox;FireDACDBXDriver;vclx;spConsultas;DAVBBoxCli;cgoCompletoDT;ZIPBBox;EDIBBox;scmCompleto;VCLRESTComponents;rbTCUI1617;RvCore;pg5cPrettyLabel;Box;tbxrt;vclie;bindengine;addict;FireDACMySQLDriver;dxcomn;wflViolacoesDependencia;spVclPkg;SAMLBBoxSrv;smdCompleto;DataSnapClient;spAddict;bindcompdbx;DBXSybaseASEDriver;IndyIPServer;prcImpl;PngComponents;IndySystem;spTablet;XMLBBox;spVCL_DT;dsnapcon;VirtualTreesR;DBPlannerPkg;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;RvStandard;RvBarcode;spDados;spGravador;Jcl;spLdap;emshosting;spDxInspector;RvReport;DsgnBBox;dxBarDBNavR;spCompletoDadosConsultas_DT;pg5cCompleto;ccpCompleto;spEmbeddedWB;sasCompleto;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DreamControls;digCompletoViolacoesPg5;DbxCommonDriver;intCompleto;xmlrtl;DataSnapNativeClient;fmxobj;spCompletoNew_DT;rtl;DbxClientDriver;DBXSybaseASADriver;dxDBEd;spCentralNotificacoes;appanalytics;spdxExpressBar;IndyIPClient;WPTAddict_DT;dxdbtr;bindcompvcl;vcldbx;TeeUI;dxELib;dxGrEd;HtmlLabelPkg;VclSmp;FireDACODBCDriver;spPatternsAPI;spVCLStylesEditor;DataSnapIndy10ServerTransport;BaseBBox;edtCompleto;DataSnapProviderClient;MailBBox;FireDACMongoDBDriver;spActiveDirectory;SFTPBBoxCli;PacotespPrinter;spCompleto_DT;DataSnapServerMidas;TVidGrab;spGenesis;DBXInterBaseDriver;RvGraphics;PKIECtrl;SAMLBBox;svnui;rbIDE1617;TMSLabelsButtonsPkg;DAVBBoxSrv;dxBarExtDBItemsR;DBXMSSQLDriver;spQuickPDF;spUIDControlsDT;DatasnapConnectorsFreePascal;spViewPDF;rbBDE1617;bindcompfmx;SSHBBoxCli;DBXOracleDriver;spCommonStructures;inetdb;CEF4Delphi;spVCLStyles;FmxTeeUI;emsedge;PDFBBox;fmx;fmxdae;SSHBBoxSrv;EQDBTL;spPatternsImpl;CloudBBox;spHTTP;wflCompleto;sajCompleto;PGPTLSBBox;digCompleto;dbexpress;IndyCore;smdPrettyListView;OfficeBBox;dsnap;DataSnapCommon;sggCompleto;bdertl;DataSnapConnectors;XDevice;SqlDir;EQTL;sarCompleto;rbRCL1617;SAXMSR;FTPSBBoxCli;EmbeddedWebBrowser;FireDACOracleDriver;DBXMySQLDriver;XFormat;ECQDBC;BurnCSP;DBXFirebirdDriver;Json_RT;SOAPBBoxCli;FireDACCommonODBC;ah_comp;MIMEBBox;spZip;cgoCompleto;ObjectDebugger;spImageEn;IndyIPCommon;ppWPToolsPack;vcl;XMLBBoxSec;FTPSBBoxSrv;FireDACDb2Driver;PBFolderDialog;spUtils;XLSSuit;PKIBBox;HTTPBBoxCli;aipCompleto;TeeDB;PKISSHBBox;dxForumLib;VCLZipDT;FireDACPgDriver;proCompleto;FireDACASADriver;dxObjIns;WPTools;spCompletoBase;Tee;DataSnapServer;vclwinx;FireDACDSDriver;dxIns;RvEngine;CustomIPTransport;vcldsnap;spCompletoNew;spDxInspector_DT;SMIMECAdESBBox;dxBarExtItemsR;bindcomp;DBXInformixDriver;SSLBBoxCli;spFormularios;dxBarR;SSLBBoxSrv;HTTPBBoxSrv;SMIMEBBox;aclCompleto;dbxcds;SAXR;PGPSSHBBox;adortl;pg5cPrettyListView;spSecureBlackBox;dxEdtr;ggpCompleto;rbTDBC1617;spCommonFunctions;dsnapxml;rbTC1617;dbrtl;inetdbxpress;IndyProtocols;LDAPBBox;spDUnit;SynEditR;spLockBox;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
@@ -76,6 +78,8 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -91,11 +95,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Form.Main.pas">
+        <DCCReference Include="src\WebService\WebService.Correios.pas"/>
+        <DCCReference Include="src\Form\Form.Main.pas">
             <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="WebServices.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -116,6 +120,9 @@
                 <Source>
                     <Source Name="MainSource">Mission11.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="Win32\Debug\Mission11.exe" Configuration="Debug" Class="ProjectOutput">
