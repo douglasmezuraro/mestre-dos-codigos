@@ -43,15 +43,28 @@ uses
   Horse.Provider.VCL in '3rdParty\Horse\src\Horse.Provider.VCL.pas',
   Horse.WebModule in '3rdParty\Horse\src\Horse.WebModule.pas' {HorseWebModule: TWebModule},
   ThirdParty.Posix.Syslog in '3rdParty\Horse\src\ThirdParty.Posix.Syslog.pas',
-  Web.WebConst in '3rdParty\Horse\src\Web.WebConst.pas';
+  Web.WebConst in '3rdParty\Horse\src\Web.WebConst.pas',
+  Server.State in 'src\Server\Server.State.pas',
+  Model.State in 'src\Model\Model.State.pas',
+  Provider.State in 'src\Provider\Provider.State.pas',
+  Helper.Json in 'src\Helper\Helper.Json.pas',
+  Provider.API in 'src\Provider\Provider.API.pas';
 
 begin
   try
-    { TODO -oUser -cConsole Main : Insert code here }
+    THorse.Listen(9000,
+      procedure(AHorse: THorse)
+      begin
+        Writeln(Format('Server is runing on %s:%d', [AHorse.Host, AHorse.Port]));
+      end);
   except
     on Error: Exception do
     begin
       Writeln(Error.ClassName, ': ', Error.Message);
     end;
   end;
+
+{$WARN SYMBOL_PLATFORM OFF}
+  ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
+{$WARN SYMBOL_PLATFORM DEFAULT}
 end.
