@@ -1,0 +1,156 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0E7EDFD9-0E83-48A0-8F2E-E084DC34856C}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="mission-01\Mission01.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-02\Mission02.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-03\Mission03.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-04\Mission04.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-05\Mission05.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-06\Mission06.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-07\Mission07.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-08\Mission08.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-10\Mission10.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-11\Mission11.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="mission-12\Mission12.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Mission01">
+        <MSBuild Projects="mission-01\Mission01.dproj"/>
+    </Target>
+    <Target Name="Mission01:Clean">
+        <MSBuild Projects="mission-01\Mission01.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission01:Make">
+        <MSBuild Projects="mission-01\Mission01.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission02">
+        <MSBuild Projects="mission-02\Mission02.dproj"/>
+    </Target>
+    <Target Name="Mission02:Clean">
+        <MSBuild Projects="mission-02\Mission02.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission02:Make">
+        <MSBuild Projects="mission-02\Mission02.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission03">
+        <MSBuild Projects="mission-03\Mission03.dproj"/>
+    </Target>
+    <Target Name="Mission03:Clean">
+        <MSBuild Projects="mission-03\Mission03.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission03:Make">
+        <MSBuild Projects="mission-03\Mission03.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission04">
+        <MSBuild Projects="mission-04\Mission04.dproj"/>
+    </Target>
+    <Target Name="Mission04:Clean">
+        <MSBuild Projects="mission-04\Mission04.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission04:Make">
+        <MSBuild Projects="mission-04\Mission04.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission05">
+        <MSBuild Projects="mission-05\Mission05.dproj"/>
+    </Target>
+    <Target Name="Mission05:Clean">
+        <MSBuild Projects="mission-05\Mission05.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission05:Make">
+        <MSBuild Projects="mission-05\Mission05.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission06">
+        <MSBuild Projects="mission-06\Mission06.dproj"/>
+    </Target>
+    <Target Name="Mission06:Clean">
+        <MSBuild Projects="mission-06\Mission06.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission06:Make">
+        <MSBuild Projects="mission-06\Mission06.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission07">
+        <MSBuild Projects="mission-07\Mission07.dproj"/>
+    </Target>
+    <Target Name="Mission07:Clean">
+        <MSBuild Projects="mission-07\Mission07.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission07:Make">
+        <MSBuild Projects="mission-07\Mission07.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission08">
+        <MSBuild Projects="mission-08\Mission08.dproj"/>
+    </Target>
+    <Target Name="Mission08:Clean">
+        <MSBuild Projects="mission-08\Mission08.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission08:Make">
+        <MSBuild Projects="mission-08\Mission08.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission10">
+        <MSBuild Projects="mission-10\Mission10.dproj"/>
+    </Target>
+    <Target Name="Mission10:Clean">
+        <MSBuild Projects="mission-10\Mission10.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission10:Make">
+        <MSBuild Projects="mission-10\Mission10.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission11">
+        <MSBuild Projects="mission-11\Mission11.dproj"/>
+    </Target>
+    <Target Name="Mission11:Clean">
+        <MSBuild Projects="mission-11\Mission11.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission11:Make">
+        <MSBuild Projects="mission-11\Mission11.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Mission12">
+        <MSBuild Projects="mission-12\Mission12.dproj"/>
+    </Target>
+    <Target Name="Mission12:Clean">
+        <MSBuild Projects="mission-12\Mission12.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission12:Make">
+        <MSBuild Projects="mission-12\Mission12.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Mission01;Mission02;Mission03;Mission04;Mission05;Mission06;Mission07;Mission08;Mission10;Mission11;Mission12"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Mission01:Clean;Mission02:Clean;Mission03:Clean;Mission04:Clean;Mission05:Clean;Mission06:Clean;Mission07:Clean;Mission08:Clean;Mission10:Clean;Mission11:Clean;Mission12:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Mission01:Make;Mission02:Make;Mission03:Make;Mission04:Make;Mission05:Make;Mission06:Make;Mission07:Make;Mission08:Make;Mission10:Make;Mission11:Make;Mission12:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
