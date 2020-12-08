@@ -12,36 +12,38 @@ uses
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
-  Test.Operations in 'Test.Operations.pas',
-  Impl.Operations in 'Impl.Operations.pas';
+  Impl.Operations in 'src\Impl\Impl.Operations.pas',
+  Test.Operations in 'src\Test\Test.Operations.pas';
 
 procedure Run;
 var
-  Runner: ITestRunner;
-  Results: IRunResults;
-  Logger: ITestLogger;
-  NUnitLogger: ITestLogger;
+  LRunner: ITestRunner;
+  LResults: IRunResults;
+  LLogger: ITestLogger;
+  LUnitLogger: ITestLogger;
 begin
   TDUnitX.CheckCommandLine;
-  Runner := TDUnitX.CreateRunner;
-  Runner.UseRTTI := True;
-  Logger := TDUnitXConsoleLogger.Create(true);
-  Runner.AddLogger(Logger);
-  NUnitLogger := TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);
-  Runner.AddLogger(NUnitLogger);
-  Runner.FailsOnNoAsserts := True;
+  LRunner := TDUnitX.CreateRunner;
+  LRunner.UseRTTI := True;
+  LLogger := TDUnitXConsoleLogger.Create(true);
+  LRunner.AddLogger(LLogger);
+  LUnitLogger := TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);
+  LRunner.AddLogger(LUnitLogger);
+  LRunner.FailsOnNoAsserts := True;
 
-  Results := Runner.Execute;
-  if not Results.AllPassed then
+  LResults := LRunner.Execute;
+  if not LResults.AllPassed then
+  begin
     System.ExitCode := EXIT_ERRORS;
+  end;
 
-  {$IFNDEF CI}
+{$IFNDEF CI}
   if TDUnitX.Options.ExitBehavior = TDUnitXExitBehavior.Pause then
   begin
     System.Write('Done.. press <Enter> key to quit.');
     System.Readln;
   end;
-  {$ENDIF}
+{$ENDIF}
 end;
 
 begin
@@ -51,8 +53,13 @@ begin
 {$ENDIF}
   try
     Run;
+  {$WARN SYMBOL_PLATFORM OFF}
+    ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
+  {$WARN SYMBOL_PLATFORM DEFAULT}
   except
-    on E: Exception do
-      System.Writeln(E.ClassName, ': ', E.Message);
+    on Error: Exception do
+    begin
+      System.Writeln(Error.ClassName, ': ', Error.Message);
+    end;
   end;
 end.
