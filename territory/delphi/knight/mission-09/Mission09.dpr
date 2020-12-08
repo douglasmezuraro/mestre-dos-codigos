@@ -55,12 +55,14 @@ begin
     THorse.Listen(9000,
       procedure(AHorse: THorse)
       begin
-        Writeln(Format('Server is runing on %s:%d', [AHorse.Host, AHorse.Port]));
+        AHorse.Host := 'localhost';
+        Writeln(Format('Server is runing on %s:%d.', [AHorse.Host, AHorse.Port]));
       end);
   except
     on Error: Exception do
     begin
       Writeln(Error.ClassName, ': ', Error.Message);
+      THorse.StopListen;
     end;
   end;
 

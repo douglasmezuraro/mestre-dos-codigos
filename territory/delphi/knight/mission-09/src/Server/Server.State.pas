@@ -33,12 +33,10 @@ end;
 
 class procedure TStateServer.List(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 var
-  LJson: string;
   LProvider: IProviderAPI;
 begin
   LProvider := TStateProvider.Create;
-  LJson := TJson.ArrayToJson(LProvider.List);
-  AResponse.Send(LJson).Status(THTTPStatus.OK);
+  AResponse.Send(TJson.ArrayToJson(LProvider.List)).Status(THTTPStatus.OK);
 end;
 
 initialization
