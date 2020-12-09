@@ -20,15 +20,11 @@ object Main: TMain
     Top = 0
     Width = 600
     Height = 456
-    ActivePage = TabSheetConfiguration
+    ActivePage = TabSheetMessage
     Align = alClient
     TabOrder = 0
     object TabSheetMessage: TTabSheet
       Caption = 'Message'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LabelBody: TLabel
         Left = 15
         Top = 99
@@ -54,19 +50,23 @@ object Main: TMain
         EditLabel.Caption = 'Subject'
         TabOrder = 1
       end
-      object EditRecepients: TLabeledEdit
+      object EditRicipients: TLabeledEdit
         Left = 15
         Top = 68
         Width = 563
         Height = 21
-        EditLabel.Width = 53
+        EditLabel.Width = 45
         EditLabel.Height = 13
-        EditLabel.Caption = 'Recepients'
+        EditLabel.Caption = 'Ricipients'
         TabOrder = 2
       end
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LabelUseTLS: TLabel
         Left = 15
         Top = 188

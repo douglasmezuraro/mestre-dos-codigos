@@ -1,4 +1,4 @@
-﻿unit Form.Main;
+unit Form.Main;
 
 interface
 
@@ -19,7 +19,7 @@ type
     EditHost: TLabeledEdit;
     EditPassword: TLabeledEdit;
     EditPort: TLabeledEdit;
-    EditRecepients: TLabeledEdit;
+    EditRicipients: TLabeledEdit;
     EditSubject: TLabeledEdit;
     EditUsername: TLabeledEdit;
     GroupBoxSSL: TGroupBox;
@@ -71,7 +71,7 @@ begin
   EditUsername.Text := 'douglasmez@gmail.com';
   EditPort.Text := 465.ToString;
   EditSubject.Text := 'E-mail test';
-  EditRecepients.Text := string.Join(', ', ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com']);
+  EditRicipients.Text := string.Join(', ', ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com']);
   MemoBody.Lines.AddStrings(['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020']);
   ComboBoxIdSSLVersion.ItemIndex := Ord(TIdSSLVersion.sslvSSLv23);
   ComboBoxIdSSLMode.ItemIndex := Ord(TIdSSLMode.sslmClient);
@@ -91,7 +91,7 @@ begin
   LDTO.IdUseTLS := TIdUseTLS(ComboBoxIdUseTLS.ItemIndex);
   LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType(ComboBoxIdSMTPAuthenticationType.ItemIndex);
   LDTO.Subject := EditSubject.Text;
-  LDTO.Recipients := string(EditRecepients.Text).Split([', ']);
+  LDTO.Recipients := string(EditRicipients.Text).Split([', ']);
   LDTO.Body := MemoBody.Lines.ToStringArray;
   LDTO.IdSSLVersion := TIdSSLVersion(ComboBoxIdSSLVersion.ItemIndex);
   LDTO.IdSSLMode := TIdSSLMode(ComboBoxIdSSLMode.ItemIndex);
@@ -111,7 +111,7 @@ begin
 
     on Error: Exception do
     begin
-      MessageDlg('Unhandled Error: ' +Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+      MessageDlg('Unhandled Error: ' + Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
     end;
   end;
 end;
