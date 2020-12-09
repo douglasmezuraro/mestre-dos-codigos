@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  Caption = 'Consulta de endere'#231'os'
+  Caption = 'Delphi Knight - Mission 11'
   ClientHeight = 275
   ClientWidth = 449
   Color = clBtnFace

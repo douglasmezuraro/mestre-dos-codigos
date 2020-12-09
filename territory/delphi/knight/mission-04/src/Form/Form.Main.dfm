@@ -3,7 +3,7 @@ object Main: TMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'Delphi Knight - Mission 4'
+  Caption = 'Delphi Knight - Mission 04'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace

@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  Caption = 'Delphi Knight - Mission 07 - E-mail sender'
+  Caption = 'Delphi Knight - Mission 07'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace
@@ -24,10 +24,8 @@ object Main: TMain
     ActivePage = TabSheetMessage
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 559
     object TabSheetMessage: TTabSheet
       Caption = 'Message'
-      ExplicitHeight = 531
       object LabelBody: TLabel
         Left = 15
         Top = 195
@@ -108,6 +106,9 @@ object Main: TMain
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 531
       object LabelUseTLS: TLabel
         Left = 15

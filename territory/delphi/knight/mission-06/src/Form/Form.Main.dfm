@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Downloader'
+  Caption = 'Delphi Knight - Mission 06'
   ClientHeight = 194
   ClientWidth = 430
   Color = clBtnFace

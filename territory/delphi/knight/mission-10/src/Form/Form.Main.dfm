@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  Caption = 'E-mail validator'
+  Caption = 'Delphi Knight - Mission 10'
   ClientHeight = 92
   ClientWidth = 533
   Color = clBtnFace

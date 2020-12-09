@@ -1,7 +1,7 @@
 object Main: TMain
   Left = 0
   Top = 0
-  Caption = 'GitHub User Search'
+  Caption = 'Delphi Knight - Mission 08'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace

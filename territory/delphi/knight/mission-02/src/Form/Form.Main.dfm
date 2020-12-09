@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   ActiveControl = Grid
-  Caption = 'Programs'
+  Caption = 'Delphi Knight - Mission 02'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace
