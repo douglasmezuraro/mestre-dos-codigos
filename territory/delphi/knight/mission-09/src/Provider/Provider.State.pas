@@ -10,7 +10,7 @@ type
   strict private
     FDatabase: TDictionary<UInt64, TObject>;
   private
-    procedure MockDatabase;
+    procedure RunMigration;
   public
     constructor Create;
     destructor Destroy; override;
@@ -23,7 +23,7 @@ implementation
 constructor TStateProvider.Create;
 begin
   FDatabase := TDictionary<UInt64, TObject>.Create;
-  MockDatabase;
+  RunMigration;
 end;
 
 destructor TStateProvider.Destroy;
@@ -42,9 +42,9 @@ begin
   Result := FDatabase.Values.ToArray;
 end;
 
-procedure TStateProvider.MockDatabase;
+procedure TStateProvider.RunMigration;
 begin
-  FDatabase.Add(01, TState.Create('Acre', 'AC', 'RioBranco', 'Norte'));
+  FDatabase.Add(01, TState.Create('Acre', 'AC', 'Rio Branco', 'Norte'));
   FDatabase.Add(02, TState.Create('Alagoas', 'AL', 'Maceió', 'Nordeste'));
   FDatabase.Add(03, TState.Create('Amapá', 'AP', 'Macapá', 'Norte'));
   FDatabase.Add(04, TState.Create('Amazonas', 'AM', 'Manaus', 'Norte'));
@@ -62,7 +62,7 @@ begin
   FDatabase.Add(16, TState.Create('Paraná', 'PR', 'Curitiba', 'Sul'));
   FDatabase.Add(17, TState.Create('Pernambuco', 'PE', 'Recife', 'Centro-Leste'));
   FDatabase.Add(18, TState.Create('Piauí', 'PI', 'Teresina', 'Nordeste'));
-  FDatabase.Add(19, TState.Create('Rio de Janeiro', 'RJ', 'Rio d eJaneiro', 'Sudeste'));
+  FDatabase.Add(19, TState.Create('Rio de Janeiro', 'RJ', 'Rio de Janeiro', 'Sudeste'));
   FDatabase.Add(20, TState.Create('Rio Grande do Norte', 'RN', 'Natal', 'Nordeste'));
   FDatabase.Add(21, TState.Create('Rio Grande do Sul', 'RS', 'Porto Alegre', 'Sul'));
   FDatabase.Add(22, TState.Create('Rondônia', 'RO', 'Porto Velho', 'Norte'));

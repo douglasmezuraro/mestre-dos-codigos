@@ -56,7 +56,7 @@ begin
       procedure(AHorse: THorse)
       begin
         AHorse.Host := 'localhost';
-        Writeln(Format('Server is runing on %s:%d.', [AHorse.Host, AHorse.Port]));
+        Writeln('Server is runing on ', AHorse.Host, ':', AHorse.Port);
       end);
   except
     on Error: Exception do

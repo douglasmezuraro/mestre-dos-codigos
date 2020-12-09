@@ -24,7 +24,7 @@ begin
 
   if Assigned(LState) then
   begin
-    AResponse.Send(TJson.ObjectToJsonString(LState)).Status(THTTPStatus.OK);
+    AResponse.Send(TJson.ObjectToJson(LState)).Status(THTTPStatus.OK);
     Exit;
   end;
 

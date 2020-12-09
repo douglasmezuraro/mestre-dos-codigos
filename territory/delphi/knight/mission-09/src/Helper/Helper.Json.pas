@@ -9,6 +9,7 @@ type
   TJsonHelper = class Helper for TJson
   public
     class function ArrayToJson(const AArray: TArray<TObject>): string;
+    class function ObjectToJson(const AObject: TObject): string;
   end;
 
 implementation
@@ -16,19 +17,24 @@ implementation
 class function TJsonHelper.ArrayToJson(const AArray: TArray<TObject>): string;
 var
   LObject: TObject;
-  LArray: TJsonArray;
+  LJsonArray: TJsonArray;
 begin
-  LArray := TJsonArray.Create;
+  LJsonArray := TJsonArray.Create;
   try
     for LObject in AArray do
     begin
-      LArray.AddElement(TJson.ObjectToJsonObject(LObject));
+      LJsonArray.AddElement(TJson.ObjectToJsonObject(LObject));
     end;
 
-    Result := LArray.ToJson;
+    Result := TJson.Format(LJsonArray);
   finally
-    LArray.Free;
+    LJsonArray.Free;
   end;
+end;
+
+class function TJsonHelper.ObjectToJson(const AObject: TObject): string;
+begin
+  Result := TJson.Format(TJson.ObjectToJsonObject(AObject));
 end;
 
 end.
