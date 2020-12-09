@@ -1,6 +1,7 @@
 object Main: TMain
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   Caption = 'E-mail sender'
   ClientHeight = 497
   ClientWidth = 600
@@ -63,10 +64,6 @@ object Main: TMain
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LabelUseTLS: TLabel
         Left = 15
         Top = 188

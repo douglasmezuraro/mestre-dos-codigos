@@ -67,9 +67,9 @@ end;
 
 procedure TMain.FormShow(Sender: TObject);
 begin
-  EditHost.Text := 'smtp.gmail.com';
-  EditUsername.Text := 'douglasmez@gmail.com';
-  EditPort.Text := 465.ToString;
+  EditHost.Text := 'smtp.office365.com';
+  EditUsername.Text := 'douglas.mezuraro@db1.com.br';
+  EditPort.Text := 587.ToString;
   EditSubject.Text := 'E-mail test';
   EditRicipients.Text := string.Join(', ', ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com']);
   MemoBody.Lines.AddStrings(['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020']);
@@ -91,13 +91,13 @@ begin
       LDTO.Username := EditUsername.Text;
       LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
       LDTO.Port := StrToIntDef(EditPort.Text, Word.MinValue);
-      LDTO.IdUseTLS := TIdUseTLS(ComboBoxIdUseTLS.ItemIndex);
-      LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType(ComboBoxIdSMTPAuthenticationType.ItemIndex);
+      LDTO.IdUseTLS := TIdUseTLS.Parse(ComboBoxIdUseTLS.ItemIndex);
+      LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType.Parse(ComboBoxIdSMTPAuthenticationType.ItemIndex);
       LDTO.Subject := EditSubject.Text;
       LDTO.Recipients := string(EditRicipients.Text).Split([', ']);
       LDTO.Body := MemoBody.Lines.ToStringArray;
-      LDTO.IdSSLVersion := TIdSSLVersion(ComboBoxIdSSLVersion.ItemIndex);
-      LDTO.IdSSLMode := TIdSSLMode(ComboBoxIdSSLMode.ItemIndex);
+      LDTO.IdSSLVersion := TIdSSLVersion.Parse(ComboBoxIdSSLVersion.ItemIndex);
+      LDTO.IdSSLMode := TIdSSLMode.Parse(ComboBoxIdSSLMode.ItemIndex);
 
       try
         LSender := TEmailSender.Create(LDTO);

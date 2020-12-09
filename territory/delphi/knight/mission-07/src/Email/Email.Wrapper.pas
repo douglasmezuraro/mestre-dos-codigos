@@ -20,7 +20,7 @@ type
     public
       function ToInteger: Integer;
       function ToString: string;
-      function Parse(const AIndex: Integer): TIdSSLVersion;
+      class function Parse(const AIndex: Integer): TIdSSLVersion; static;
       class function ToArray: TArray<TIdSSLVersion>; static;
       class function ToStringArray: TArray<string>; static;
     end;
@@ -31,7 +31,7 @@ type
     public
       function ToInteger: Integer;
       function ToString: string;
-      function Parse(const AIndex: Integer): TIdSSLMode;
+      class function Parse(const AIndex: Integer): TIdSSLMode; static;
       class function ToArray: TArray<TIdSSLMode>; static;
       class function ToStringArray: TArray<string>; static;
     end;
@@ -42,7 +42,7 @@ type
     public
       function ToInteger: Integer;
       function ToString: string;
-      function Parse(const AIndex: Integer): TIdUseTLS;
+      class function Parse(const AIndex: Integer): TIdUseTLS; static;
       class function ToArray: TArray<TIdUseTLS>; static;
       class function ToStringArray: TArray<string>; static;
     end;
@@ -53,7 +53,7 @@ type
     public
       function ToInteger: Integer;
       function ToString: string;
-      function Parse(const AIndex: Integer): TIdSMTPAuthenticationType;
+      class function Parse(const AIndex: Integer): TIdSMTPAuthenticationType; static;
       class function ToArray: TArray<TIdSMTPAuthenticationType>; static;
       class function ToStringArray: TArray<string>; static;
     end;
@@ -62,7 +62,7 @@ implementation
 
 { TIdSSLVersionHelper }
 
-function TIdSSLVersionHelper.Parse(const AIndex: Integer): TIdSSLVersion;
+class function TIdSSLVersionHelper.Parse(const AIndex: Integer): TIdSSLVersion;
 begin
   Result := TIdSSLVersion(AIndex);
 end;
@@ -101,7 +101,7 @@ end;
 
 { TIdSSLModeHelper }
 
-function TIdSSLModeHelper.Parse(const AIndex: Integer): TIdSSLMode;
+class function TIdSSLModeHelper.Parse(const AIndex: Integer): TIdSSLMode;
 begin
   Result := TIdSSLMode(AIndex);
 end;
@@ -140,7 +140,7 @@ end;
 
 { TIdUseTLSHelper }
 
-function TIdUseTLSHelper.Parse(const AIndex: Integer): TIdUseTLS;
+class function TIdUseTLSHelper.Parse(const AIndex: Integer): TIdUseTLS;
 begin
   Result := TIdUseTLS(AIndex);
 end;
@@ -179,7 +179,7 @@ end;
 
 { TIdSMTPAuthenticationTypeHelper }
 
-function TIdSMTPAuthenticationTypeHelper.Parse(const AIndex: Integer): TIdSMTPAuthenticationType;
+class function TIdSMTPAuthenticationTypeHelper.Parse(const AIndex: Integer): TIdSMTPAuthenticationType;
 begin
   Result := TIdSMTPAuthenticationType(AIndex);
 end;
