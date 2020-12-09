@@ -96,23 +96,23 @@ begin
   LDTO.IdSSLVersion := TIdSSLVersion(ComboBoxIdSSLVersion.ItemIndex);
   LDTO.IdSSLMode := TIdSSLMode(ComboBoxIdSSLMode.ItemIndex);
 
-  LSender := TEmailSender.Create(LDTO);
   try
+    LSender := TEmailSender.Create(LDTO);
     try
       LSender.Send;
-    except
-      on Error: EEmailSenderArgumentException do
-      begin
-        MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
-      end;
-
-      on Error: Exception do
-      begin
-        MessageDlg('Unhandled Error: ' +Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
-      end;
+    finally
+      LSender.Free;
     end;
-  finally
-    LSender.Free;
+  except
+    on Error: EEmailSenderArgumentException do
+    begin
+      MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+    end;
+
+    on Error: Exception do
+    begin
+      MessageDlg('Unhandled Error: ' +Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+    end;
   end;
 end;
 
