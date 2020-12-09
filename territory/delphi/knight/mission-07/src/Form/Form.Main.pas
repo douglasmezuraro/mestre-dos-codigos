@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnList,
-  Vcl.ComCtrls, System.Actions, System.UITypes, Vcl.Dialogs, Email.Wrapper, Impl.Cryptography;
+  Vcl.ComCtrls, System.Actions, System.UITypes, Vcl.Dialogs, Email.Wrapper, Impl.Cryptography,
+  Vcl.Buttons;
 
 type
   TMain = class sealed(TForm)
@@ -35,12 +36,18 @@ type
     TabSheetMessage: TTabSheet;
     EditCC: TLabeledEdit;
     EditBCC: TLabeledEdit;
+    ActionSelectAttachments: TAction;
+    ListBoxAttachments: TListBox;
+    ButtonSelectAttachments: TSpeedButton;
+    LabelAttachments: TLabel;
   {$ENDREGION}
     procedure ActionSendEmailExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ActionSelectAttachmentsExecute(Sender: TObject);
   private
     procedure SendEmail;
     function GetDTO: TEmailDTO;
+    function SelectAttachments: TArray<string>;
   public
     procedure AfterConstruction; override;
   end;
@@ -51,6 +58,17 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TMain.ActionSelectAttachmentsExecute(Sender: TObject);
+var
+  LAttachments: TArray<string>;
+begin
+  LAttachments := SelectAttachments;
+  if Assigned(LAttachments) then
+  begin
+    ListBoxAttachments.Items.AddStrings(LAttachments);
+  end;
+end;
 
 procedure TMain.ActionSendEmailExecute(Sender: TObject);
 begin
@@ -94,12 +112,32 @@ begin
   LDTO.CC := EditCC.Text;
   LDTO.BCC := EditBCC.Text;
   LDTO.Body := MemoBody.Lines.ToStringArray;
+  LDTO.Attachments := ListBoxAttachments.Items.ToStringArray;
   LDTO.IdSSLVersion := TIdSSLVersion.Parse(ComboBoxIdSSLVersion.ItemIndex);
   LDTO.IdSSLMode := TIdSSLMode.Parse(ComboBoxIdSSLMode.ItemIndex);
   LDTO.IdUseTLS := TIdUseTLS.Parse(ComboBoxIdUseTLS.ItemIndex);
   LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType.Parse(ComboBoxIdSMTPAuthenticationType.ItemIndex);
 
   Result := LDTO;
+end;
+
+function TMain.SelectAttachments: TArray<string>;
+var
+  LDialog: TOpenDialog;
+begin
+  LDialog := TOpenDialog.Create(Self);
+  try
+    LDialog.Options := [ofAllowMultiSelect, ofFileMustExist];
+
+    if LDialog.Execute then
+    begin
+      Exit(LDialog.Files.ToStringArray);
+    end;
+
+    Result := nil;
+  finally
+    LDialog.Free;
+  end;
 end;
 
 procedure TMain.SendEmail;

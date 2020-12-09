@@ -3,8 +3,8 @@ unit Email.Sender;
 interface
 
 uses
-  IdMessage, IdText, IdSMTP, IdSSLOpenSSL, IdExplicitTLSClientServerBase, Impl.Cryptography,
-  System.Classes, System.SysUtils, Vcl.Forms, Email.DTO;
+  IdMessage, IdText, IdSMTP, IdSSLOpenSSL, IdExplicitTLSClientServerBase, IdAttachmentFile,
+  Impl.Cryptography, System.Classes, System.SysUtils, Vcl.Forms, Email.DTO;
 
 type
   EEmailSenderArgumentException = class(EArgumentException);
@@ -15,11 +15,14 @@ type
     FIdText: TIdText;
     FIdMessage: TIdMessage;
     FIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+    FEmailDTO: TEmailDTO;
   private
     procedure Validate;
+    procedure Build;
   public
     constructor Create(const ADTO: TEmailDTO);
     destructor Destroy; override;
+    procedure AfterConstruction; override;
     procedure Send;
   end;
 
@@ -31,28 +34,11 @@ begin
   FIdMessage := TIdMessage.Create(nil);
   FIdText := TIdText.Create(FIdMessage.MessageParts);
   FIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create;
-
   FIdSMTP.ConnectTimeout := 30000;
   FIdSMTP.IOHandler := FIOHandler;
   FIdMessage.Encoding := TIdMessageEncoding.meMIME;
   FIdText.ContentType := 'text/plain; charset=iso-8859-1';
-
-  FIdSMTP.Host := ADTO.Host;
-  FIdSMTP.Username := ADTO.Username;
-  FIdMessage.From.Address := ADTO.Username;
-  FIdSMTP.Password := TCryptography.Decrypt(ADTO.Password);
-  FIdSMTP.Port := ADTO.Port;
-  FIdText.Body.AddStrings(ADTO.Body);
-  FIdMessage.Subject := ADTO.Subject;
-  FIdMessage.Recipients.EMailAddresses := ADTO.Recipients;
-  FIdMessage.CCList.EMailAddresses := ADTO.CC;
-  FIdMessage.BCCList.EMailAddresses := ADTO.BCC;
-  FIOHandler.SSLOptions.Method := ADTO.IdSSLVersion;
-  FIOHandler.SSLOptions.Mode := ADTO.IdSSLMode;
-  FIdSMTP.UseTLS := ADTO.IdUseTLS;
-  FIdSMTP.AuthType := ADTO.IdSMTPAuthenticationType;
-
-  Validate;
+  FEmailDTO := ADTO;
 end;
 
 destructor TEmailSender.Destroy;
@@ -62,6 +48,38 @@ begin
   FIdMessage.Free;
   FIdSMTP.Free;
   inherited;
+end;
+
+procedure TEmailSender.AfterConstruction;
+begin
+  inherited;
+  Build;
+  Validate;
+end;
+
+procedure TEmailSender.Build;
+var
+  LAttachment: string;
+begin
+  FIdSMTP.Host := FEmailDTO.Host;
+  FIdSMTP.Username := FEmailDTO.Username;
+  FIdMessage.From.Address := FEmailDTO.Username;
+  FIdSMTP.Password := TCryptography.Decrypt(FEmailDTO.Password);
+  FIdSMTP.Port := FEmailDTO.Port;
+  FIdText.Body.AddStrings(FEmailDTO.Body);
+  FIdMessage.Subject := FEmailDTO.Subject;
+  FIdMessage.Recipients.EMailAddresses := FEmailDTO.Recipients;
+  FIdMessage.CCList.EMailAddresses := FEmailDTO.CC;
+  FIdMessage.BCCList.EMailAddresses := FEmailDTO.BCC;
+  FIOHandler.SSLOptions.Method := FEmailDTO.IdSSLVersion;
+  FIOHandler.SSLOptions.Mode := FEmailDTO.IdSSLMode;
+  FIdSMTP.UseTLS := FEmailDTO.IdUseTLS;
+  FIdSMTP.AuthType := FEmailDTO.IdSMTPAuthenticationType;
+
+  for LAttachment in FEmailDTO.Attachments do
+  begin
+    TIdAttachmentFile.Create(FIdMessage.MessageParts, LAttachment);
+  end;
 end;
 
 procedure TEmailSender.Send;

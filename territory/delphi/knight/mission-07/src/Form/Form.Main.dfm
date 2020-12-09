@@ -3,8 +3,8 @@ object Main: TMain
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'E-mail sender'
-  ClientHeight = 591
-  ClientWidth = 600
+  ClientHeight = 600
+  ClientWidth = 800
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,34 +19,49 @@ object Main: TMain
   object PageControl: TPageControl
     Left = 0
     Top = 0
-    Width = 600
-    Height = 550
+    Width = 800
+    Height = 559
     ActivePage = TabSheetMessage
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 600
     ExplicitHeight = 456
     object TabSheetMessage: TTabSheet
       Caption = 'Message'
-      ExplicitHeight = 428
+      ExplicitTop = 23
       object LabelBody: TLabel
         Left = 15
-        Top = 195
+        Top = 187
         Width = 24
         Height = 13
         Caption = 'Body'
         FocusControl = MemoBody
       end
+      object ButtonSelectAttachments: TSpeedButton
+        Left = 760
+        Top = 390
+        Width = 23
+        Height = 22
+        Action = ActionSelectAttachments
+      end
+      object LabelAttachments: TLabel
+        Left = 15
+        Top = 373
+        Width = 61
+        Height = 13
+        Caption = 'Attachments'
+      end
       object MemoBody: TMemo
         Left = 15
-        Top = 214
-        Width = 563
-        Height = 297
+        Top = 206
+        Width = 764
+        Height = 155
         TabOrder = 0
       end
       object EditSubject: TLabeledEdit
         Left = 15
         Top = 23
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 36
         EditLabel.Height = 13
@@ -56,7 +71,7 @@ object Main: TMain
       object EditRicipients: TLabeledEdit
         Left = 15
         Top = 68
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 45
         EditLabel.Height = 13
@@ -66,26 +81,35 @@ object Main: TMain
       object EditCC: TLabeledEdit
         Left = 15
         Top = 112
-        Width = 563
+        Width = 764
         Height = 21
-        EditLabel.Width = 32
+        EditLabel.Width = 14
         EditLabel.Height = 13
-        EditLabel.Caption = 'EditCC'
+        EditLabel.Caption = 'CC'
         TabOrder = 3
       end
       object EditBCC: TLabeledEdit
         Left = 15
         Top = 156
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 20
         EditLabel.Height = 13
         EditLabel.Caption = 'BCC'
         TabOrder = 4
       end
+      object ListBoxAttachments: TListBox
+        Left = 15
+        Top = 392
+        Width = 735
+        Height = 123
+        ItemHeight = 13
+        TabOrder = 5
+      end
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
+      ExplicitWidth = 592
       ExplicitHeight = 428
       object LabelUseTLS: TLabel
         Left = 15
@@ -106,7 +130,7 @@ object Main: TMain
       object EditHost: TLabeledEdit
         Left = 15
         Top = 23
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 22
         EditLabel.Height = 13
@@ -116,7 +140,7 @@ object Main: TMain
       object EditUsername: TLabeledEdit
         Left = 15
         Top = 68
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 48
         EditLabel.Height = 13
@@ -126,7 +150,7 @@ object Main: TMain
       object EditPassword: TLabeledEdit
         Left = 15
         Top = 112
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 46
         EditLabel.Height = 13
@@ -137,7 +161,7 @@ object Main: TMain
       object EditPort: TLabeledEdit
         Left = 15
         Top = 157
-        Width = 563
+        Width = 764
         Height = 21
         EditLabel.Width = 20
         EditLabel.Height = 13
@@ -148,7 +172,7 @@ object Main: TMain
       object GroupBoxSSL: TGroupBox
         Left = 15
         Top = 284
-        Width = 563
+        Width = 764
         Height = 127
         Caption = 'SSL'
         TabOrder = 4
@@ -170,7 +194,7 @@ object Main: TMain
         object ComboBoxIdSSLVersion: TComboBox
           Left = 15
           Top = 36
-          Width = 530
+          Width = 732
           Height = 21
           Style = csDropDownList
           TabOrder = 0
@@ -178,7 +202,7 @@ object Main: TMain
         object ComboBoxIdSSLMode: TComboBox
           Left = 15
           Top = 85
-          Width = 530
+          Width = 732
           Height = 21
           Style = csDropDownList
           TabOrder = 1
@@ -187,7 +211,7 @@ object Main: TMain
       object ComboBoxIdUseTLS: TComboBox
         Left = 15
         Top = 201
-        Width = 563
+        Width = 764
         Height = 21
         Style = csDropDownList
         TabOrder = 5
@@ -195,7 +219,7 @@ object Main: TMain
       object ComboBoxIdSMTPAuthenticationType: TComboBox
         Left = 15
         Top = 246
-        Width = 563
+        Width = 764
         Height = 21
         Style = csDropDownList
         TabOrder = 6
@@ -204,12 +228,13 @@ object Main: TMain
   end
   object Panel: TPanel
     Left = 0
-    Top = 550
-    Width = 600
+    Top = 559
+    Width = 800
     Height = 41
     Align = alBottom
     TabOrder = 1
     ExplicitTop = 456
+    ExplicitWidth = 600
     object ButtonSendEmail: TButton
       Left = 1
       Top = 1
@@ -226,6 +251,9 @@ object Main: TMain
     object ActionSendEmail: TAction
       Caption = '&Send e-mail'
       OnExecute = ActionSendEmailExecute
+    end
+    object ActionSelectAttachments: TAction
+      OnExecute = ActionSelectAttachmentsExecute
     end
   end
 end
