@@ -40,6 +40,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     procedure SendEmail;
+    function GetDTO: TEmailDTO;
   public
     procedure AfterConstruction; override;
   end;
@@ -80,30 +81,36 @@ begin
   ComboBoxIdUseTLS.ItemIndex := TIdUseTLS.utUseExplicitTLS.ToInteger;
 end;
 
+function TMain.GetDTO: TEmailDTO;
+var
+  LDTO: TEmailDTO;
+begin
+  LDTO.Host := EditHost.Text;
+  LDTO.Username := EditUsername.Text;
+  LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
+  LDTO.Port := StrToIntDef(EditPort.Text, 0);
+  LDTO.Subject := EditSubject.Text;
+  LDTO.Recipients := EditRicipients.Text;
+  LDTO.CC := EditCC.Text;
+  LDTO.BCC := EditBCC.Text;
+  LDTO.Body := MemoBody.Lines.ToStringArray;
+  LDTO.IdSSLVersion := TIdSSLVersion.Parse(ComboBoxIdSSLVersion.ItemIndex);
+  LDTO.IdSSLMode := TIdSSLMode.Parse(ComboBoxIdSSLMode.ItemIndex);
+  LDTO.IdUseTLS := TIdUseTLS.Parse(ComboBoxIdUseTLS.ItemIndex);
+  LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType.Parse(ComboBoxIdSMTPAuthenticationType.ItemIndex);
+
+  Result := LDTO;
+end;
+
 procedure TMain.SendEmail;
 begin
   TThread.CreateAnonymousThread(
     procedure
     var
-      LDTO: TEmailDTO;
       LSender: TEmailSender;
     begin
-      LDTO.Host := EditHost.Text;
-      LDTO.Username := EditUsername.Text;
-      LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
-      LDTO.Port := StrToIntDef(EditPort.Text, 0);
-      LDTO.Subject := EditSubject.Text;
-      LDTO.Recipients := EditRicipients.Text;
-      LDTO.CC := EditCC.Text;
-      LDTO.BCC := EditBCC.Text;
-      LDTO.Body := MemoBody.Lines.ToStringArray;
-      LDTO.IdSSLVersion := TIdSSLVersion.Parse(ComboBoxIdSSLVersion.ItemIndex);
-      LDTO.IdSSLMode := TIdSSLMode.Parse(ComboBoxIdSSLMode.ItemIndex);
-      LDTO.IdUseTLS := TIdUseTLS.Parse(ComboBoxIdUseTLS.ItemIndex);
-      LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType.Parse(ComboBoxIdSMTPAuthenticationType.ItemIndex);
-
       try
-        LSender := TEmailSender.Create(LDTO);
+        LSender := TEmailSender.Create(GetDTO);
         try
           LSender.Send;
         finally
