@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  Caption = 'E-mail sender'
+  Caption = 'Delphi Knight - Mission 07 - E-mail sender'
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace
@@ -20,12 +20,14 @@ object Main: TMain
     Left = 0
     Top = 0
     Width = 800
-    Height = 559
+    Height = 555
     ActivePage = TabSheetMessage
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 559
     object TabSheetMessage: TTabSheet
       Caption = 'Message'
+      ExplicitHeight = 531
       object LabelBody: TLabel
         Left = 15
         Top = 195
@@ -43,7 +45,7 @@ object Main: TMain
       end
       object LabelAttachments: TLabel
         Left = 15
-        Top = 356
+        Top = 354
         Width = 61
         Height = 13
         Caption = 'Attachments'
@@ -52,7 +54,7 @@ object Main: TMain
         Left = 15
         Top = 211
         Width = 760
-        Height = 135
+        Height = 133
         TabOrder = 0
       end
       object EditSubject: TLabeledEdit
@@ -97,15 +99,16 @@ object Main: TMain
       end
       object ListBoxAttachments: TListBox
         Left = 15
-        Top = 372
+        Top = 370
         Width = 731
-        Height = 135
+        Height = 133
         ItemHeight = 13
         TabOrder = 5
       end
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
+      ExplicitHeight = 531
       object LabelUseTLS: TLabel
         Left = 15
         Top = 195
@@ -223,16 +226,16 @@ object Main: TMain
   end
   object Panel: TPanel
     Left = 0
-    Top = 559
+    Top = 555
     Width = 800
-    Height = 41
+    Height = 45
     Align = alBottom
     TabOrder = 1
     object ButtonSend: TSpeedButton
       Left = 1
       Top = 1
       Width = 100
-      Height = 39
+      Height = 43
       Action = ActionSend
       Align = alLeft
       ExplicitLeft = 222
