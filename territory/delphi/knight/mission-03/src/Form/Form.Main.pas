@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList, Vcl.StdCtrls,
-  System.Zip, Vcl.ComCtrls, System.Generics.Collections, System.UITypes, System.Actions, System.IOUtils, Impl.Zip;
+  System.Zip, Vcl.ComCtrls, System.UITypes, System.Actions, Impl.Zip;
 
 type
   TMain = class sealed(TForm)
