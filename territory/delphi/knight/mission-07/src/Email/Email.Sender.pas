@@ -9,7 +9,7 @@ uses
 type
   EEmailSenderArgumentException = class(EArgumentException);
 
-  TEmailSender = class sealed(TObject)
+  TEmailSender = class sealed
   strict private
     FIdSMTP: TIdSMTP;
     FIdText: TIdText;
@@ -44,9 +44,9 @@ begin
   FIdSMTP.Port := ADTO.Port;
   FIdText.Body.AddStrings(ADTO.Body);
   FIdMessage.Subject := ADTO.Subject;
-  FIdMessage.Recipients.EMailAddresses := string.Join(', ', ADTO.Recipients);
-  FIdMessage.CCList.EMailAddresses := string.Join(', ', ADTO.Recipients);
-  FIdMessage.BCCList.EMailAddresses := string.Join(', ', ADTO.Recipients);
+  FIdMessage.Recipients.EMailAddresses := ADTO.Recipients;
+  FIdMessage.CCList.EMailAddresses := ADTO.CC;
+  FIdMessage.BCCList.EMailAddresses := ADTO.BCC;
   FIOHandler.SSLOptions.Method := ADTO.IdSSLVersion;
   FIOHandler.SSLOptions.Mode := ADTO.IdSSLMode;
   FIdSMTP.UseTLS := ADTO.IdUseTLS;
@@ -70,7 +70,7 @@ begin
   try
     if FIdSMTP.Authenticate then
     begin
-      FIdSMTP.SendMsg(FIdMessage);
+      FIdSMTP.Send(FIdMessage);
     end;
   finally
     FIdSMTP.Disconnect;
@@ -99,9 +99,6 @@ begin
     raise EEmailSenderArgumentException.Create('The password cannot be empty.');
   end;
 
-  // Precisa validar se valor é <c>Integer.0<c>?
-  // FIdSMTP.Port := ADTO.Port;
-
   if FIdText.Body.Count = 0 then
   begin
     raise EEmailSenderArgumentException.Create('The body cannot be empty.');
@@ -116,15 +113,6 @@ begin
   begin
     raise EEmailSenderArgumentException.Create('The recipients cannot be empty.');
   end;
-
-  // Precisa validar se o valor é <c>TIdSSLModesslmUnassigned<c>?
-  // FIOHandler.SSLOptions.Mode := ADTO.IdSSLMode;
-
-  // Precisa validar se o valor é <c>.TIdUseTLSutNoTLSSupport<c>?
-  // FIdSMTP.UseTLS := ADTO.IdUseTLS;
-
-  // Precisa validar se o valor é <c>TIdSMTPAuthenticationType.satNone<c>?
-  // FIdSMTP.AuthType := ADTO.IdSMTPAuthenticationType;
 end;
 
 end.

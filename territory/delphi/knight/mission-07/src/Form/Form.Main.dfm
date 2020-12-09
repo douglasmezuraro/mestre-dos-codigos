@@ -3,7 +3,7 @@ object Main: TMain
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'E-mail sender'
-  ClientHeight = 497
+  ClientHeight = 591
   ClientWidth = 600
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,15 +20,17 @@ object Main: TMain
     Left = 0
     Top = 0
     Width = 600
-    Height = 456
+    Height = 550
     ActivePage = TabSheetMessage
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 456
     object TabSheetMessage: TTabSheet
       Caption = 'Message'
+      ExplicitHeight = 428
       object LabelBody: TLabel
         Left = 15
-        Top = 99
+        Top = 195
         Width = 24
         Height = 13
         Caption = 'Body'
@@ -36,9 +38,9 @@ object Main: TMain
       end
       object MemoBody: TMemo
         Left = 15
-        Top = 114
+        Top = 214
         Width = 563
-        Height = 301
+        Height = 297
         TabOrder = 0
       end
       object EditSubject: TLabeledEdit
@@ -61,9 +63,30 @@ object Main: TMain
         EditLabel.Caption = 'Ricipients'
         TabOrder = 2
       end
+      object EditCC: TLabeledEdit
+        Left = 15
+        Top = 112
+        Width = 563
+        Height = 21
+        EditLabel.Width = 32
+        EditLabel.Height = 13
+        EditLabel.Caption = 'EditCC'
+        TabOrder = 3
+      end
+      object EditBCC: TLabeledEdit
+        Left = 15
+        Top = 156
+        Width = 563
+        Height = 21
+        EditLabel.Width = 20
+        EditLabel.Height = 13
+        EditLabel.Caption = 'BCC'
+        TabOrder = 4
+      end
     end
     object TabSheetConfiguration: TTabSheet
       Caption = 'Configuration'
+      ExplicitHeight = 428
       object LabelUseTLS: TLabel
         Left = 15
         Top = 188
@@ -181,11 +204,12 @@ object Main: TMain
   end
   object Panel: TPanel
     Left = 0
-    Top = 456
+    Top = 550
     Width = 600
     Height = 41
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 456
     object ButtonSendEmail: TButton
       Left = 1
       Top = 1

@@ -33,6 +33,8 @@ type
     Panel: TPanel;
     TabSheetConfiguration: TTabSheet;
     TabSheetMessage: TTabSheet;
+    EditCC: TLabeledEdit;
+    EditBCC: TLabeledEdit;
   {$ENDREGION}
     procedure ActionSendEmailExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -40,7 +42,6 @@ type
     procedure SendEmail;
   public
     procedure AfterConstruction; override;
-
   end;
 
 var
@@ -71,12 +72,12 @@ begin
   EditUsername.Text := 'douglas.mezuraro@db1.com.br';
   EditPort.Text := 587.ToString;
   EditSubject.Text := 'E-mail test';
-  EditRicipients.Text := string.Join(', ', ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com']);
-  MemoBody.Lines.AddStrings(['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020']);
-  ComboBoxIdSSLVersion.ItemIndex := Ord(TIdSSLVersion.sslvSSLv23);
-  ComboBoxIdSSLMode.ItemIndex := Ord(TIdSSLMode.sslmClient);
-  ComboBoxIdSMTPAuthenticationType.ItemIndex := Ord(TIdUseTLS.utUseImplicitTLS);
-  ComboBoxIdUseTLS.ItemIndex := Ord(TIdSMTPAuthenticationType.satDefault);
+  EditRicipients.Text := 'douglas.mezuraro@db1.com.br, douglasmez@gmail.com';
+  MemoBody.Lines.AddStrings(['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 09/12/2020']);
+  ComboBoxIdSSLVersion.ItemIndex := TIdSSLVersion.sslvTLSv1_2.ToInteger;
+  ComboBoxIdSSLMode.ItemIndex := TIdSSLMode.sslmUnassigned.ToInteger;
+  ComboBoxIdSMTPAuthenticationType.ItemIndex := TIdSMTPAuthenticationType.satDefault.ToInteger;
+  ComboBoxIdUseTLS.ItemIndex := TIdUseTLS.utUseExplicitTLS.ToInteger;
 end;
 
 procedure TMain.SendEmail;
@@ -90,14 +91,16 @@ begin
       LDTO.Host := EditHost.Text;
       LDTO.Username := EditUsername.Text;
       LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
-      LDTO.Port := StrToIntDef(EditPort.Text, Word.MinValue);
-      LDTO.IdUseTLS := TIdUseTLS.Parse(ComboBoxIdUseTLS.ItemIndex);
-      LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType.Parse(ComboBoxIdSMTPAuthenticationType.ItemIndex);
+      LDTO.Port := StrToIntDef(EditPort.Text, 0);
       LDTO.Subject := EditSubject.Text;
-      LDTO.Recipients := string(EditRicipients.Text).Split([', ']);
+      LDTO.Recipients := EditRicipients.Text;
+      LDTO.CC := EditCC.Text;
+      LDTO.BCC := EditBCC.Text;
       LDTO.Body := MemoBody.Lines.ToStringArray;
       LDTO.IdSSLVersion := TIdSSLVersion.Parse(ComboBoxIdSSLVersion.ItemIndex);
       LDTO.IdSSLMode := TIdSSLMode.Parse(ComboBoxIdSSLMode.ItemIndex);
+      LDTO.IdUseTLS := TIdUseTLS.Parse(ComboBoxIdUseTLS.ItemIndex);
+      LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType.Parse(ComboBoxIdSMTPAuthenticationType.ItemIndex);
 
       try
         LSender := TEmailSender.Create(LDTO);
@@ -107,14 +110,9 @@ begin
           LSender.Free;
         end;
       except
-        on Error: EEmailSenderArgumentException do
-        begin
-          MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
-        end;
-
         on Error: Exception do
         begin
-          MessageDlg('Unhandled Error: ' + Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+          MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
         end;
       end;
     end).Start;

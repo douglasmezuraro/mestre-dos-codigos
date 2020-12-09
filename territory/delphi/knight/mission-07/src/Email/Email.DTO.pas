@@ -9,7 +9,9 @@ type
   TEmailDTO = record
   public
     Subject: string;
-    Recipients: TArray<string>;
+    Recipients: string;
+    CC: string;
+    BCC: string;
     Body: TArray<string>;
     Host: string;
     Username: string;
