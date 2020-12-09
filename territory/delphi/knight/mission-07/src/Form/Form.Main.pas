@@ -80,40 +80,44 @@ begin
 end;
 
 procedure TMain.SendEmail;
-var
-  LDTO: TEmailDTO;
-  LSender: TEmailSender;
 begin
-  LDTO.Host := EditHost.Text;
-  LDTO.Username := EditUsername.Text;
-  LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
-  LDTO.Port := StrToIntDef(EditPort.Text, Word.MinValue);
-  LDTO.IdUseTLS := TIdUseTLS(ComboBoxIdUseTLS.ItemIndex);
-  LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType(ComboBoxIdSMTPAuthenticationType.ItemIndex);
-  LDTO.Subject := EditSubject.Text;
-  LDTO.Recipients := string(EditRicipients.Text).Split([', ']);
-  LDTO.Body := MemoBody.Lines.ToStringArray;
-  LDTO.IdSSLVersion := TIdSSLVersion(ComboBoxIdSSLVersion.ItemIndex);
-  LDTO.IdSSLMode := TIdSSLMode(ComboBoxIdSSLMode.ItemIndex);
-
-  try
-    LSender := TEmailSender.Create(LDTO);
-    try
-      LSender.Send;
-    finally
-      LSender.Free;
-    end;
-  except
-    on Error: EEmailSenderArgumentException do
+  TThread.CreateAnonymousThread(
+    procedure
+    var
+      LDTO: TEmailDTO;
+      LSender: TEmailSender;
     begin
-      MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
-    end;
+      LDTO.Host := EditHost.Text;
+      LDTO.Username := EditUsername.Text;
+      LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
+      LDTO.Port := StrToIntDef(EditPort.Text, Word.MinValue);
+      LDTO.IdUseTLS := TIdUseTLS(ComboBoxIdUseTLS.ItemIndex);
+      LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType(ComboBoxIdSMTPAuthenticationType.ItemIndex);
+      LDTO.Subject := EditSubject.Text;
+      LDTO.Recipients := string(EditRicipients.Text).Split([', ']);
+      LDTO.Body := MemoBody.Lines.ToStringArray;
+      LDTO.IdSSLVersion := TIdSSLVersion(ComboBoxIdSSLVersion.ItemIndex);
+      LDTO.IdSSLMode := TIdSSLMode(ComboBoxIdSSLMode.ItemIndex);
 
-    on Error: Exception do
-    begin
-      MessageDlg('Unhandled Error: ' + Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
-    end;
-  end;
+      try
+        LSender := TEmailSender.Create(LDTO);
+        try
+          LSender.Send;
+        finally
+          LSender.Free;
+        end;
+      except
+        on Error: EEmailSenderArgumentException do
+        begin
+          MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+        end;
+
+        on Error: Exception do
+        begin
+          MessageDlg('Unhandled Error: ' + Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+        end;
+      end;
+    end).Start;
 end;
 
 end.
