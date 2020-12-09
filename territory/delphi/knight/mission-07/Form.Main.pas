@@ -3,29 +3,19 @@
 interface
 
 uses
-  System.SysUtils,
-  System.Classes,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
-  Vcl.ActnList,
-  Vcl.ComCtrls,
-  System.Actions,
-  Impl.EmailSender,
-  Impl.EmailSender.Types,
-  Impl.Cryptography, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP;
+  System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnList,
+  Vcl.ComCtrls, System.Actions, Email.Wrapper, Impl.Cryptography;
 
 type
   TMain = class sealed(TForm)
+  {$REGION 'Visual Components'}
     ActionList: TActionList;
     ActionSendEmail: TAction;
     ButtonSendEmail: TButton;
-    ComboBoxAuthType: TComboBox;
-    ComboBoxMethod: TComboBox;
-    ComboBoxMode: TComboBox;
-    ComboBoxUseTLS: TComboBox;
+    ComboBoxIdSMTPAuthenticationType: TComboBox;
+    ComboBoxIdSSLVersion: TComboBox;
+    ComboBoxIdSSLMode: TComboBox;
+    ComboBoxIdUseTLS: TComboBox;
     EditHost: TLabeledEdit;
     EditPassword: TLabeledEdit;
     EditPort: TLabeledEdit;
@@ -33,63 +23,23 @@ type
     EditSubject: TLabeledEdit;
     EditUsername: TLabeledEdit;
     GroupBoxSSL: TGroupBox;
-    LabelAuthType: TLabel;
+    LabeIdSMTPAuthenticationType: TLabel;
     LabelBody: TLabel;
-    LabelSSLMethod: TLabel;
-    LabelSSLMode: TLabel;
+    LabelIdSSLVersion: TLabel;
+    LabelIdSSLMode: TLabel;
     LabelUseTLS: TLabel;
     MemoBody: TMemo;
     PageControl: TPageControl;
     Panel: TPanel;
     TabSheetConfiguration: TTabSheet;
     TabSheetMessage: TTabSheet;
-    idsmtp2: TIdSMTP;
+  {$ENDREGION}
     procedure ActionSendEmailExecute(Sender: TObject);
-  strict private
-    function GetHost: string;
-    procedure SetHost(const Value: string);
-    function GetUsername: string;
-    procedure SetUsername(const Value: string);
-    function GetPassword: string;
-    procedure SetPassword(const Value: string);
-    function GetBody: TArray<string>;
-    procedure SetBody(const Value: TArray<string>);
-    function GetPort: Word;
-    procedure SetPort(const Value: Word);
-    function GetSubject: string;
-    procedure SetSubject(const Value: string);
-    function GetRecipients: TArray<string>;
-    procedure SetRecipients(const Value: TArray<string>);
-    function GetMethod: TSSLMethod;
-    procedure SetMethod(const Value: TSSLMethod);
-    function GetMode: TSSLMode;
-    procedure SetMode(const Value: TSSLMode);
-    function GetUseTLS: TUseTLS;
-    procedure SetUseTLS(const Value: TUseTLS);
-    function GetAuthType: TAuthType;
-    procedure SetAuthType(const Value: TAuthType);
   private
-    procedure Init;
     procedure SendEmail;
   public
     procedure AfterConstruction; override;
 
-    { Message }
-    property Subject: string read GetSubject write SetSubject;
-    property Recipients: TArray<string> read GetRecipients write SetRecipients;
-    property Body: TArray<string> read GetBody write SetBody;
-
-    { SMTP Configuration }
-    property Host: string read GetHost write SetHost;
-    property Username: string read GetUsername write SetUsername;
-    property Password: string read GetPassword write SetPassword;
-    property Port: Word read GetPort write SetPort;
-    property UseTLS: TUseTLS read GetUseTLS write SetUseTLS;
-    property AuthType: TAuthType read GetAuthType write SetAuthType;
-
-    { SSL Configuration }
-    property Method: TSSLMethod read GetMethod write SetMethod;
-    property Mode: TSSLMode read GetMode write SetMode;
   end;
 
 var
@@ -109,163 +59,46 @@ begin
   inherited;
   PageControl.ActivePage := TabSheetMessage;
 
-  ComboBoxMethod.Items.AddStrings(TSSLMethod.ToStringArray);
-  ComboBoxMode.Items.AddStrings(TSSLMode.ToStringArray);
-  ComboBoxUseTLS.Items.AddStrings(TUseTLS.ToStringArray);
-  ComboBoxAuthType.Items.AddStrings(TAuthType.ToStringArray);
+  ComboBoxIdSSLVersion.Items.AddStrings(TIdSSLVersion.ToStringArray);
+  ComboBoxIdSSLMode.Items.AddStrings(TIdSSLMode.ToStringArray);
+  ComboBoxIdUseTLS.Items.AddStrings(TIdUseTLS.ToStringArray);
+  ComboBoxIdSMTPAuthenticationType.Items.AddStrings(TIdSMTPAuthenticationType.ToStringArray);
 
-  Init;
+  EditHost.Text := 'smtp.gmail.com';
+  EditUsername.Text := 'douglasmez@gmail.com';
+  EditPort.Text := 465.ToString;
+  EditSubject.Text := 'E-mail test';
+  EditRecepients.Text := string.Join(', ', ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com']);
+  MemoBody.Lines.AddStrings(['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020']);
+  ComboBoxIdSSLVersion.ItemIndex := Ord(TIdSSLVersion.sslvSSLv23);
+  ComboBoxIdSSLMode.ItemIndex := Ord(TIdSSLMode.sslmClient);
+  ComboBoxIdSMTPAuthenticationType.ItemIndex := Ord(TIdUseTLS.utUseImplicitTLS);
+  ComboBoxIdUseTLS.ItemIndex := Ord(TIdSMTPAuthenticationType.satDefault);
 end;
 
 procedure TMain.SendEmail;
 var
+  LDTO: TEmailDTO;
   Sender: TEmailSender;
 begin
   Sender := TEmailSender.Create;
   try
-    Sender.Host := Host;
-    Sender.Username := Username;
-    Sender.Password := TCryptography.EnDeCrypt(Password);
-    Sender.Port := Port;
-    Sender.UseTLS := UseTLS;
-    Sender.AuthType := AuthType;
-
-    Sender.Subject := Subject;
-    Sender.Recipients := Recipients;
-    Sender.Body := Body;
-
-    Sender.Method := Method;
-    Sender.Mode := Mode;
+    LDTO.Host := EditHost.Text;
+    LDTO.Username := EditUsername.Text;
+    LDTO.Password := TCryptography.Decrypt(EditPassword.Text);
+    LDTO.Port := StrToIntDef(EditPort.Text, Word.MinValue);
+    LDTO.IdUseTLS := TIdUseTLS(ComboBoxIdUseTLS.ItemIndex);
+    LDTO.IdSMTPAuthenticationType := TIdSMTPAuthenticationType(ComboBoxIdSMTPAuthenticationType.ItemIndex);
+    LDTO.Subject := EditSubject.Text;
+    LDTO.Recipients := string(EditRecepients.Text).Split([', ']);
+    LDTO.Body := MemoBody.Lines.ToStringArray;
+    LDTO.IdSSLVersion := TIdSSLVersion(ComboBoxIdSSLVersion.ItemIndex);
+    LDTO.IdSSLMode := TIdSSLMode(ComboBoxIdSSLMode.ItemIndex);
 
     Sender.Send;
   finally
     Sender.Free;
   end;
-end;
-
-function TMain.GetAuthType: TAuthType;
-begin
-  Result := TAuthType(ComboBoxAuthType.ItemIndex);
-end;
-
-function TMain.GetBody: TArray<string>;
-begin
-  Result := MemoBody.Lines.ToStringArray;
-end;
-
-function TMain.GetHost: string;
-begin
-  Result := EditHost.Text;
-end;
-
-function TMain.GetMethod: TSSLMethod;
-begin
-  Result := TSSLMethod(ComboBoxMethod.ItemIndex);
-end;
-
-function TMain.GetMode: TSSLMode;
-begin
-  Result := TSSLMode(ComboBoxMode.ItemIndex);
-end;
-
-function TMain.GetPassword: string;
-begin
-  Result := EditPassword.Text;
-end;
-
-function TMain.GetPort: Word;
-begin
-  Result := StrToIntDef(EditPort.Text, Word.MinValue);
-end;
-
-function TMain.GetRecipients: TArray<string>;
-begin
-  Result := string(EditRecepients.Text).Split([', ']);
-end;
-
-function TMain.GetSubject: string;
-begin
-  Result := EditSubject.Text;
-end;
-
-function TMain.GetUsername: string;
-begin
-  Result := EditUsername.Text;
-end;
-
-function TMain.GetUseTLS: TUseTLS;
-begin
-  Result := TUseTLS(ComboBoxUseTLS.ItemIndex);
-end;
-
-procedure TMain.Init;
-begin
-  Host       := 'smtp.gmail.com';
-  Username   := 'douglasmez@gmail.com';
-  Port       := 465;
-  Subject    := 'E-mail test';
-  Recipients := ['douglas.mezuraro@db1.com.br', 'douglasmez@gmail.com'];
-  Body       := ['Mission 07', 'Author: Douglas Mezuraro', 'Last Modification: 28/02/2020'];
-  Method     := TSSLMethod.sslvSSLv23;
-  Mode       := TSSLMode.sslmClient;
-  UseTLS     := TUseTLS.utUseImplicitTLS;
-  AuthType   := TAuthType.satDefault;
-end;
-
-procedure TMain.SetAuthType(const Value: TAuthType);
-begin
-  ComboBoxAuthType.ItemIndex := Value.ToInteger;
-end;
-
-procedure TMain.SetBody(const Value: TArray<string>);
-begin
-  MemoBody.Clear;
-  MemoBody.Lines.AddStrings(Value);
-end;
-
-procedure TMain.SetHost(const Value: string);
-begin
-  EditHost.Text := Value;
-end;
-
-procedure TMain.SetMethod(const Value: TSSLMethod);
-begin
-  ComboBoxMethod.ItemIndex := Value.ToInteger;
-end;
-
-procedure TMain.SetMode(const Value: TSSLMode);
-begin
-  ComboBoxMode.ItemIndex := Value.ToInteger;
-end;
-
-procedure TMain.SetPassword(const Value: string);
-begin
-  EditPassword.Text := Value;
-end;
-
-procedure TMain.SetPort(const Value: Word);
-begin
-  EditPort.Text := Value.ToString;
-end;
-
-procedure TMain.SetRecipients(const Value: TArray<string>);
-begin
-  EditRecepients.Text := string.Join(', ', Value);
-end;
-
-procedure TMain.SetSubject(const Value: string);
-begin
-  EditSubject.Text := Value;
-end;
-
-procedure TMain.SetUsername(const Value: string);
-begin
-  EditUsername.Text := Value;
-end;
-
-procedure TMain.SetUseTLS(const Value: TUseTLS);
-begin
-  ComboBoxUseTLS.ItemIndex := Value.ToInteger;
 end;
 
 end.

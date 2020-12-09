@@ -68,15 +68,15 @@ object Main: TMain
         Width = 38
         Height = 13
         Caption = 'Use TLS'
-        FocusControl = ComboBoxUseTLS
+        FocusControl = ComboBoxIdUseTLS
       end
-      object LabelAuthType: TLabel
+      object LabeIdSMTPAuthenticationType: TLabel
         Left = 15
         Top = 231
         Width = 48
         Height = 13
         Caption = 'Auth type'
-        FocusControl = ComboBoxAuthType
+        FocusControl = ComboBoxIdSMTPAuthenticationType
       end
       object EditHost: TLabeledEdit
         Left = 15
@@ -127,22 +127,22 @@ object Main: TMain
         Height = 127
         Caption = 'SSL'
         TabOrder = 4
-        object LabelSSLMethod: TLabel
+        object LabelIdSSLVersion: TLabel
           Left = 15
           Top = 21
-          Width = 36
+          Width = 35
           Height = 13
-          Caption = 'Method'
-          FocusControl = ComboBoxMethod
+          Caption = 'Version'
+          FocusControl = ComboBoxIdSSLVersion
         end
-        object LabelSSLMode: TLabel
+        object LabelIdSSLMode: TLabel
           Left = 15
           Top = 70
           Width = 26
           Height = 13
           Caption = 'Mode'
         end
-        object ComboBoxMethod: TComboBox
+        object ComboBoxIdSSLVersion: TComboBox
           Left = 15
           Top = 36
           Width = 530
@@ -150,7 +150,7 @@ object Main: TMain
           Style = csDropDownList
           TabOrder = 0
         end
-        object ComboBoxMode: TComboBox
+        object ComboBoxIdSSLMode: TComboBox
           Left = 15
           Top = 85
           Width = 530
@@ -159,7 +159,7 @@ object Main: TMain
           TabOrder = 1
         end
       end
-      object ComboBoxUseTLS: TComboBox
+      object ComboBoxIdUseTLS: TComboBox
         Left = 15
         Top = 201
         Width = 563
@@ -167,7 +167,7 @@ object Main: TMain
         Style = csDropDownList
         TabOrder = 5
       end
-      object ComboBoxAuthType: TComboBox
+      object ComboBoxIdSMTPAuthenticationType: TComboBox
         Left = 15
         Top = 246
         Width = 563
@@ -201,10 +201,5 @@ object Main: TMain
       Caption = '&Send e-mail'
       OnExecute = ActionSendEmailExecute
     end
-  end
-  object idsmtp2: TIdSMTP
-    SASLMechanisms = <>
-    Left = 316
-    Top = 262
   end
 end

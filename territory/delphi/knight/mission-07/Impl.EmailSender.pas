@@ -3,23 +3,15 @@ unit Impl.EmailSender;
 interface
 
 uses
-  IdMessage,
-  IdText,
-  IdSMTP,
-  IdSSLOpenSSL,
-  IdExplicitTLSClientServerBase,
-  Impl.Cryptography,
-  Impl.EmailSender.Types,
-  System.Classes,
-  System.SysUtils,
-  Vcl.Forms;
+  IdMessage, IdText, IdSMTP, IdSSLOpenSSL, IdExplicitTLSClientServerBase, Impl.Cryptography,
+  Email.Types, System.Classes, System.SysUtils, Vcl.Forms;
 
 type
   TEmailSender = class sealed(TObject)
   private
-    FSMTP: TIdSMTP;
-    FText: TIdText;
-    FMessage: TIdMessage;
+    FIdSMTP: TIdSMTP;
+    FIdText: TIdText;
+    FIdMessage: TIdMessage;
     FIOHandler: TIdSSLIOHandlerSocketOpenSSL;
     function GetHost: string;
     procedure SetHost(const Value: string);
@@ -75,45 +67,45 @@ implementation
 
 constructor TEmailSender.Create;
 begin
-  FSMTP := TIdSMTP.Create(nil);
-  FMessage := TIdMessage.Create(nil);
-  FText := TIdText.Create(FMessage.MessageParts);
+  FIdSMTP := TIdSMTP.Create(nil);
+  FIdMessage := TIdMessage.Create(nil);
+  FIdText := TIdText.Create(FIdMessage.MessageParts);
   FIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create;
-  FSMTP.OnFailedRecipient := OnFailedRecipient;
-  FSMTP.OnTLSNotAvailable := OnTLSNotAvailable;
+  FIdSMTP.OnFailedRecipient := OnFailedRecipient;
+  FIdSMTP.OnTLSNotAvailable := OnTLSNotAvailable;
 end;
 
 destructor TEmailSender.Destroy;
 begin
   FIOHandler.Free;
-  FText.Free;
-  FMessage.Free;
-  FSMTP.Free;
+  FIdText.Free;
+  FIdMessage.Free;
+  FIdSMTP.Free;
   inherited;
 end;
 
 procedure TEmailSender.AfterConstruction;
 begin
   inherited;
-  FSMTP.ConnectTimeout := 30000;
-  FSMTP.IOHandler := FIOHandler;
-  FMessage.Encoding := TIdMessageEncoding.meMIME;
-  FText.ContentType := 'text/plain; charset=iso-8859-1';
+  FIdSMTP.ConnectTimeout := 30000;
+  FIdSMTP.IOHandler := FIOHandler;
+  FIdMessage.Encoding := TIdMessageEncoding.meMIME;
+  FIdText.ContentType := 'text/plain; charset=iso-8859-1';
 end;
 
 function TEmailSender.GetAuthType: TAuthType;
 begin
-  Result := FSMTP.AuthType;
+  Result := FIdSMTP.AuthType;
 end;
 
 function TEmailSender.GetBody: TArray<string>;
 begin
-  Result := FText.Body.ToStringArray;
+  Result := FIdText.Body.ToStringArray;
 end;
 
 function TEmailSender.GetHost: string;
 begin
-  Result := FSMTP.Host;
+  Result := FIdSMTP.Host;
 end;
 
 function TEmailSender.GetMethod: TIdSSLVersion;
@@ -128,32 +120,32 @@ end;
 
 function TEmailSender.GetPassword: string;
 begin
-  Result := TCryptography.EnDeCrypt(FSMTP.Password);
+  Result := TCryptography.Encrypt(FIdSMTP.Password);
 end;
 
 function TEmailSender.GetPort: Word;
 begin
-  Result := FSMTP.Port;
+  Result := FIdSMTP.Port;
 end;
 
 function TEmailSender.GetRecipients: TArray<string>;
 begin
-  Result := FMessage.Recipients.EMailAddresses.Split([', ']);
+  Result := FIdMessage.Recipients.EMailAddresses.Split([', ']);
 end;
 
 function TEmailSender.GetSubject: string;
 begin
-  Result := FMessage.Subject;
+  Result := FIdMessage.Subject;
 end;
 
 function TEmailSender.GetUsername: string;
 begin
-  Result := FSMTP.Username;
+  Result := FIdSMTP.Username;
 end;
 
 function TEmailSender.GetUseTLS: TUseTLS;
 begin
-  Result := FSMTP.UseTLS;
+  Result := FIdSMTP.UseTLS;
 end;
 
 procedure TEmailSender.OnFailedRecipient(Sender: TObject; const AAddress, ACode, AText: String;
@@ -164,28 +156,28 @@ end;
 
 procedure TEmailSender.Send;
 begin
-  FSMTP.Connect;
+  FIdSMTP.Connect;
   try
-    if FSMTP.Authenticate then
-      FSMTP.SendMsg(FMessage);
+    if FIdSMTP.Authenticate then
+      FIdSMTP.SendMsg(FIdMessage);
   finally
-    FSMTP.Disconnect;
+    FIdSMTP.Disconnect;
   end;
 end;
 
 procedure TEmailSender.SetAuthType(const Value: TAuthType);
 begin
-  FSMTP.AuthType := Value;
+  FIdSMTP.AuthType := Value;
 end;
 
 procedure TEmailSender.SetBody(const Value: TArray<string>);
 begin
-  FText.Body.AddStrings(Value);
+  FIdText.Body.AddStrings(Value);
 end;
 
 procedure TEmailSender.SetHost(const Value: string);
 begin
-  FSMTP.Host := Value;
+  FIdSMTP.Host := Value;
 end;
 
 procedure TEmailSender.SetMethod(const Value: TIdSSLVersion);
@@ -200,35 +192,35 @@ end;
 
 procedure TEmailSender.SetPassword(const Value: string);
 begin
-  FSMTP.Password := TCryptography.EnDeCrypt(Value);
+  FIdSMTP.Password := TCryptography.Decrypt(Value);
 end;
 
 procedure TEmailSender.SetPort(const Value: Word);
 begin
-  FSMTP.Port := Value;
+  FIdSMTP.Port := Value;
 end;
 
 procedure TEmailSender.SetRecipients(const Value: TArray<string>);
 begin
-  FMessage.Recipients.EMailAddresses := string.Join(', ', Value);
-  FMessage.CCList.EMailAddresses := string.Join(', ', Value);
-  FMessage.BccList.EMailAddresses := string.Join(', ', Value);
+  FIdMessage.Recipients.EMailAddresses := string.Join(', ', Value);
+  FIdMessage.CCList.EMailAddresses := string.Join(', ', Value);
+  FIdMessage.BccList.EMailAddresses := string.Join(', ', Value);
 end;
 
 procedure TEmailSender.SetSubject(const Value: string);
 begin
-  FMessage.Subject := Value;
+  FIdMessage.Subject := Value;
 end;
 
 procedure TEmailSender.SetUsername(const Value: string);
 begin
-  FSMTP.Username := Value;
-  FMessage.From.Address := Value;
+  FIdSMTP.Username := Value;
+  FIdMessage.From.Address := Value;
 end;
 
 procedure TEmailSender.SetUseTLS(const Value: TUseTLS);
 begin
-  FSMTP.UseTLS := Value;
+  FIdSMTP.UseTLS := Value;
 end;
 
 procedure TEmailSender.OnTLSNotAvailable(Asender: TObject; var VContinue: Boolean);

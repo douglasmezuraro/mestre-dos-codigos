@@ -3,9 +3,10 @@ program Mission07;
 uses
   Vcl.Forms,
   Form.Main in 'Form.Main.pas' {Main},
-  Impl.EmailSender in 'Impl.EmailSender.pas',
+  Email.Sender in 'src\Email\Email.Sender.pas',
   Impl.Cryptography in 'Impl.Cryptography.pas',
-  Impl.EmailSender.Types in 'Impl.EmailSender.Types.pas';
+  Email.DTO in 'src\Email\Email.DTO.pas',
+  Email.Wrapper in 'src\Email\Email.Wrapper.pas';
 
 {$R *.res}
 

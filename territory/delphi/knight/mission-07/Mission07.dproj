@@ -99,9 +99,10 @@
             <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Impl.EmailSender.pas"/>
+        <DCCReference Include="src\Email\Email.Sender.pas"/>
         <DCCReference Include="Impl.Cryptography.pas"/>
-        <DCCReference Include="Impl.EmailSender.Types.pas"/>
+        <DCCReference Include="src\Email\Email.DTO.pas"/>
+        <DCCReference Include="src\Email\Email.Wrapper.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -127,7 +128,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\Mission07.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="bin\Win32\Debug\Mission07.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Mission07.exe</RemoteName>
                         <Overwrite>true</Overwrite>
