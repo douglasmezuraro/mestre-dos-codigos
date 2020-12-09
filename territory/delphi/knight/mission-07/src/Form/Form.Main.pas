@@ -5,14 +5,13 @@ interface
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnList,
   Vcl.ComCtrls, System.Actions, System.UITypes, Vcl.Dialogs, Email.Wrapper, Impl.Cryptography,
-  Vcl.Buttons;
+  Vcl.Buttons, System.ImageList, Vcl.ImgList;
 
 type
   TMain = class sealed(TForm)
   {$REGION 'Visual Components'}
     ActionList: TActionList;
-    ActionSendEmail: TAction;
-    ButtonSendEmail: TButton;
+    ActionSend: TAction;
     ComboBoxIdSMTPAuthenticationType: TComboBox;
     ComboBoxIdSSLVersion: TComboBox;
     ComboBoxIdSSLMode: TComboBox;
@@ -40,12 +39,14 @@ type
     ListBoxAttachments: TListBox;
     ButtonSelectAttachments: TSpeedButton;
     LabelAttachments: TLabel;
+    ImageList: TImageList;
+    ButtonSend: TSpeedButton;
   {$ENDREGION}
-    procedure ActionSendEmailExecute(Sender: TObject);
+    procedure ActionSendExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ActionSelectAttachmentsExecute(Sender: TObject);
   private
-    procedure SendEmail;
+    procedure Send;
     function GetDTO: TEmailDTO;
     function SelectAttachments: TArray<string>;
   public
@@ -60,25 +61,18 @@ implementation
 {$R *.dfm}
 
 procedure TMain.ActionSelectAttachmentsExecute(Sender: TObject);
-var
-  LAttachments: TArray<string>;
 begin
-  LAttachments := SelectAttachments;
-  if Assigned(LAttachments) then
-  begin
-    ListBoxAttachments.Items.AddStrings(LAttachments);
-  end;
+  ListBoxAttachments.Items.AddStrings(SelectAttachments);
 end;
 
-procedure TMain.ActionSendEmailExecute(Sender: TObject);
+procedure TMain.ActionSendExecute(Sender: TObject);
 begin
-  SendEmail;
+  Send;
 end;
 
 procedure TMain.AfterConstruction;
 begin
   inherited;
-  PageControl.ActivePage := TabSheetMessage;
   ComboBoxIdSSLVersion.Items.AddStrings(TIdSSLVersion.ToStringArray);
   ComboBoxIdSSLMode.Items.AddStrings(TIdSSLMode.ToStringArray);
   ComboBoxIdUseTLS.Items.AddStrings(TIdUseTLS.ToStringArray);
@@ -87,6 +81,7 @@ end;
 
 procedure TMain.FormShow(Sender: TObject);
 begin
+  PageControl.ActivePage := TabSheetMessage;
   EditHost.Text := 'smtp.office365.com';
   EditUsername.Text := 'douglas.mezuraro@db1.com.br';
   EditPort.Text := 587.ToString;
@@ -140,7 +135,7 @@ begin
   end;
 end;
 
-procedure TMain.SendEmail;
+procedure TMain.Send;
 begin
   TThread.CreateAnonymousThread(
     procedure
