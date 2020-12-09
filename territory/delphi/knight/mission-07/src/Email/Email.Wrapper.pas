@@ -11,6 +11,7 @@ type
   TIdUseTLS = IdExplicitTLSClientServerBase.TIdUseTLS;
   TIdSMTPAuthenticationType = IdSMTP.TIdSMTPAuthenticationType;
   TEmailDTO = Email.DTO.TEmailDTO;
+  EEmailSenderArgumentException = Email.Sender.EEmailSenderArgumentException;
   TEmailSender = Email.Sender.TEmailSender;
 
   TIdSSLVersionHelper = record Helper for TIdSSLVersion

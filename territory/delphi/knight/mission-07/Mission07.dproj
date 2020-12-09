@@ -95,12 +95,12 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Form.Main.pas">
+        <DCCReference Include="src\Form\Form.Main.pas">
             <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="src\Email\Email.Sender.pas"/>
-        <DCCReference Include="Impl.Cryptography.pas"/>
+        <DCCReference Include="src\Impl\Impl.Cryptography.pas"/>
         <DCCReference Include="src\Email\Email.DTO.pas"/>
         <DCCReference Include="src\Email\Email.Wrapper.pas"/>
         <BuildConfiguration Include="Release">
