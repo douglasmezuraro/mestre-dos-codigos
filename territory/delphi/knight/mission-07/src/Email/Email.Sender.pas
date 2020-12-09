@@ -79,7 +79,52 @@ end;
 
 procedure TEmailSender.Validate;
 begin
+  if FIdSMTP.Host.Trim.IsEmpty then
+  begin
+    raise EEmailSenderArgumentException.Create('The host cannot be empty.');
+  end;
 
+  if FIdSMTP.Username.Trim.IsEmpty then
+  begin
+    raise EEmailSenderArgumentException.Create('The username cannot be empty.');
+  end;
+
+  if FIdMessage.From.Address.Trim.IsEmpty then
+  begin
+    raise EEmailSenderArgumentException.Create('The address cannot be empty.');
+  end;
+
+  if FIdSMTP.Password.Trim.IsEmpty then
+  begin
+    raise EEmailSenderArgumentException.Create('The password cannot be empty.');
+  end;
+
+  // Precisa validar se valor é <c>Integer.0<c>?
+  // FIdSMTP.Port := ADTO.Port;
+
+  if FIdText.Body.Count = 0 then
+  begin
+    raise EEmailSenderArgumentException.Create('The body cannot be empty.');
+  end;
+
+  if FIdMessage.Subject.Trim.IsEmpty then
+  begin
+    raise EEmailSenderArgumentException.Create('The subject cannot be empty.');
+  end;
+
+  if FIdMessage.Recipients.EMailAddresses.Trim.IsEmpty then
+  begin
+    raise EEmailSenderArgumentException.Create('The recipients cannot be empty.');
+  end;
+
+  // Precisa validar se o valor é <c>TIdSSLModesslmUnassigned<c>?
+  // FIOHandler.SSLOptions.Mode := ADTO.IdSSLMode;
+
+  // Precisa validar se o valor é <c>.TIdUseTLSutNoTLSSupport<c>?
+  // FIdSMTP.UseTLS := ADTO.IdUseTLS;
+
+  // Precisa validar se o valor é <c>TIdSMTPAuthenticationType.satNone<c>?
+  // FIdSMTP.AuthType := ADTO.IdSMTPAuthenticationType;
 end;
 
 end.
