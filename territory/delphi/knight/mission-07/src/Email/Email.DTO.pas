@@ -19,8 +19,9 @@ type
     IdSMTPAuthenticationType: TIdSMTPAuthenticationType;
     IdSSLVersion: TIdSSLVersion;
     IdSSLMode: TIdSSLMode
-    end;
+  end;
 
 implementation
 
 end.
+

@@ -97,12 +97,11 @@
         </DelphiCompile>
         <DCCReference Include="src\Form\Form.Main.pas">
             <Form>Main</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="src\Email\Email.Sender.pas"/>
-        <DCCReference Include="src\Impl\Impl.Cryptography.pas"/>
         <DCCReference Include="src\Email\Email.DTO.pas"/>
         <DCCReference Include="src\Email\Email.Wrapper.pas"/>
+        <DCCReference Include="src\Impl\Impl.Cryptography.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
