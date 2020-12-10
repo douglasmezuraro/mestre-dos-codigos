@@ -3,8 +3,8 @@ unit Test.Service.Person;
 interface
 
 uses
-  DUnitX.TestFramework, System.SysUtils, Delphi.Mocks, uPessoaRepository, uPessoa, uPessoaService,
-  uPessoaService.Impl;
+  DUnitX.TestFramework, Data.DB, System.SysUtils, Delphi.Mocks, uPessoaRepository, uPessoaService,
+  uPessoaService.Impl, uPessoa;
 
 type
   [TestFixture]
@@ -21,14 +21,22 @@ type
     procedure TearDown;
 
     [Test]
-    [TestCase('Valid person', 'Douglas Mezuraro,18/06/1996')]
-    procedure SavePersonWhenPersonIsValid(const AName, ABirthDate: string);
+    [TestCase('Tests the service when person is valid', 'Douglas Mezuraro,18/06/1996')]
+    procedure TestSavePersonWhenPersonIsValid(const AName, ABirthDate: string);
 
     [Test]
-    [TestCase('Empty name', ',18/06/1996,O nome não foi informado')]
-    [TestCase('Empty birthdate', 'Douglas Mezuraro,,A Data de nascimento não foi informada')]
-    [TestCase('Underage person', 'Douglas Mezuraro,10/12/2020,Menor de idade não pode ser cadastrado')]
+    [TestCase('Tests the service when person name is empty', ',18/06/1996,O nome não foi informado')]
+    [TestCase('Tests the service when person birthdate is empty', 'Douglas Mezuraro,,A Data de nascimento não foi informada')]
+    [TestCase('Tests the service when person is underage', 'Douglas Mezuraro,10/12/2020,Menor de idade não pode ser cadastrado')]
     procedure TestSavePersonWhenPersonIsInvalid(const AName, ABirthDate, AExceptionMessage: string);
+
+    [Test]
+    [TestCase('Tests the service when repository raises a database exception', 'Douglas Mezuraro,18/06/1996')]
+    procedure TestSavePersonWhenRepositoryRaisesDatabaseException(const AName, ABirthDate: string);
+
+    [Test]
+    [TestCase('Tests the service when repository raises an exception', 'Douglas Mezuraro,18/06/1996')]
+    procedure TestSavePersonWhenRepositoryRaisesException(const AName, ABirthDate: string);
   end;
 
 implementation
@@ -45,7 +53,7 @@ begin
   FPerson.Free;
 end;
 
-procedure TServiceTest.SavePersonWhenPersonIsValid(const AName, ABirthDate: string);
+procedure TServiceTest.TestSavePersonWhenPersonIsValid(const AName, ABirthDate: string);
 begin
   FRepository.Setup.WillReturnDefault('PersistirDados', True);
 
@@ -67,6 +75,36 @@ begin
     end,
     Exception,
     AExceptionMessage);
+end;
+
+procedure TServiceTest.TestSavePersonWhenRepositoryRaisesDatabaseException(const AName, ABirthDate: string);
+begin
+  FRepository.Setup.WillRaise('PersistirDados', EDatabaseError);
+
+  Assert.WillRaise(
+    procedure
+    begin
+      FPerson.Nome := AName;
+      FPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
+
+      FService.Salvar(FPerson);
+    end,
+    EArgumentException);
+end;
+
+procedure TServiceTest.TestSavePersonWhenRepositoryRaisesException(const AName, ABirthDate: string);
+begin
+  FRepository.Setup.WillRaise('PersistirDados', Exception);
+
+  Assert.WillRaise(
+    procedure
+    begin
+      FPerson.Nome := AName;
+      FPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
+
+      FService.Salvar(FPerson);
+    end,
+    Exception);
 end;
 
 initialization

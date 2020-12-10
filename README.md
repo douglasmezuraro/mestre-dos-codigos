@@ -10,7 +10,7 @@
  - [x] Missão 10
  - [x] Missão 11
  - [x] Missão 12
- - [ ] Missão 13
+ - [x] Missão 13
  - [ ] Missão 14
  - [ ] Missão 15
  - [ ] Missão 16
