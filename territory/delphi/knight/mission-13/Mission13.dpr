@@ -27,12 +27,18 @@ program Mission13;
 
 uses
   System.SysUtils,
-{$IFDEF TESTINSIGHT}
+  {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
-{$ENDIF }
+  {$ENDIF }
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
-  DUnitX.TestFramework;
+  DUnitX.TestFramework,
+  Test.Service.Person in 'src\Test\Test.Service.Person.pas',
+  uPessoa in 'src\3rdParty\AppDesktop\uPessoa.pas',
+  uPessoaRepository.Impl in 'src\3rdParty\AppDesktop\uPessoaRepository.Impl.pas',
+  uPessoaRepository in 'src\3rdParty\AppDesktop\uPessoaRepository.pas',
+  uPessoaService.Impl in 'src\3rdParty\AppDesktop\uPessoaService.Impl.pas',
+  uPessoaService in 'src\3rdParty\AppDesktop\uPessoaService.pas';
 
 procedure Run;
 var
