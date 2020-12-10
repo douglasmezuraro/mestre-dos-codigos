@@ -22,6 +22,9 @@
 #*.deployproj
 #
 
+# Other
+*.xml
+
 # Delphi compiler-generated binaries (safe to delete)
 *.exe
 *.dll
