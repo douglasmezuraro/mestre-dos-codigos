@@ -5,6 +5,7 @@ interface
 type
   TEstadoCivil = (ecSolteiro, ecCasado, ecViuvo);
 
+{$M+}
   TPessoa = class
   private
     FDataNascimento: TDateTime;
@@ -21,6 +22,7 @@ type
     property DataNascimento: TDateTime read FDataNascimento write SetDataNascimento;
     property EstadoCivil: TEstadoCivil read FEstadoCivil write SetEstadoCivil;
   end;
+{$M-}
 
 implementation
 
