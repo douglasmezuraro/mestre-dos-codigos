@@ -12,9 +12,13 @@ type
   strict private
     FService: IPessoaService;
     FRepository: TMock<IPessoaRepository>;
+    FPerson: TPessoa;
   public
     [Setup]
     procedure Setup;
+
+    [TearDown]
+    procedure TearDown;
 
     [Test]
     [TestCase('Valid person', 'Douglas Mezuraro,18/06/1996')]
@@ -33,40 +37,33 @@ procedure TServiceTest.Setup;
 begin
   FRepository := TMock<IPessoaRepository>.Create;
   FService := TPessoaService.Create(FRepository);
+  FPerson := TPessoa.Create;
+end;
+
+procedure TServiceTest.TearDown;
+begin
+  FPerson.Free;
 end;
 
 procedure TServiceTest.SavePersonWhenPersonIsValid(const AName, ABirthDate: string);
-var
-  LPerson: TPessoa;
 begin
   FRepository.Setup.WillReturnDefault('PersistirDados', True);
-  LPerson := TPessoa.Create;
-  try
-    LPerson.Nome := AName;
-    LPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
 
-    Assert.IsTrue(FService.Salvar(LPerson));
-  finally
-    LPerson.Free;
-  end;
+  FPerson.Nome := AName;
+  FPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
+
+  Assert.IsTrue(FService.Salvar(FPerson));
 end;
 
 procedure TServiceTest.TestSavePersonWhenPersonIsInvalid(const AName, ABirthDate, AExceptionMessage: string);
 begin
   Assert.WillRaiseWithMessage(
     procedure
-    var
-      LPerson: TPessoa;
     begin
-      LPerson := TPessoa.Create;
-      try
-        LPerson.Nome := AName;
-        LPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
+      FPerson.Nome := AName;
+      FPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
 
-        FService.Salvar(LPerson);
-      finally
-        LPerson.Free;
-      end;
+      FService.Salvar(FPerson);
     end,
     Exception,
     AExceptionMessage);
