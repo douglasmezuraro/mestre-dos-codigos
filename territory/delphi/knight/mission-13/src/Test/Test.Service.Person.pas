@@ -3,54 +3,58 @@ unit Test.Service.Person;
 interface
 
 uses
-  DUnitX.TestFramework, uPessoa, uPessoaService, uPessoaService.Impl, System.SysUtils;
+  DUnitX.TestFramework, System.SysUtils, Delphi.Mocks, uPessoaRepository, uPessoa, uPessoaService,
+  uPessoaService.Impl;
 
 type
   [TestFixture]
-  TServiceTests = class sealed
+  TServiceTest = class sealed
   strict private
     FService: IPessoaService;
+    FRepositoryMock: TMock<IPessoaRepository>;
   public
     [Setup]
     procedure Setup;
 
-    [TearDown]
-    procedure TearDown;
-
     [Test]
-    procedure TestSavePerson;
+    [TestCase('Empty name', ',18/06/1996,O nome não foi informado')]
+    [TestCase('Empty birthdate', 'Douglas Mezuraro,,A Data de nascimento não foi informada')]
+    [TestCase('Underage person', 'Douglas Mezuraro,10/12/2020,Menor de idade não pode ser cadastrado')]
+    procedure TestSavePersonWhenDataIsIncomplete(const AName, ABirthDate, AExceptionMessage: string);
   end;
 
 implementation
 
-procedure TServiceTests.Setup;
+procedure TServiceTest.Setup;
 begin
-  FService := TPessoaService.Create(nil);
+  FRepositoryMock := TMock<IPessoaRepository>.Create;
+  FService := TPessoaService.Create(FRepositoryMock);
 end;
 
-procedure TServiceTests.TearDown;
+procedure TServiceTest.TestSavePersonWhenDataIsIncomplete(const AName, ABirthDate, AExceptionMessage: string);
 begin
+  FRepositoryMock.Setup.WillRaise('PersistirDados', Exception);
 
-end;
+  Assert.WillRaiseWithMessage(
+    procedure
+    var
+      LPerson: TPessoa;
+    begin
+      LPerson := TPessoa.Create;
+      try
+        LPerson.Nome := AName;
+        LPerson.DataNascimento := System.SysUtils.StrToDateDef(ABirthDate, 0);
 
-procedure TServiceTests.TestSavePerson;
-var
-  LPerson: TPessoa;
-begin
-  LPerson := TPessoa.Create;
-  try
-    LPerson.ID := TGUID.NewGuid;
-    LPerson.Nome := 'Douglas Mezuraro';
-    LPerson.DataNascimento := System.SysUtils.StrToDate('18/06/1996');
-    LPerson.EstadoCivil := TEstadoCivil.ecSolteiro;
-
-    Assert.IsTrue(FService.Salvar(LPerson));
-  finally
-    LPerson.Free;
-  end;
+        FService.Salvar(LPerson);
+      finally
+        LPerson.Free;
+      end;
+    end,
+    Exception,
+    AExceptionMessage);
 end;
 
 initialization
-  TDUnitX.RegisterTestFixture(TServiceTests);
+  TDUnitX.RegisterTestFixture(TServiceTest);
 
 end.

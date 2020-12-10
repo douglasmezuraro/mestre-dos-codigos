@@ -94,6 +94,24 @@
         <DCCReference Include="src\3rdParty\AppDesktop\uPessoaRepository.pas"/>
         <DCCReference Include="src\3rdParty\AppDesktop\uPessoaService.Impl.pas"/>
         <DCCReference Include="src\3rdParty\AppDesktop\uPessoaService.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.AutoMock.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Behavior.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Expectation.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Helpers.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Interfaces.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.MethodData.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.ObjectProxy.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.ParamMatcher.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Proxy.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Proxy.TypeInfo.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.ReturnTypePatch.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Utils.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Validation.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.VirtualInterface.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.VirtualMethodInterceptor.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.WeakReference.pas"/>
+        <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.When.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
