@@ -25,6 +25,9 @@
 # Other
 *.xml
 
+# Database files
+*.fdb
+
 # Delphi compiler-generated binaries (safe to delete)
 *.exe
 *.dll
