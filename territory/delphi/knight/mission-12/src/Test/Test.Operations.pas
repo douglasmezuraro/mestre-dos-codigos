@@ -7,7 +7,7 @@ uses
 
 type
   [TestFixture]
-  TOperationsTest = class sealed(TObject)
+  TOperationsTest = class sealed
   strict private
     FOperations: TOperations;
   public
