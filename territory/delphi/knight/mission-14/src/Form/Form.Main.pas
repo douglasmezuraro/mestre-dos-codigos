@@ -64,8 +64,47 @@ begin
 end;
 
 procedure TMain.RunInitialMigration(Sender: TObject);
+const
+  SQL = 'CREATE DOMAIN TString VARCHAR(180);'+
+        'CREATE DOMAIN TDateTime TIMESTAMP;'+
+        'CREATE DOMAIN TDouble DECIMAL(18, 4);'+
+        'CREATE DOMAIN TInteger BIGINT;'+
+        'CREATE DOMAIN TPhone CHAR(11);'+
+        ''+
+        'CREATE TABLE FUNCIONARIO'+
+        '    ('+
+        '        ID TInteger NOT NULL PRIMARY KEY,'+
+        '        NOME TString,'+
+        '        ADMISSAO TDateTime,'+
+        '        SALARIO TDouble'+
+        '    );'+
+        ''+
+        'CREATE TABLE DEPARTAMENTO'+
+        '    ('+
+        '        ID TInteger NOT NULL PRIMARY KEY,'+
+        '        DESCRICAO TString,'+
+        '        TELEFONE TPhone'+
+        '    );'+
+        ''+
+        'CREATE TABLE FUNCIONARIO_DEPARTAMENTO'+
+        '    ('+
+        '        FUNCIONARIO_ID TInteger NOT NULL REFERENCES FUNCIONARIO(ID),'+
+        '        DEPARTAMENTO_ID TInteger NOT NULL REFERENCES DEPARTAMENTO(ID)'+
+        '    );';
+        var
+  LRunner: TFDScript;
+  LScript: TFDSQLScript;
 begin
-  raise ENotImplemented.Create('Run Migration');
+  LRunner := TFDScript.Create(Self);
+  try
+    LRunner.Connection := FDConnection;
+    LScript := LRunner.SQLScripts.Add;
+    LScript.SQL.Add(SQL);
+    LRunner.ValidateAll;
+    LRunner.ExecuteAll;
+  finally
+    LRunner.Free;
+  end;
 end;
 
 end.
