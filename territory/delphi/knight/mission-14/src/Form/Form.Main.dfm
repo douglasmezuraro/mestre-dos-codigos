@@ -13,4 +13,12 @@ object Main: TMain
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'DriverID=fB'
+      'User_Name=sysdba'
+      'Password=masterkey')
+    Left = 36
+    Top = 38
+  end
 end
