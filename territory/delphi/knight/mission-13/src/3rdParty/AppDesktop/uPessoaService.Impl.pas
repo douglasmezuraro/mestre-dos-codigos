@@ -28,7 +28,6 @@ end;
 
 function TPessoaService.Salvar(const APessoa: TPessoa): Boolean;
 begin
-  Result := False;
   try
     if APessoa.DataNascimento = 0 then
       raise Exception.Create('A Data de nascimento não foi informada');
