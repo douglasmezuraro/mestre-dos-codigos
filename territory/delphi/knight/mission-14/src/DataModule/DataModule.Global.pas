@@ -20,10 +20,11 @@ type
     FDQueryEmployeesDepartments: TFDQuery;
   private
     function GetDatabasePath: string;
-    function ConnectToDatabase: Boolean;
     function DatabaseExists: Boolean;
-    function GetScript: TArray<string>;
-    procedure RunInitialMigration(Sender: TObject);
+    function GetScripts: TArray<string>;
+    procedure ConnectToDatabase;
+    procedure SetUp;
+    procedure RunScripts(Sender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -41,31 +42,31 @@ constructor TDM.Create(AOwner: TComponent);
 begin
   inherited;
   ConnectToDatabase;
+  SetUp;
 end;
 
-function TDM.ConnectToDatabase: Boolean;
+procedure TDM.ConnectToDatabase;
 begin
+  FDConnection.Params.Values['CharacterSet'] := 'WIN1252';
+  FDConnection.Params.Values['Database'] := GetDatabasePath;
+  FDConnection.Params.Values['ExtendedMetadata'] := 'True';
+  FDConnection.Params.Values['OpenMode'] := 'OpenOrCreate';
+  FDConnection.Params.Values['OSAuthent'] := 'No';
+  FDConnection.Params.Values['Password'] := 'masterkey';
+  FDConnection.Params.Values['SQLDialect'] := '3';
+  FDConnection.Params.Values['User_name'] := 'sysdba';
+
   if not DatabaseExists then
   begin
-    FDConnection.AfterConnect := RunInitialMigration;
+    FDConnection.AfterConnect := RunScripts;
   end;
 
-  FDConnection.Params.Values['Database'] := GetDatabasePath;
-
-  FDConnection.Connected := True;
-  Result := FDConnection.Connected;
-
-  FDQueryEmployees.UpdateOptions.GeneratorName := 'GEN_FUNCIONARIO';
-  FDQueryEmployees.UpdateOptions.AutoIncFields := 'ID';
-  FDQueryEmployees.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
-  FDQueryEmployees.Open('SELECT * FROM FUNCIONARIO');
-
-  FDQueryDepartments.UpdateOptions.GeneratorName := 'GEN_DEPARTAMENTO';
-  FDQueryDepartments.UpdateOptions.AutoIncFields := 'ID';
-  FDQueryDepartments.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
-  FDQueryDepartments.Open('SELECT * FROM DEPARTAMENTO');
-
-  FDQueryEmployeesDepartments.Open('SELECT * FROM FUNCIONARIO_DEPARTAMENTO');
+  try
+    FDConnection.Connected := True;
+  except
+    raise Exception.Create('There was a problem connecting to the database.');
+    Application.Terminate;
+  end;
 end;
 
 function TDM.DatabaseExists: Boolean;
@@ -78,7 +79,7 @@ begin
   Result := 'C:\database.fdb';
 end;
 
-function TDM.GetScript: TArray<string>;
+function TDM.GetScripts: TArray<string>;
 var
   LResourceStream: TResourceStream;
   LStringList: TStringList;
@@ -95,7 +96,22 @@ begin
   end;
 end;
 
-procedure TDM.RunInitialMigration(Sender: TObject);
+procedure TDM.SetUp;
+begin
+  FDQueryEmployees.UpdateOptions.GeneratorName := 'GEN_FUNCIONARIO';
+  FDQueryEmployees.UpdateOptions.AutoIncFields := 'ID';
+  FDQueryEmployees.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
+  FDQueryEmployees.Open('SELECT * FROM FUNCIONARIO');
+
+  FDQueryDepartments.UpdateOptions.GeneratorName := 'GEN_DEPARTAMENTO';
+  FDQueryDepartments.UpdateOptions.AutoIncFields := 'ID';
+  FDQueryDepartments.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
+  FDQueryDepartments.Open('SELECT * FROM DEPARTAMENTO');
+
+  FDQueryEmployeesDepartments.Open('SELECT * FROM FUNCIONARIO_DEPARTAMENTO');
+end;
+
+procedure TDM.RunScripts(Sender: TObject);
 var
   LRunner: TFDScript;
   LScript: TFDSQLScript;
@@ -104,7 +120,7 @@ begin
   try
     LRunner.Connection := FDConnection;
     LScript := LRunner.SQLScripts.Add;
-    LScript.SQL.AddStrings(GetScript);
+    LScript.SQL.AddStrings(GetScripts);
     LRunner.ValidateAll;
     LRunner.ExecuteAll;
   finally

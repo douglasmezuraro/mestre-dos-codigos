@@ -4,20 +4,12 @@ object DM: TDM
   Width = 611
   object FDConnection: TFDConnection
     Params.Strings = (
+      'DriverID=fB'
       'User_Name=sysdba'
-      'Password=masterkey'
-      'OSAuthent=No'
-      'CharacterSet=WIN1252'
-      'OpenMode=OpenOrCreate'
-      'ExtendedMetadata=True'
-      
-        'Database=C:\Users\douglas.mezuraro\Documents\GitHub\mestre-dos-c' +
-        'odigos\territory\delphi\knight\mission-14\bin\Win32\Debug\DATABA' +
-        'SE.FDB'
-      'DriverID=fB')
+      'Password=masterkey')
     LoginPrompt = False
-    Left = 38
-    Top = 38
+    Left = 60
+    Top = 32
   end
   object FDQueryEmployees: TFDQuery
     Connection = FDConnection
