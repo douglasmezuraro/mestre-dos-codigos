@@ -37,38 +37,11 @@ object Main: TMain
         TitleFont.Height = -11
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
-        Columns = <
-          item
-            Expanded = False
-            FieldName = 'ID'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'NOME'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'ADMISSAO'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'SALARIO'
-            Width = 64
-            Visible = True
-          end>
       end
     end
     object TabSheetDepartments: TTabSheet
       Caption = 'Departamentos'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GridDepartments: TDBGrid
         Left = 0
         Top = 0
@@ -87,10 +60,6 @@ object Main: TMain
     object TabSheetRelationship: TTabSheet
       Caption = 'Empregados x Departamentos'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GridRelationship: TDBGrid
         Left = 0
         Top = 0

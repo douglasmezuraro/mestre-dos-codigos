@@ -14,10 +14,6 @@ type
   TDM = class(TDataModule)
     FDConnection: TFDConnection;
     FDQueryEmployees: TFDQuery;
-    FieldFDQueryFuncionariosID: TIntegerField;
-    FieldFDQueryFuncionariosNOME: TStringField;
-    TimeStampFieldFDQueryFuncionariosADMISSAO: TSQLTimeStampField;
-    BCDFieldFDQueryFuncionariosSALARIO: TBCDField;
     FDQueryDepartments: TFDQuery;
     FDPhysFBDriverLink: TFDPhysFBDriverLink;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;

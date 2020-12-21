@@ -7,6 +7,7 @@ uses
 
 type
   TMain = class sealed(TForm)
+  {$REGION 'Visual Components'}
     DataSourceEmployees: TDataSource;
     PageControl: TPageControl;
     TabSheetEmployees: TTabSheet;
@@ -17,6 +18,7 @@ type
     DataSourceDepartments: TDataSource;
     GridRelationship: TDBGrid;
     DataSourceEmployeesDepartments: TDataSource;
+  {$ENDREGION}
   end;
 
 var
