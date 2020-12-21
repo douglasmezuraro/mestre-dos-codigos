@@ -47,26 +47,41 @@ end;
 
 procedure TDM.ConnectToDatabase;
 begin
-  FDConnection.Params.Values['CharacterSet'] := 'WIN1252';
-  FDConnection.Params.Values['Database'] := GetDatabasePath;
-  FDConnection.Params.Values['ExtendedMetadata'] := 'True';
-  FDConnection.Params.Values['OpenMode'] := 'OpenOrCreate';
-  FDConnection.Params.Values['OSAuthent'] := 'No';
-  FDConnection.Params.Values['Password'] := 'masterkey';
-  FDConnection.Params.Values['SQLDialect'] := '3';
-  FDConnection.Params.Values['User_name'] := 'sysdba';
-
-  if not DatabaseExists then
-  begin
-    FDConnection.AfterConnect := RunScripts;
-  end;
-
   try
+    FDConnection.Params.Values['CharacterSet'] := 'WIN1252';
+    FDConnection.Params.Values['Database'] := GetDatabasePath;
+    FDConnection.Params.Values['ExtendedMetadata'] := 'True';
+    FDConnection.Params.Values['OpenMode'] := 'OpenOrCreate';
+    FDConnection.Params.Values['OSAuthent'] := 'No';
+    FDConnection.Params.Values['Password'] := 'masterkey';
+    FDConnection.Params.Values['SQLDialect'] := '3';
+    FDConnection.Params.Values['User_name'] := 'sysdba';
+
+    if not DatabaseExists then
+    begin
+      FDConnection.AfterConnect := RunScripts;
+    end;
+
     FDConnection.Connected := True;
   except
     raise Exception.Create('There was a problem connecting to the database.');
     Application.Terminate;
   end;
+end;
+
+procedure TDM.SetUp;
+begin
+  FDQueryEmployees.UpdateOptions.GeneratorName := 'GEN_FUNCIONARIO';
+  FDQueryEmployees.UpdateOptions.AutoIncFields := 'ID';
+  FDQueryEmployees.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
+  FDQueryEmployees.Open('SELECT * FROM FUNCIONARIO');
+
+  FDQueryDepartments.UpdateOptions.GeneratorName := 'GEN_DEPARTAMENTO';
+  FDQueryDepartments.UpdateOptions.AutoIncFields := 'ID';
+  FDQueryDepartments.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
+  FDQueryDepartments.Open('SELECT * FROM DEPARTAMENTO');
+
+  FDQueryEmployeesDepartments.Open('SELECT * FROM FUNCIONARIO_DEPARTAMENTO');
 end;
 
 function TDM.DatabaseExists: Boolean;
@@ -94,21 +109,6 @@ begin
     LResourceStream.Free;
     LStringList.Free;
   end;
-end;
-
-procedure TDM.SetUp;
-begin
-  FDQueryEmployees.UpdateOptions.GeneratorName := 'GEN_FUNCIONARIO';
-  FDQueryEmployees.UpdateOptions.AutoIncFields := 'ID';
-  FDQueryEmployees.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
-  FDQueryEmployees.Open('SELECT * FROM FUNCIONARIO');
-
-  FDQueryDepartments.UpdateOptions.GeneratorName := 'GEN_DEPARTAMENTO';
-  FDQueryDepartments.UpdateOptions.AutoIncFields := 'ID';
-  FDQueryDepartments.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
-  FDQueryDepartments.Open('SELECT * FROM DEPARTAMENTO');
-
-  FDQueryEmployeesDepartments.Open('SELECT * FROM FUNCIONARIO_DEPARTAMENTO');
 end;
 
 procedure TDM.RunScripts(Sender: TObject);
