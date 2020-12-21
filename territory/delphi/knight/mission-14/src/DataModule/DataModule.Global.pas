@@ -12,12 +12,14 @@ uses
 
 type
   TDM = class sealed(TDataModule)
+  {$REGION 'Visual Components'}
     FDConnection: TFDConnection;
-    FDQueryEmployees: TFDQuery;
-    FDQueryDepartments: TFDQuery;
-    FDPhysFBDriverLink: TFDPhysFBDriverLink;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;
+    FDPhysFBDriverLink: TFDPhysFBDriverLink;
+    FDQueryDepartments: TFDQuery;
+    FDQueryEmployees: TFDQuery;
     FDQueryEmployeesDepartments: TFDQuery;
+  {$ENDREGION}
   private
     function GetDatabasePath: string;
     function DatabaseExists: Boolean;
@@ -33,8 +35,6 @@ var
   DM: TDM;
 
 implementation
-
-{%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
 

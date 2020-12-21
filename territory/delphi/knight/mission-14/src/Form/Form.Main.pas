@@ -8,16 +8,16 @@ uses
 type
   TMain = class sealed(TForm)
   {$REGION 'Visual Components'}
-    DataSourceEmployees: TDataSource;
-    PageControl: TPageControl;
-    TabSheetEmployees: TTabSheet;
-    GridEmployees: TDBGrid;
-    TabSheetDepartments: TTabSheet;
-    GridDepartments: TDBGrid;
-    TabSheetRelationship: TTabSheet;
     DataSourceDepartments: TDataSource;
-    GridRelationship: TDBGrid;
+    DataSourceEmployees: TDataSource;
     DataSourceEmployeesDepartments: TDataSource;
+    GridDepartments: TDBGrid;
+    GridEmployees: TDBGrid;
+    GridEmployeesDepartments: TDBGrid;
+    PageControl: TPageControl;
+    TabSheetDepartments: TTabSheet;
+    TabSheetEmployees: TTabSheet;
+    TabSheetEmployeesDepartments: TTabSheet;
   {$ENDREGION}
   end;
 

@@ -57,10 +57,10 @@ object Main: TMain
         TitleFont.Style = []
       end
     end
-    object TabSheetRelationship: TTabSheet
+    object TabSheetEmployeesDepartments: TTabSheet
       Caption = 'Empregados x Departamentos'
       ImageIndex = 2
-      object GridRelationship: TDBGrid
+      object GridEmployeesDepartments: TDBGrid
         Left = 0
         Top = 0
         Width = 1039
