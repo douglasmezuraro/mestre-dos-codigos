@@ -11,19 +11,21 @@ uses
   FireDAC.Comp.UI, FireDAC.Phys.IBBase;
 
 type
-  TDM = class(TDataModule)
+  TDM = class sealed(TDataModule)
     FDConnection: TFDConnection;
     FDQueryEmployees: TFDQuery;
     FDQueryDepartments: TFDQuery;
     FDPhysFBDriverLink: TFDPhysFBDriverLink;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;
     FDQueryEmployeesDepartments: TFDQuery;
-    procedure DataModuleCreate(Sender: TObject);
   private
     function GetDatabasePath: string;
     function ConnectToDatabase: Boolean;
     function DatabaseExists: Boolean;
+    function GetScript: TArray<string>;
     procedure RunInitialMigration(Sender: TObject);
+  public
+    constructor Create(AOwner: TComponent); override;
   end;
 
 var
@@ -34,6 +36,12 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+constructor TDM.Create(AOwner: TComponent);
+begin
+  inherited;
+  ConnectToDatabase;
+end;
 
 function TDM.ConnectToDatabase: Boolean;
 begin
@@ -65,47 +73,29 @@ begin
   Result := TFile.Exists(GetDatabasePath);
 end;
 
-procedure TDM.DataModuleCreate(Sender: TObject);
-begin
-  ConnectToDatabase;
-end;
-
 function TDM.GetDatabasePath: string;
 begin
   Result := 'C:\database.fdb';
 end;
 
+function TDM.GetScript: TArray<string>;
+var
+  LResourceStream: TResourceStream;
+  LStringList: TStringList;
+begin
+  LStringList := TStringList.Create;
+  LResourceStream := TResourceStream.Create(HInstance, 'script', PChar('sql'));
+  try
+    LResourceStream.Position := 0;
+    LStringList.LoadFromStream(LResourceStream);
+    Result := LStringList.ToStringArray;
+  finally
+    LResourceStream.Free;
+    LStringList.Free;
+  end;
+end;
+
 procedure TDM.RunInitialMigration(Sender: TObject);
-const
-  SQL = 'CREATE DOMAIN TString VARCHAR(80);'+
-        'CREATE DOMAIN TDateTime TIMESTAMP;'+
-        'CREATE DOMAIN TDouble DECIMAL(18, 4);'+
-        'CREATE DOMAIN TInteger INTEGER;'+
-        'CREATE DOMAIN TPhone CHAR(11);'+
-        ''+
-        'CREATE TABLE FUNCIONARIO'+
-        '    ('+
-        '        ID TInteger PRIMARY KEY,'+
-        '        NOME TString,'+
-        '        ADMISSAO TDateTime,'+
-        '        SALARIO TDouble'+
-        '    );'+
-        ''+
-        'CREATE TABLE DEPARTAMENTO'+
-        '    ('+
-        '        ID TInteger PRIMARY KEY,'+
-        '        DESCRICAO TString,'+
-        '        TELEFONE TPhone'+
-        '    );'+
-        ''+
-        'CREATE TABLE FUNCIONARIO_DEPARTAMENTO'+
-        '    ('+
-        '        FUNCIONARIO_ID TInteger NOT NULL REFERENCES FUNCIONARIO(ID),'+
-        '        DEPARTAMENTO_ID TInteger NOT NULL REFERENCES DEPARTAMENTO(ID)'+
-        '    );'+
-        ''+
-        'CREATE SEQUENCE GEN_FUNCIONARIO;'+
-        'CREATE SEQUENCE GEN_DEPARTAMENTO;';
 var
   LRunner: TFDScript;
   LScript: TFDSQLScript;
@@ -114,7 +104,7 @@ begin
   try
     LRunner.Connection := FDConnection;
     LScript := LRunner.SQLScripts.Add;
-    LScript.SQL.Add(SQL);
+    LScript.SQL.AddStrings(GetScript);
     LRunner.ValidateAll;
     LRunner.ExecuteAll;
   finally

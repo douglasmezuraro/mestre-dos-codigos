@@ -21,6 +21,8 @@ program Mission14;
 //                funcionários a departamentos (mestre-detalhe). A conexão com o banco de dados e a
 //                manipulação de dados devem ser feitas com FireDAC.
 
+{$R *.dres}
+
 uses
   Vcl.Forms,
   System.SysUtils,
