@@ -2,8 +2,8 @@ object Main: TMain
   Left = 0
   Top = 0
   Caption = 'Delphi Knight - Mission 14'
-  ClientHeight = 299
-  ClientWidth = 635
+  ClientHeight = 648
+  ClientWidth = 1047
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,14 +11,115 @@ object Main: TMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  WindowState = wsMaximized
   PixelsPerInch = 96
   TextHeight = 13
-  object FDConnection: TFDConnection
-    Params.Strings = (
-      'DriverID=fB'
-      'User_Name=sysdba'
-      'Password=masterkey')
-    Left = 36
-    Top = 38
+  object PageControl: TPageControl
+    Left = 0
+    Top = 0
+    Width = 1047
+    Height = 648
+    ActivePage = TabSheetEmployees
+    Align = alClient
+    TabOrder = 0
+    object TabSheetEmployees: TTabSheet
+      Caption = 'Empregados'
+      object GridEmployees: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 1039
+        Height = 620
+        Align = alClient
+        DataSource = DataSourceEmployees
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'ID'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NOME'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ADMISSAO'
+            Width = 64
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SALARIO'
+            Width = 64
+            Visible = True
+          end>
+      end
+    end
+    object TabSheetDepartments: TTabSheet
+      Caption = 'Departamentos'
+      ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object GridDepartments: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 1039
+        Height = 620
+        Align = alClient
+        DataSource = DataSourceDepartments
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+    end
+    object TabSheetRelationship: TTabSheet
+      Caption = 'Empregados x Departamentos'
+      ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object GridRelationship: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 1039
+        Height = 620
+        Align = alClient
+        DataSource = DataSourceEmployeesDepartments
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+    end
+  end
+  object DataSourceEmployees: TDataSource
+    DataSet = DM.FDQueryEmployees
+    Left = 80
+    Top = 72
+  end
+  object DataSourceDepartments: TDataSource
+    DataSet = DM.FDQueryDepartments
+    Left = 80
+    Top = 124
+  end
+  object DataSourceEmployeesDepartments: TDataSource
+    DataSet = DM.FDQueryEmployeesDepartments
+    Left = 80
+    Top = 182
   end
 end

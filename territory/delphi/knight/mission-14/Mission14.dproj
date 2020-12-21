@@ -106,6 +106,11 @@
         <DCCReference Include="src\Form\Form.Main.pas">
             <Form>Main</Form>
         </DCCReference>
+        <DCCReference Include="src\DataModule\DataModule.Global.pas">
+            <Form>DM</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -131,7 +136,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\Mission14.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="bin\Win32\Debug\Mission14.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Mission14.exe</RemoteName>
                         <Overwrite>true</Overwrite>
