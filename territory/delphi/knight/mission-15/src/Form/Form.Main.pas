@@ -4,10 +4,27 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Comp.Client, FireDAC.Phys.SQLiteVDataSet, FireDAC.Comp.DataSet,
+  FireDAC.Stan.Async, FireDAC.DApt, System.IOUtils, FireDAC.Stan.StorageXML, FireDAC.UI.Intf,
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs;
 
 type
   TMain = class sealed(TForm)
+    DataSource: TDataSource;
+    FDConnection: TFDConnection;
+    FDGUIxWaitCursor: TFDGUIxWaitCursor;
+    FDLocalSQL: TFDLocalSQL;
+    FDMemTableCities: TFDMemTable;
+    FDMemTableCustomers: TFDMemTable;
+    FDQuery: TFDQuery;
+    FDStanStorageXMLLink: TFDStanStorageXMLLink;
+    Grid: TDBGrid;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
   end;
 
 var
@@ -16,5 +33,24 @@ var
 implementation
 
 {$R *.dfm}
+
+constructor TMain.Create(AOwner: TComponent);
+begin
+  inherited;
+  FDMemTableCustomers.LoadFromFile('C:\Users\douglas.mezuraro\Documents\GitHub\mestre-dos-codigos\territory\delphi\knight\mission-15\Clientes.xml');
+  FDMemTableCities.LoadFromFile('C:\Users\douglas.mezuraro\Documents\GitHub\mestre-dos-codigos\territory\delphi\knight\mission-15\Cidades.xml');
+
+  FDConnection.Connected := True;
+  FDLocalSQL.Active := True;
+  FDQuery.Active := True;
+end;
+
+destructor TMain.Destroy;
+begin
+  FDQuery.Active := False;
+  FDLocalSQL.Active := False;
+  FDConnection.Connected := False;
+  inherited;
+end;
 
 end.
