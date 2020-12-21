@@ -17,9 +17,9 @@ object Main: TMain
   TextHeight = 13
   object Grid: TDBGrid
     Left = 0
-    Top = 0
+    Top = 29
     Width = 800
-    Height = 600
+    Height = 571
     Align = alClient
     DataSource = DataSource
     TabOrder = 0
@@ -28,6 +28,35 @@ object Main: TMain
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+  end
+  object Panel: TPanel
+    Left = 0
+    Top = 0
+    Width = 800
+    Height = 29
+    Align = alTop
+    TabOrder = 1
+    object EditCitie: TEdit
+      Left = 1
+      Top = 1
+      Width = 664
+      Height = 27
+      Align = alLeft
+      TabOrder = 0
+    end
+    object ButtonSearch: TButton
+      Left = 665
+      Top = 1
+      Width = 134
+      Height = 27
+      Action = ActionSearch
+      Align = alClient
+      TabOrder = 1
+      ExplicitLeft = 640
+      ExplicitTop = 6
+      ExplicitWidth = 75
+      ExplicitHeight = 25
+    end
   end
   object FDMemTableCustomers: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -38,8 +67,8 @@ object Main: TMain
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     LocalSQL = FDLocalSQL
-    Left = 188
-    Top = 104
+    Left = 362
+    Top = 50
   end
   object FDMemTableCities: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -50,8 +79,8 @@ object Main: TMain
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     LocalSQL = FDLocalSQL
-    Left = 186
-    Top = 154
+    Left = 440
+    Top = 50
   end
   object FDLocalSQL: TFDLocalSQL
     Connection = FDConnection
@@ -64,44 +93,51 @@ object Main: TMain
         DataSet = FDMemTableCities
         Name = 'CITIES'
       end>
-    Left = 188
-    Top = 210
+    Left = 284
+    Top = 50
   end
   object DataSource: TDataSource
     DataSet = FDQuery
-    Left = 192
-    Top = 52
+    Left = 50
+    Top = 50
   end
   object FDQuery: TFDQuery
     LocalSQL = FDLocalSQL
     Connection = FDConnection
     SQL.Strings = (
       'SELECT'
-      #9'CUSTOMERS.ID,'
-      #9'CUSTOMERS.NOME,'
-      #9'CUSTOMERS.IDCIDADE,'
-      #9'CITIES.NOME AS NOMECIDADE'
+      #9'CUSTOMERS.ID AS '#39'Id'#39','
+      #9'CUSTOMERS.NOME AS '#39'Pessoa'#39','
+      #9'CITIES.NOME AS '#39'Cidade'#39
       'FROM'
       #9'CUSTOMERS'
       'JOIN'
       #9'CITIES ON CITIES.IDCIDADE = CUSTOMERS.IDCIDADE')
-    Left = 190
-    Top = 276
+    Left = 518
+    Top = 50
   end
   object FDStanStorageXMLLink: TFDStanStorageXMLLink
-    Left = 424
-    Top = 374
+    Left = 596
+    Top = 50
   end
   object FDGUIxWaitCursor: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 496
-    Top = 226
+    Left = 206
+    Top = 50
   end
   object FDConnection: TFDConnection
     Params.Strings = (
       'DriverID=SQLite')
     LoginPrompt = False
-    Left = 386
-    Top = 166
+    Left = 128
+    Top = 50
+  end
+  object ActionList: TActionList
+    Left = 454
+    Top = 240
+    object ActionSearch: TAction
+      Caption = 'Search'
+      OnExecute = ActionSearchExecute
+    end
   end
 end

@@ -9,7 +9,8 @@ uses
   FireDAC.DApt.Intf, FireDAC.Comp.Client, FireDAC.Phys.SQLiteVDataSet, FireDAC.Comp.DataSet,
   FireDAC.Stan.Async, FireDAC.DApt, System.IOUtils, FireDAC.Stan.StorageXML, FireDAC.UI.Intf,
   FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs;
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, System.Actions, Vcl.ActnList,
+  Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
   TMain = class sealed(TForm)
@@ -22,6 +23,12 @@ type
     FDQuery: TFDQuery;
     FDStanStorageXMLLink: TFDStanStorageXMLLink;
     Grid: TDBGrid;
+    Panel: TPanel;
+    EditCitie: TEdit;
+    ButtonSearch: TButton;
+    ActionList: TActionList;
+    ActionSearch: TAction;
+    procedure ActionSearchExecute(Sender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -51,6 +58,15 @@ begin
   FDLocalSQL.Active := False;
   FDConnection.Connected := False;
   inherited;
+end;
+
+procedure TMain.ActionSearchExecute(Sender: TObject);
+var
+  LCitie: string;
+begin
+  LCitie := EditCitie.Text;
+  FDQuery.Filter := 'UPPER(CIDADE) LIKE ''%' + LCitie.ToUpper + '%''';
+  FDQuery.Filtered := not LCitie.Trim.IsEmpty;
 end;
 
 end.
