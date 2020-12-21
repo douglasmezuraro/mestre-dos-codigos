@@ -17,7 +17,7 @@ program Mission15;
 uses
   System.SysUtils,
   Vcl.Forms,
-  Form.Main in 'Form\Form.Main.pas' {Main};
+  Form.Main in 'src\Form\Form.Main.pas' {Main};
 
 {$R *.res}
 

@@ -44,8 +44,8 @@ implementation
 constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
-  FDMemTableCustomers.LoadFromFile('C:\Users\douglas.mezuraro\Documents\GitHub\mestre-dos-codigos\territory\delphi\knight\mission-15\Clientes.xml');
-  FDMemTableCities.LoadFromFile('C:\Users\douglas.mezuraro\Documents\GitHub\mestre-dos-codigos\territory\delphi\knight\mission-15\Cidades.xml');
+  FDMemTableCustomers.LoadFromFile('Clientes.xml');
+  FDMemTableCities.LoadFromFile('Cidades.xml');
 
   FDConnection.Connected := True;
   FDLocalSQL.Active := True;
