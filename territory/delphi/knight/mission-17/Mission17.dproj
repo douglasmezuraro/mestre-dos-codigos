@@ -108,6 +108,7 @@
             <Form>frmSalvadorDePessoas</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaJsonRepository.Impl.pas"/>
         <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaRepository.Impl.pas"/>
         <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaRepository.pas"/>
         <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaService.Impl.pas"/>

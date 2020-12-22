@@ -1,24 +1,24 @@
-program Mission13;
+ï»¿program Mission13;
 
 //       Author : Douglas Mezuraro
 // Modification : 09/12/2020
 //        Level : Knight
 //      Mission : 13
-//    Objective : Sistemas, para serem testáveis, precisam possuir baixo acoplamento. Assim, durante
-//                a etapa de testes, é possível, por exemplo, substituir a camada de persistência de
-//                dados por um mock que “fará de conta” que os dados foram salvos com sucesso. Ou ainda,
-//                emitir uma exceção simulando um erro na camada de infraestrutura. Para construção de
+//    Objective : Sistemas, para serem testï¿½veis, precisam possuir baixo acoplamento. Assim, durante
+//                a etapa de testes, ï¿½ possï¿½vel, por exemplo, substituir a camada de persistï¿½ncia de
+//                dados por um mock que ï¿½farï¿½ de contaï¿½ que os dados foram salvos com sucesso. Ou ainda,
+//                emitir uma exceï¿½ï¿½o simulando um erro na camada de infraestrutura. Para construï¿½ï¿½o de
 //                mocks e stubs, existe uma biblioteca gratuita chamada Delphi-Mocks
 //                https://github.com/VSoftTechnologies/Delphi-Mocks. Utilizando a biblioteca
-//                Delphi-Mocks, escreva os teste unitários para a classe TPessoaService. Utilize o
-//                framework Delphi-Mocks para mockar o repositório. Não serão aceitos códigos implementados
+//                Delphi-Mocks, escreva os teste unitï¿½rios para a classe TPessoaService. Utilize o
+//                framework Delphi-Mocks para mockar o repositï¿½rio. Nï¿½o serï¿½o aceitos cï¿½digos implementados
 //                com classes fake. Os testes devem incluir:
-//                  - O comportamento de quando TPessoa está inválido;
-//                  - Garantir que o método de TPessoaRepository não será chamado quando TPessoa não estiver válida;
-//                  - Garantir que o método de TPessoaRepository será chamado quando TPessoa estiver válido;
-//                  - O comportamento de TPessoaService quando TPessoaRepository emite uma exceção EDatabaseError;
-//                  - O comportamento de TPessoaService, caso TPessoaRepository emita qualquer outra exceção que não seja EDatabaseError;
-//                O código para esta resolução está disponível em:
+//                  - O comportamento de quando TPessoa estï¿½ invï¿½lido;
+//                  - Garantir que o mï¿½todo de TPessoaRepository nï¿½o serï¿½ chamado quando TPessoa nï¿½o estiver vï¿½lida;
+//                  - Garantir que o mï¿½todo de TPessoaRepository serï¿½ chamado quando TPessoa estiver vï¿½lido;
+//                  - O comportamento de TPessoaService quando TPessoaRepository emite uma exceï¿½ï¿½o EDatabaseError;
+//                  - O comportamento de TPessoaService, caso TPessoaRepository emita qualquer outra exceï¿½ï¿½o que nï¿½o seja EDatabaseError;
+//                O cï¿½digo para esta resoluï¿½ï¿½o estï¿½ disponï¿½vel em:
 //                https://github.com/db1group/mestre-dos-codigos/tree/master/docs/files/cavaleiro-delphi/projeto
 
 {$IFNDEF TESTINSIGHT}
@@ -40,6 +40,7 @@ uses
   uPessoaRepository in 'src\3rdParty\AppDesktop\uPessoaRepository.pas',
   uPessoaService.Impl in 'src\3rdParty\AppDesktop\uPessoaService.Impl.pas',
   uPessoaService in 'src\3rdParty\AppDesktop\uPessoaService.pas',
+  uPessoaJsonRepository.Impl in 'src\3rdParty\AppDesktop\uPessoaJsonRepository.Impl.pas',
   Delphi.Mocks.AutoMock in 'src\3rdParty\Delphi-Mocks\Delphi.Mocks.AutoMock.pas',
   Delphi.Mocks.Behavior in 'src\3rdParty\Delphi-Mocks\Delphi.Mocks.Behavior.pas',
   Delphi.Mocks.Expectation in 'src\3rdParty\Delphi-Mocks\Delphi.Mocks.Expectation.pas',

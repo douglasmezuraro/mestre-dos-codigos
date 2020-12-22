@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, uPessoaService, uPessoaRepository, uPessoa,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Data.DB;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Data.DB,
+  uPessoaJsonRepository.Impl;
 
 type
   TfrmSalvadorDePessoas = class(TForm)
@@ -45,6 +46,7 @@ uses
 
 procedure TfrmSalvadorDePessoas.FormCreate(Sender: TObject);
 begin
+//{$DEFINE PERSISTENCIA_PADRAO}
   InicializarControlesVisuais;
 end;
 
@@ -58,7 +60,12 @@ function TfrmSalvadorDePessoas.PegarPessoaService: IPessoaService;
 var
   _pessoaRepository: IPessoaRepository;
 begin
+{$IFDEF PERSISTENCIA_PADRAO}
   _pessoaRepository := TPessoaRepository.Create;
+{$ELSE}
+  _pessoaRepository := TPersonRepository.Create;
+{$ENDIF}
+
   Result := TPessoaService.Create(_pessoaRepository);
 end;
 

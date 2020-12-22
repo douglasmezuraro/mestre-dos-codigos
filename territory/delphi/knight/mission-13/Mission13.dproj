@@ -40,7 +40,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_DcuOutput>.</DCC_DcuOutput>
+        <DCC_DcuOutput>.\bin\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\bin\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
@@ -94,6 +94,7 @@
         <DCCReference Include="src\3rdParty\AppDesktop\uPessoaRepository.pas"/>
         <DCCReference Include="src\3rdParty\AppDesktop\uPessoaService.Impl.pas"/>
         <DCCReference Include="src\3rdParty\AppDesktop\uPessoaService.pas"/>
+        <DCCReference Include="src\3rdParty\AppDesktop\uPessoaJsonRepository.Impl.pas"/>
         <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.AutoMock.pas"/>
         <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Behavior.pas"/>
         <DCCReference Include="src\3rdParty\Delphi-Mocks\Delphi.Mocks.Expectation.pas"/>
