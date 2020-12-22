@@ -1,13 +1,9 @@
 program Mission16;
 
-//       Author : Douglas Mezuraro
-// Modification : 10/12/2020
-//        Level : Knight
-//      Mission : 16
-//    Objective : Na aplicação do exercício 13, a unit uPessoa está emitindo um warning. Sem alterar
-//                o código da classe, faça com que o warning não seja mais emitido e adicione um
-//                comentário explicando o que o causava e de qual forma o código poderia ser reescrito
-//                para que ele não fosse emitido.
+// Author: Douglas Mezuraro
+// Modification: 21/12/2020
+// Level: Knight
+// Mission: 16
 
 {$APPTYPE CONSOLE}
 

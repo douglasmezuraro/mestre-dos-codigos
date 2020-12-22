@@ -1,12 +1,9 @@
 program Mission05;
 
-//       Author : Douglas Mezuraro
-// Modification : 07/12/2020
-//        Level : Knight
-//      Mission : 05
-//    Objective : Em uma aplicação console ou VCL, faça um laço de repetição de 1 até 1 milhão
-//                listando os números primos encontrados, utilizando o TParallel da biblioteca 
-//                System.Threading para paralelizar as iterações.
+// Author: Douglas Mezuraro
+// Modification: 21/12/2020
+// Level: Knight
+// Mission: 05
 
 {$APPTYPE CONSOLE}
 

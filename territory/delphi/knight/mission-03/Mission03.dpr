@@ -1,15 +1,9 @@
 program Mission03;
 
 // Author: Douglas Mezuraro
-// Last modification: 06/12/2020
+// Modification: 21/12/2020
 // Level: Knight
 // Mission: 03
-// Objective: Desenvolva uma aplicação VCL que faça a compactação de arquivos utilizando a classe
-// TZipFile. Para isso, no formulário principal, permita que o usuário possa selecionar os arquivos
-// que deseja compactar, bem como o caminho e nome do arquivo compactado que será criado. A operação
-// deve observar as seguintes regras e comportamentos: Arquivos com extensão .EXE não podem ser
-// selecionados (exiba uma mensagem ao usuário);
-
 
 uses
   MidasLib,

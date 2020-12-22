@@ -1,16 +1,9 @@
 program Mission07;
 
-//       Author : Douglas Mezuraro
-// Modification : 09/12/2020
-//        Level : Knight
-//      Mission : 07
-//    Objective : Neste exercício, você deverá criar uma aplicação VCL para envio de e-mails
-//                utilizando o Indy. O formulário deverá disponibilizar campos de texto para informar
-//                o endereço SMTP, usuário, senha, porta e configurações de SSL. Além disso, adicione
-//                também um campo para informar o anexo e um componente TMemo para informar o corpo
-//                da mensagem, no qual poderá aceitar comandos HTML. Faça a chamada do envio do e-mail
-//                em uma Anonymous Thread.
-
+// Author: Douglas Mezuraro
+// Modification: 21/12/2020
+// Level: Knight
+// Mission: 07
 
 uses
   System.SysUtils,

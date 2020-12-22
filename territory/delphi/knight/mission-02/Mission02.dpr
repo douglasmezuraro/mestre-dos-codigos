@@ -1,12 +1,9 @@
 program Mission02;
 
 // Author: Douglas Mezuraro
-// Last modification: 06/12/2020
+// Modification: 21/12/2020
 // Level: Knight
 // Mission: 02
-// Objective: Desenvolva uma aplicação VCL capaz de listar os programas instalados no computador
-// através da leitura do registro do Windows. Para isso, utilize a classe TRegistry e apresente,
-// em uma TDBGrid, o nome do programa, versão e a empresa.
 
 uses
   MidasLib,

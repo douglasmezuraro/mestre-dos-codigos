@@ -1,13 +1,9 @@
 program Mission01;
 
 // Author: Douglas Mezuraro
-// Last modification: 06/12/2020
+// Modification: 21/12/2020
 // Level: Knight
 // Mission: 01
-// Objective: Em uma aplicação console, defina duas Interfaces, chamadas IRepositorioNuvem e
-// IRepositorioArquivo. Ambas devem declarar o método "SalvarDados". Em seguida, declare uma classe
-// que implemente as duas Interfaces e codifique o método "SalvarDados" de cada Interface. Use o
-// conceito de Method Resolution Clause para tratar o conflito de nomes de métodos iguais.
 
 {$APPTYPE CONSOLE}
 

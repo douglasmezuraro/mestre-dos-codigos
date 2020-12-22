@@ -1,25 +1,9 @@
 ﻿program Mission13;
 
-//       Author : Douglas Mezuraro
-// Modification : 09/12/2020
-//        Level : Knight
-//      Mission : 13
-//    Objective : Sistemas, para serem test�veis, precisam possuir baixo acoplamento. Assim, durante
-//                a etapa de testes, � poss�vel, por exemplo, substituir a camada de persist�ncia de
-//                dados por um mock que �far� de conta� que os dados foram salvos com sucesso. Ou ainda,
-//                emitir uma exce��o simulando um erro na camada de infraestrutura. Para constru��o de
-//                mocks e stubs, existe uma biblioteca gratuita chamada Delphi-Mocks
-//                https://github.com/VSoftTechnologies/Delphi-Mocks. Utilizando a biblioteca
-//                Delphi-Mocks, escreva os teste unit�rios para a classe TPessoaService. Utilize o
-//                framework Delphi-Mocks para mockar o reposit�rio. N�o ser�o aceitos c�digos implementados
-//                com classes fake. Os testes devem incluir:
-//                  - O comportamento de quando TPessoa est� inv�lido;
-//                  - Garantir que o m�todo de TPessoaRepository n�o ser� chamado quando TPessoa n�o estiver v�lida;
-//                  - Garantir que o m�todo de TPessoaRepository ser� chamado quando TPessoa estiver v�lido;
-//                  - O comportamento de TPessoaService quando TPessoaRepository emite uma exce��o EDatabaseError;
-//                  - O comportamento de TPessoaService, caso TPessoaRepository emita qualquer outra exce��o que n�o seja EDatabaseError;
-//                O c�digo para esta resolu��o est� dispon�vel em:
-//                https://github.com/db1group/mestre-dos-codigos/tree/master/docs/files/cavaleiro-delphi/projeto
+// Author: Douglas Mezuraro
+// Modification: 21/12/2020
+// Level: Knight
+// Mission: 13
 
 {$IFNDEF TESTINSIGHT}
 {$APPTYPE CONSOLE}

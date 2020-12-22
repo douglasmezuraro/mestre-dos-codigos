@@ -1,18 +1,9 @@
 program Mission15;
 
-//       Author : Douglas Mezuraro
-// Modification : 21/12/2020
-//        Level : Knight
-//      Mission : 15
-//    Objective : O componente TFDLocalSql é utilizado para executar comandos SQLs em DataSets em
-//                memória, ou seja, sem conexão com bancos de dados. Neste exercício, baixe os arquivos
-//                Clientes.xml e Cidades.xml
-//                (https://github.com/db1group/mestre-dos-codigos/tree/master/docs/files/cavaleiro-delphi/dados).
-//                Em uma aplicação VCL, carregue estes arquivos em dois componentes TFDMemTable. Em
-//                seguida, use o componente TFDLocalSql para ligar os dados dos dois componentes
-//                (pelo campo IdCidade) de forma que, em uma TDBGrid, sejam exibidos o nome do cliente
-//                e o nome da cidade. A aplicação também deve permitir que o usuário filtre os clientes
-//                de uma cidade específica.
+// Author: Douglas Mezuraro
+// Modification: 21/12/2020
+// Level: Knight
+// Mission: 15
 
 uses
   System.SysUtils,

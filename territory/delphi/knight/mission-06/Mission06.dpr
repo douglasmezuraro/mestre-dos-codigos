@@ -1,14 +1,9 @@
 program Mission06;
 
-//       Author : Douglas Mezuraro
-// Modification : 08/12/2020
-//        Level : Knight
-//      Mission : 06
-//    Objective : Em uma aplicação VCL, declare uma classe Thread responsável por fazer o download
-//                de um arquivo qualquer da internet. Em seguida, em um formulário, adicione um campo
-//                de texto para que o usuário informe o endereço do arquivo, e uma barra de progresso
-//                para exibir o progresso do download. A classe TThread deverá ser utilizada para
-//                baixar o arquivo e atualizar a barra de progresso sem travar a aplicação.
+// Author: Douglas Mezuraro
+// Modification: 21/12/2020
+// Level: Knight
+// Mission: 06
 
 uses
   Vcl.Forms,
