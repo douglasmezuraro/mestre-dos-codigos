@@ -34,3 +34,4 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+
