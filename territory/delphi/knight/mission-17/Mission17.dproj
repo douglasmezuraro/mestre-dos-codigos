@@ -103,6 +103,15 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoa.pas"/>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaForm.pas">
+            <Form>frmSalvadorDePessoas</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaRepository.Impl.pas"/>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaRepository.pas"/>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaService.Impl.pas"/>
+        <DCCReference Include="..\mission-13\src\3rdParty\AppDesktop\uPessoaService.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
