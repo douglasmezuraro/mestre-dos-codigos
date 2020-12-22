@@ -21,13 +21,15 @@ program Mission14;
 //                funcionários a departamentos (mestre-detalhe). A conexão com o banco de dados e a
 //                manipulação de dados devem ser feitas com FireDAC.
 
+
+
 {$R *.dres}
 
 uses
   Vcl.Forms,
   System.SysUtils,
   Form.Main in 'src\Form\Form.Main.pas' {Main},
-  DataModule.Global in 'src\DataModule\DataModule.Global.pas' {DM: TDataModule};
+  DataModule.Global in 'src\DataModule\DataModule.Global.pas' {DM};
 
 {$R *.res}
 

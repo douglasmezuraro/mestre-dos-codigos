@@ -1,39 +1,39 @@
 object DM: TDM
   OldCreateOrder = False
-  Height = 388
-  Width = 611
+  Height = 287
+  Width = 590
   object FDConnection: TFDConnection
     Params.Strings = (
       'DriverID=fB'
       'User_Name=sysdba'
       'Password=masterkey')
     LoginPrompt = False
-    Left = 60
-    Top = 32
+    Left = 75
+    Top = 75
   end
   object FDQueryEmployees: TFDQuery
     Connection = FDConnection
     UpdateOptions.AssignedValues = [uvGeneratorName]
-    Left = 148
-    Top = 90
+    Left = 75
+    Top = 465
   end
   object FDQueryDepartments: TFDQuery
     Connection = FDConnection
-    Left = 148
-    Top = 152
+    Left = 75
+    Top = 387
   end
   object FDPhysFBDriverLink: TFDPhysFBDriverLink
-    Left = 111
-    Top = 331
+    Left = 75
+    Top = 231
   end
   object FDGUIxWaitCursor: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 110
-    Top = 281
+    Left = 75
+    Top = 153
   end
   object FDQueryEmployeesDepartments: TFDQuery
     Connection = FDConnection
-    Left = 148
-    Top = 216
+    Left = 75
+    Top = 309
   end
 end

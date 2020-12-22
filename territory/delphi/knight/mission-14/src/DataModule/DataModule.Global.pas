@@ -11,7 +11,7 @@ uses
   FireDAC.Comp.UI, FireDAC.Phys.IBBase;
 
 type
-  TDM = class sealed(TDataModule)
+  TDM = class(TDataModule)
   {$REGION 'Visual Components'}
     FDConnection: TFDConnection;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;
@@ -64,8 +64,11 @@ begin
 
     FDConnection.Connected := True;
   except
-    raise Exception.Create('There was a problem connecting to the database.');
-    Application.Terminate;
+    on Error: Exception do
+    begin
+      raise Exception.CreateFmt('There was a problem connecting to the database: %s.', [Error.Message]);
+      Application.Terminate;
+    end;
   end;
 end;
 

@@ -109,7 +109,6 @@
         <DCCReference Include="src\DataModule\DataModule.Global.pas">
             <Form>DM</Form>
             <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <RcItem Include="script.sql">
             <ContainerId>ResourceItem</ContainerId>
