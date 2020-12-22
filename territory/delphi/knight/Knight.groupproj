@@ -52,7 +52,7 @@
             <Dependencies>mission-13\Mission13.dproj</Dependencies>
         </Projects>
         <Projects Include="mission-17\Mission17.dproj">
-            <Dependencies/>
+            <Dependencies>mission-13\Mission13.dproj</Dependencies>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -206,13 +206,13 @@
     <Target Name="Mission16:Make" DependsOnTargets="Mission13:Make">
         <MSBuild Projects="mission-16\Mission16.dproj" Targets="Make"/>
     </Target>
-    <Target Name="Mission17">
+    <Target Name="Mission17" DependsOnTargets="Mission13">
         <MSBuild Projects="mission-17\Mission17.dproj"/>
     </Target>
-    <Target Name="Mission17:Clean">
+    <Target Name="Mission17:Clean" DependsOnTargets="Mission13:Clean">
         <MSBuild Projects="mission-17\Mission17.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="Mission17:Make">
+    <Target Name="Mission17:Make" DependsOnTargets="Mission13:Make">
         <MSBuild Projects="mission-17\Mission17.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
