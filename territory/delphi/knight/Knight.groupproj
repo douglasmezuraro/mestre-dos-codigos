@@ -54,6 +54,9 @@
         <Projects Include="mission-17\Mission17.dproj">
             <Dependencies>mission-13\Mission13.dproj</Dependencies>
         </Projects>
+        <Projects Include="mission-18\Mission18.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -215,14 +218,23 @@
     <Target Name="Mission17:Make" DependsOnTargets="Mission13:Make">
         <MSBuild Projects="mission-17\Mission17.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Mission18">
+        <MSBuild Projects="mission-18\Mission18.dproj"/>
+    </Target>
+    <Target Name="Mission18:Clean">
+        <MSBuild Projects="mission-18\Mission18.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mission18:Make">
+        <MSBuild Projects="mission-18\Mission18.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Mission01;Mission02;Mission03;Mission04;Mission05;Mission06;Mission07;Mission08;Mission09;Mission10;Mission11;Mission12;Mission13;Mission14;Mission15;Mission16;Mission17"/>
+        <CallTarget Targets="Mission01;Mission02;Mission03;Mission04;Mission05;Mission06;Mission07;Mission08;Mission09;Mission10;Mission11;Mission12;Mission13;Mission14;Mission15;Mission16;Mission17;Mission18"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Mission01:Clean;Mission02:Clean;Mission03:Clean;Mission04:Clean;Mission05:Clean;Mission06:Clean;Mission07:Clean;Mission08:Clean;Mission09:Clean;Mission10:Clean;Mission11:Clean;Mission12:Clean;Mission13:Clean;Mission14:Clean;Mission15:Clean;Mission16:Clean;Mission17:Clean"/>
+        <CallTarget Targets="Mission01:Clean;Mission02:Clean;Mission03:Clean;Mission04:Clean;Mission05:Clean;Mission06:Clean;Mission07:Clean;Mission08:Clean;Mission09:Clean;Mission10:Clean;Mission11:Clean;Mission12:Clean;Mission13:Clean;Mission14:Clean;Mission15:Clean;Mission16:Clean;Mission17:Clean;Mission18:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Mission01:Make;Mission02:Make;Mission03:Make;Mission04:Make;Mission05:Make;Mission06:Make;Mission07:Make;Mission08:Make;Mission09:Make;Mission10:Make;Mission11:Make;Mission12:Make;Mission13:Make;Mission14:Make;Mission15:Make;Mission16:Make;Mission17:Make"/>
+        <CallTarget Targets="Mission01:Make;Mission02:Make;Mission03:Make;Mission04:Make;Mission05:Make;Mission06:Make;Mission07:Make;Mission08:Make;Mission09:Make;Mission10:Make;Mission11:Make;Mission12:Make;Mission13:Make;Mission14:Make;Mission15:Make;Mission16:Make;Mission17:Make;Mission18:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
