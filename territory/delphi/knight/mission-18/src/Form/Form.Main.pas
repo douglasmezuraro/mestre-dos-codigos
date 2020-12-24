@@ -3,29 +3,29 @@ unit Form.Main;
 interface
 
 uses
-  System.SysUtils, System.Classes,
-  Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, System.Notification,
-
-
-  System.Generics.Collections, Data.DB, Datasnap.DBClient, Vcl.DBGrids,
-  Vcl.AppEvnts, Vcl.DBCtrls, Vcl.Grids;
+  Data.DB, Datasnap.DBClient, System.Classes, System.Generics.Collections, System.Notification,
+  System.SysUtils, Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, Vcl.DBGrids, Vcl.AppEvnts, Vcl.DBCtrls,
+  Vcl.Grids;
 
 type
   TMain = class sealed(TForm)
-    Timer: TTimer;
-    NotificationCenter: TNotificationCenter;
-    TrayIcon: TTrayIcon;
-    Grid: TDBGrid;
+  {$REGION 'Visual Components'}
+    ApplicationEvents: TApplicationEvents;
     DataSet: TClientDataSet;
     DataSource: TDataSource;
-    FieldFireDate: TDateTimeField;
-    ApplicationEvents: TApplicationEvents;
+    DBNavigator: TDBNavigator;
     FieldAlertBody: TStringField;
-    dbnvgr1: TDBNavigator;
+    FieldFireDate: TDateTimeField;
+    Grid: TDBGrid;
+    NotificationCenter: TNotificationCenter;
+    Timer: TTimer;
+    TrayIcon: TTrayIcon;
+  {$ENDREGION}
     procedure OnTimer(Sender: TObject);
-    procedure ApplicationEventsMinimize(Sender: TObject);
-    procedure TrayIconDblClick(Sender: TObject);
-    procedure DataSetAfterPost(ADataSet: TDataSet);
+    procedure OnMinimize(Sender: TObject);
+    procedure OnTrayIconDblClick(Sender: TObject);
+    procedure OnDataSetAfterPost(const ADataSet: TDataSet);
+    procedure OnReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
   strict private
     FNotifications: TStack<TNotification>;
   private
@@ -53,13 +53,13 @@ end;
 
 destructor TMain.Destroy;
 begin
+  while FNotifications.Count > 0 do
+  begin
+    FNotifications.Pop.Free;
+  end;
+
   FNotifications.Free;
   inherited;
-end;
-
-procedure TMain.ApplicationEventsMinimize(Sender: TObject);
-begin
-  Minimize;
 end;
 
 function TMain.CreateNotification(const ADataSet: TDataSet): TNotification;
@@ -72,11 +72,6 @@ begin
   LNotification.Title := Caption;
 
   Result := LNotification;
-end;
-
-procedure TMain.DataSetAfterPost(ADataSet: TDataSet);
-begin
-  FNotifications.Push(CreateNotification(ADataSet));
 end;
 
 procedure TMain.Maximize;
@@ -96,7 +91,22 @@ begin
   Timer.Enabled := True;
 end;
 
-procedure TMain.TrayIconDblClick(Sender: TObject);
+procedure TMain.OnDataSetAfterPost(const ADataSet: TDataSet);
+begin
+  FNotifications.Push(CreateNotification(ADataSet));
+end;
+
+procedure TMain.OnReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
+begin
+  Maximize;
+end;
+
+procedure TMain.OnMinimize(Sender: TObject);
+begin
+  Minimize;
+end;
+
+procedure TMain.OnTrayIconDblClick(Sender: TObject);
 begin
   Maximize;
 end;
@@ -113,7 +123,7 @@ begin
     Exit;
   end;
 
-  DateTimeToString(LNow, DATE_FORMAT, Now);
+  DateTimeToString(LNow, DATE_FORMAT, System.SysUtils.Now);
   DateTimeToString(LFireDate, DATE_FORMAT, FNotifications.Peek.FireDate);
 
   if not LFireDate.Equals(LNow) then

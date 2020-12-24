@@ -12,6 +12,7 @@ object Main: TMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
   object Grid: TDBGrid
@@ -36,19 +37,19 @@ object Main: TMain
       item
         Expanded = False
         FieldName = 'AlertBody'
+        Width = 350
         Visible = True
       end>
   end
-  object dbnvgr1: TDBNavigator
+  object DBNavigator: TDBNavigator
     Left = 0
     Top = 575
     Width = 480
     Height = 25
+    DataSource = DataSource
     Align = alBottom
     TabOrder = 1
-    ExplicitLeft = 182
-    ExplicitTop = 234
-    ExplicitWidth = 240
+    ExplicitTop = 0
   end
   object Timer: TTimer
     Enabled = False
@@ -57,11 +58,12 @@ object Main: TMain
     Top = 153
   end
   object NotificationCenter: TNotificationCenter
+    OnReceiveLocalNotification = OnReceiveLocalNotification
     Left = 384
     Top = 75
   end
   object TrayIcon: TTrayIcon
-    OnDblClick = TrayIconDblClick
+    OnDblClick = OnTrayIconDblClick
     Left = 178
     Top = 153
   end
@@ -69,14 +71,16 @@ object Main: TMain
     Aggregates = <>
     IndexFieldNames = 'FireDate'
     Params = <>
-    AfterPost = DataSetAfterPost
+    AfterPost = OnDataSetAfterPost
     Left = 178
     Top = 75
     object FieldFireDate: TDateTimeField
       FieldName = 'FireDate'
+      Required = True
     end
     object FieldAlertBody: TStringField
       FieldName = 'AlertBody'
+      Required = True
       Size = 180
     end
   end
@@ -86,7 +90,7 @@ object Main: TMain
     Top = 75
   end
   object ApplicationEvents: TApplicationEvents
-    OnMinimize = ApplicationEventsMinimize
+    OnMinimize = OnMinimize
     Left = 75
     Top = 75
   end
