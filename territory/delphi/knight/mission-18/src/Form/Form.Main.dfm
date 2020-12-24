@@ -3,8 +3,8 @@ object Main: TMain
   Top = 0
   ActiveControl = Grid
   Caption = 'Delphi Knight - Mission 18'
-  ClientHeight = 380
-  ClientWidth = 570
+  ClientHeight = 600
+  ClientWidth = 480
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,14 +12,13 @@ object Main: TMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Grid: TDBGrid
     Left = 0
     Top = 0
-    Width = 570
-    Height = 380
+    Width = 480
+    Height = 575
     Align = alClient
     DataSource = DataSource
     TabOrder = 0
@@ -36,47 +35,59 @@ object Main: TMain
       end
       item
         Expanded = False
-        FieldName = 'Description'
+        FieldName = 'AlertBody'
         Visible = True
       end>
+  end
+  object dbnvgr1: TDBNavigator
+    Left = 0
+    Top = 575
+    Width = 480
+    Height = 25
+    Align = alBottom
+    TabOrder = 1
+    ExplicitLeft = 182
+    ExplicitTop = 234
+    ExplicitWidth = 240
   end
   object Timer: TTimer
     Enabled = False
     OnTimer = OnTimer
-    Left = 384
-    Top = 75
+    Left = 75
+    Top = 153
   end
   object NotificationCenter: TNotificationCenter
-    Left = 281
+    Left = 384
     Top = 75
   end
   object TrayIcon: TTrayIcon
     OnDblClick = TrayIconDblClick
-    Left = 487
-    Top = 75
+    Left = 178
+    Top = 153
   end
   object DataSet: TClientDataSet
     Aggregates = <>
     IndexFieldNames = 'FireDate'
     Params = <>
-    Left = 75
+    AfterPost = DataSetAfterPost
+    Left = 178
     Top = 75
     object FieldFireDate: TDateTimeField
       FieldName = 'FireDate'
     end
-    object FieldDescription: TStringField
-      FieldName = 'Description'
+    object FieldAlertBody: TStringField
+      FieldName = 'AlertBody'
       Size = 180
     end
   end
   object DataSource: TDataSource
     DataSet = DataSet
-    Left = 178
+    Left = 281
     Top = 75
   end
   object ApplicationEvents: TApplicationEvents
     OnMinimize = ApplicationEventsMinimize
-    Left = 260
-    Top = 220
+    Left = 75
+    Top = 75
   end
 end

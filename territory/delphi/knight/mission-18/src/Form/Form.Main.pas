@@ -3,12 +3,12 @@ unit Form.Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Grids, Vcl.ValEdit, System.Notification,
+  System.SysUtils, System.Classes,
+  Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, System.Notification,
 
 
-  System.Generics.Collections, System.DateUtils, Data.DB, Datasnap.DBClient, Vcl.DBGrids,
-  Vcl.AppEvnts;
+  System.Generics.Collections, Data.DB, Datasnap.DBClient, Vcl.DBGrids,
+  Vcl.AppEvnts, Vcl.DBCtrls, Vcl.Grids;
 
 type
   TMain = class sealed(TForm)
@@ -18,19 +18,20 @@ type
     Grid: TDBGrid;
     DataSet: TClientDataSet;
     DataSource: TDataSource;
-    FieldDescription: TStringField;
     FieldFireDate: TDateTimeField;
     ApplicationEvents: TApplicationEvents;
+    FieldAlertBody: TStringField;
+    dbnvgr1: TDBNavigator;
     procedure OnTimer(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure ApplicationEventsMinimize(Sender: TObject);
     procedure TrayIconDblClick(Sender: TObject);
+    procedure DataSetAfterPost(ADataSet: TDataSet);
   strict private
-    FNotifications: TStack<TPair<TDateTime, string>>;
+    FNotifications: TStack<TNotification>;
   private
-    procedure Mock;
     procedure Minimize;
     procedure Maximize;
+    function CreateNotification(const ADataSet: TDataSet): TNotification;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -46,7 +47,7 @@ implementation
 constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
-  FNotifications := TStack<TPair<TDateTime, string>>.Create;
+  FNotifications := TStack<TNotification>.Create;
   DataSet.CreateDataSet;
 end;
 
@@ -61,18 +62,30 @@ begin
   Minimize;
 end;
 
-procedure TMain.FormCreate(Sender: TObject);
+function TMain.CreateNotification(const ADataSet: TDataSet): TNotification;
+var
+  LNotification: TNotification;
 begin
-  Mock;
+  LNotification := TNotification.Create;
+  LNotification.AlertBody := ADataSet.FieldByName('AlertBody').AsString;
+  LNotification.FireDate := ADataSet.FieldByName('FireDate').AsDateTime;
+  LNotification.Title := Caption;
+
+  Result := LNotification;
+end;
+
+procedure TMain.DataSetAfterPost(ADataSet: TDataSet);
+begin
+  FNotifications.Push(CreateNotification(ADataSet));
 end;
 
 procedure TMain.Maximize;
 begin
-  TrayIcon.Visible := False;
-  Show;
-  WindowState := wsNormal;
-  Application.BringToFront;
   Timer.Enabled := False;
+  TrayIcon.Visible := False;
+  WindowState := wsNormal;
+  Show;
+  Application.BringToFront;
 end;
 
 procedure TMain.Minimize;
@@ -80,7 +93,6 @@ begin
   Hide;
   WindowState := wsMinimized;
   TrayIcon.Visible := True;
-  TrayIcon.Animate := True;
   Timer.Enabled := True;
 end;
 
@@ -89,34 +101,12 @@ begin
   Maximize;
 end;
 
-procedure TMain.Mock;
-var
-  LDate: TDateTime;
-  LYear, LMonth, LDay, LHour, LMinute, LSecond: Word;
-begin
-  LDate := Now;
-  LYear := YearOf(LDate);
-  LMonth := MonthOf(LDate);
-  LDay := DayOf(LDate);
-  LHour := HourOf(LDate);
-  LMinute := MinuteOf(LDate);
-  LSecond := SecondOf(LDate);
-
-  while LSecond < 60 do
-  begin
-    LDate := EncodeDateTime(LYear, LMonth, LDay, LHour, LMinute, LSecond, 0);
-    DataSet.AppendRecord([LDate, 'Test ' + LSecond.ToString]);
-    FNotifications.Push(TPair<TDateTime, string>.Create(LDate, 'Test ' + LSecond.ToString));
-    Inc(LSecond);
-  end;
-end;
-
 procedure TMain.OnTimer(Sender: TObject);
 const
   DATE_FORMAT: string = 'dd/mm/yyyy hh:MM';
 var
+  LNow, LFireDate: string;
   LNotification: TNotification;
-  LNow, LTop: string;
 begin
   if FNotifications.Count = 0 then
   begin
@@ -124,19 +114,15 @@ begin
   end;
 
   DateTimeToString(LNow, DATE_FORMAT, Now);
-  DateTimeToString(LTop, DATE_FORMAT, FNotifications.Peek.Key);
+  DateTimeToString(LFireDate, DATE_FORMAT, FNotifications.Peek.FireDate);
 
-  if not LNow.Equals(LTop) then
+  if not LFireDate.Equals(LNow) then
   begin
     Exit;
   end;
 
-  LNotification := NotificationCenter.CreateNotification;
+  LNotification := FNotifications.Pop;
   try
-    LNotification.Name := Caption;
-    LNotification.Title := Caption;
-    LNotification.AlertBody := FNotifications.Pop.Value;
-
     NotificationCenter.PresentNotification(LNotification);
   finally
     LNotification.Free;
