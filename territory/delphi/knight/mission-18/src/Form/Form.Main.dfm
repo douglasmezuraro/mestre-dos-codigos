@@ -4,7 +4,7 @@ object Main: TMain
   ActiveControl = Grid
   Caption = 'Delphi Knight - Mission 18'
   ClientHeight = 600
-  ClientWidth = 480
+  ClientWidth = 800
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object Main: TMain
   object Grid: TDBGrid
     Left = 0
     Top = 0
-    Width = 480
+    Width = 800
     Height = 575
     Align = alClient
     DataSource = DataSource
@@ -37,25 +37,26 @@ object Main: TMain
       item
         Expanded = False
         FieldName = 'AlertBody'
-        Width = 350
+        Width = 650
         Visible = True
       end>
   end
   object DBNavigator: TDBNavigator
     Left = 0
     Top = 575
-    Width = 480
+    Width = 800
     Height = 25
     DataSource = DataSource
     Align = alBottom
     TabOrder = 1
     ExplicitTop = 0
+    ExplicitWidth = 480
   end
   object Timer: TTimer
     Enabled = False
     OnTimer = OnTimer
-    Left = 75
-    Top = 153
+    Left = 487
+    Top = 75
   end
   object NotificationCenter: TNotificationCenter
     OnReceiveLocalNotification = OnReceiveLocalNotification
@@ -64,8 +65,8 @@ object Main: TMain
   end
   object TrayIcon: TTrayIcon
     OnDblClick = OnTrayIconDblClick
-    Left = 178
-    Top = 153
+    Left = 590
+    Top = 75
   end
   object DataSet: TClientDataSet
     Aggregates = <>
