@@ -3,31 +3,34 @@ unit Form.Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
-  FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
-  FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.FBDef,
-  FireDAC.Phys.FB, FireDAC.Phys.IBBase, FireDAC.Comp.UI, FireDAC.Comp.Script, FireDAC.Comp.ScriptCommands,
-  System.IOUtils, Vcl.StdCtrls, System.Diagnostics, System.UITypes, FireDAC.Stan.Param,
-  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.Grids, Vcl.DBGrids,
-  Datasnap.DBClient, Vcl.ExtCtrls;
+  Winapi.Windows, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
+  Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB,
+  FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase, FireDAC.Comp.UI, FireDAC.Comp.Script,
+  FireDAC.Comp.ScriptCommands, System.IOUtils, Vcl.StdCtrls, System.Diagnostics, System.UITypes,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.ExtCtrls, FireDAC.Phys.FBDef,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, System.Actions, Vcl.ActnList;
 
 type
   TMain = class sealed(TForm)
+  {$REGION 'Visual Components'}
+    ButtonInsert: TButton;
+    FDConnection: TFDConnection;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;
     FDPhysFBDriverLink: TFDPhysFBDriverLink;
-    FDConnection: TFDConnection;
     FDQuery: TFDQuery;
-    Panel: TPanel;
-    ButtonInsert: TButton;
     Memo: TMemo;
-    procedure ButtonInsertClick(Sender: TObject);
+    Panel: TPanel;
+    ActionList: TActionList;
+    ActionInsert: TAction;
+  {$ENDREGION}
+    procedure ActionInsertExecute(Sender: TObject);
   private
     function GetDatabasePath: string;
     function DatabaseExists: Boolean;
     function GetScripts: TArray<string>;
     procedure ConnectToDatabase;
-    procedure LoadCSV;
+    procedure LoadFile;
     procedure Insert;
     procedure RunScripts(Sender: TObject);
   public
@@ -45,10 +48,10 @@ constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
   ConnectToDatabase;
-  LoadCSV;
+  LoadFile;
 end;
 
-procedure TMain.ButtonInsertClick(Sender: TObject);
+procedure TMain.ActionInsertExecute(Sender: TObject);
 var
   LStopWatch: TStopWatch;
 begin
@@ -103,7 +106,7 @@ begin
   Result := [
     ' CREATE TABLE FUNCIONARIO         ',
     '     (                            ',
-    '         ID INTEGER PRIMARY KEY,  ',
+    '         ID INTEGER,              ',
     '         NOME VARCHAR (180),      ',
     '         CIDADE VARCHAR (180),    ',
     '         EMAIL VARCHAR (180),     ',
@@ -124,21 +127,21 @@ begin
   begin
     LArray := Memo.Lines[LIndex].Split([',']);
 
-    FDQuery.ParamByName('ID').AsInteger := StrToIntDef(LArray[0], 0);
-    FDQuery.ParamByName('NOME').AsString := LArray[1];
-    FDQuery.ParamByName('CIDADE').AsString := LArray[2];
-    FDQuery.ParamByName('EMAIL').AsString := LArray[3];
-    FDQuery.ParamByName('DATANASC').AsDateTime := StrToDateTimeDef(LArray[4], MinDateTime);
-    FDQuery.ParamByName('PROFISSAO').AsString := LArray[5];
-    FDQuery.ParamByName('CARTAO').AsString := LArray[6];
+    FDQuery.ParamByName('ID').AsIntegers[LIndex] := LArray[0].ToInteger;
+    FDQuery.ParamByName('NOME').AsStrings[LIndex] := LArray[1];
+    FDQuery.ParamByName('CIDADE').AsStrings[LIndex] := LArray[2];
+    FDQuery.ParamByName('EMAIL').AsStrings[LIndex] := LArray[3];
+    FDQuery.ParamByName('DATANASC').AsDateTimes[LIndex] := StrToDateTimeDef(LArray[4], MinDateTime);
+    FDQuery.ParamByName('PROFISSAO').AsStrings[LIndex] := LArray[5];
+    FDQuery.ParamByName('CARTAO').AsStrings[LIndex] := LArray[6];
   end;
 
   FDQuery.Execute(FDQuery.Params.ArraySize);
 end;
 
-procedure TMain.LoadCSV;
+procedure TMain.LoadFile;
 begin
-  Memo.Lines.LoadFromFile('..\..\..\Dados.csv');
+  Memo.Lines.LoadFromFile('..\..\..\Dados.csv', TEncoding.UTF8);
   Memo.Lines.Delete(0);
 end;
 

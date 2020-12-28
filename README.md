@@ -16,4 +16,4 @@
  - [x] Missão 16
  - [x] Missão 17
  - [x] Missão 18
- - [ ] Missão 19
+ - [x] Missão 19

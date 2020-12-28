@@ -21,16 +21,14 @@ object Main: TMain
     Height = 45
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 559
     object ButtonInsert: TButton
       Left = 1
       Top = 1
       Width = 100
       Height = 43
+      Action = ActionInsert
       Align = alLeft
-      Caption = 'ButtonInsert'
       TabOrder = 0
-      OnClick = ButtonInsertClick
     end
   end
   object Memo: TMemo
@@ -41,18 +39,15 @@ object Main: TMain
     Align = alClient
     ReadOnly = True
     TabOrder = 1
-    ExplicitLeft = 148
-    ExplicitTop = 146
-    ExplicitWidth = 185
-    ExplicitHeight = 89
+    WordWrap = False
   end
   object FDGUIxWaitCursor: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 384
+    Left = 281
     Top = 75
   end
   object FDPhysFBDriverLink: TFDPhysFBDriverLink
-    Left = 487
+    Left = 384
     Top = 75
   end
   object FDConnection: TFDConnection
@@ -61,7 +56,7 @@ object Main: TMain
       'User_Name=sysdba'
       'Password=masterkey')
     LoginPrompt = False
-    Left = 281
+    Left = 178
     Top = 75
   end
   object FDQuery: TFDQuery
@@ -75,55 +70,56 @@ object Main: TMain
       
         '    (:ID, :NOME, :CIDADE, :EMAIL, :DATANASC, :PROFISSAO, :CARTAO' +
         ');')
-    Left = 590
+    Left = 487
     Top = 75
     ParamData = <
       item
         Name = 'ID'
         DataType = ftInteger
         ParamType = ptInput
-        Value = Null
       end
       item
         Name = 'NOME'
         DataType = ftString
         ParamType = ptInput
         Size = 180
-        Value = Null
       end
       item
         Name = 'CIDADE'
         DataType = ftString
         ParamType = ptInput
         Size = 180
-        Value = Null
       end
       item
         Name = 'EMAIL'
         DataType = ftString
         ParamType = ptInput
         Size = 180
-        Value = Null
       end
       item
         Name = 'DATANASC'
         DataType = ftDateTime
         ParamType = ptInput
-        Value = Null
       end
       item
         Name = 'PROFISSAO'
         DataType = ftString
         ParamType = ptInput
         Size = 180
-        Value = Null
       end
       item
         Name = 'CARTAO'
         DataType = ftString
         ParamType = ptInput
         Size = 180
-        Value = Null
       end>
+  end
+  object ActionList: TActionList
+    Left = 75
+    Top = 75
+    object ActionInsert: TAction
+      Caption = 'Insert'
+      OnExecute = ActionInsertExecute
+    end
   end
 end
