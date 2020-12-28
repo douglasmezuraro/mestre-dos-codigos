@@ -77,18 +77,52 @@ object Main: TMain
     end
   end
   object DataSourceEmployees: TDataSource
-    DataSet = DM.FDQueryEmployees
-    Left = 80
-    Top = 72
+    DataSet = FDQueryEmployees
+    Left = 381
+    Top = 75
   end
   object DataSourceDepartments: TDataSource
-    DataSet = DM.FDQueryDepartments
-    Left = 80
-    Top = 124
+    DataSet = FDQueryDepartments
+    Left = 228
+    Top = 75
   end
   object DataSourceEmployeesDepartments: TDataSource
-    DataSet = DM.FDQueryEmployeesDepartments
-    Left = 80
-    Top = 182
+    DataSet = FDQueryEmployeesDepartments
+    Left = 75
+    Top = 75
+  end
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'DriverID=fB'
+      'User_Name=sysdba'
+      'Password=masterkey')
+    LoginPrompt = False
+    Left = 534
+    Top = 75
+  end
+  object FDQueryEmployees: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvGeneratorName]
+    Left = 534
+    Top = 153
+  end
+  object FDQueryDepartments: TFDQuery
+    Connection = FDConnection
+    Left = 381
+    Top = 153
+  end
+  object FDPhysFBDriverLink: TFDPhysFBDriverLink
+    Left = 75
+    Top = 153
+  end
+  object FDGUIxWaitCursor: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 687
+    Top = 75
+  end
+  object FDQueryEmployeesDepartments: TFDQuery
+    Connection = FDConnection
+    Left = 228
+    Top = 153
   end
 end

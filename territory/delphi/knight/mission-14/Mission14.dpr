@@ -5,13 +5,12 @@ program Mission14;
 // Level: Knight
 // Mission: 14
 
-{$R *.dres}
+
 
 uses
   Vcl.Forms,
   System.SysUtils,
-  Form.Main in 'src\Form\Form.Main.pas' {Main},
-  DataModule.Global in 'src\DataModule\DataModule.Global.pas' {DM};
+  Form.Main in 'src\Form\Form.Main.pas' {Main};
 
 {$R *.res}
 
@@ -19,7 +18,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMain, Main);
-  Application.CreateForm(TDM, DM);
   Application.Run;
 
 {$WARN SYMBOL_PLATFORM OFF}
