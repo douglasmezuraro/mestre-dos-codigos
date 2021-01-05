@@ -93,9 +93,13 @@ object Main: TMain
   end
   object FDConnection: TFDConnection
     Params.Strings = (
-      'DriverID=fB'
       'User_Name=sysdba'
-      'Password=masterkey')
+      'Password=masterkey'
+      'CharacterSet=WIN1252'
+      'ExtendedMetadata=True'
+      'OpenMode=OpenOrCreate'
+      'OSAuthent=No'
+      'DriverID=fB')
     LoginPrompt = False
     Left = 534
     Top = 75
@@ -103,12 +107,27 @@ object Main: TMain
   object FDQueryEmployees: TFDQuery
     Connection = FDConnection
     UpdateOptions.AssignedValues = [uvGeneratorName]
-    Left = 534
+    UpdateOptions.GeneratorName = 'GEN_FUNCIONARIO'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      'SELECT'
+      '    *'
+      'FROM'
+      '    FUNCIONARIO')
+    Left = 381
     Top = 153
   end
   object FDQueryDepartments: TFDQuery
     Connection = FDConnection
-    Left = 381
+    UpdateOptions.AssignedValues = [uvGeneratorName]
+    UpdateOptions.GeneratorName = 'GEN_DEPARTAMENTO'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      'SELECT'
+      '    *'
+      'FROM'
+      '    DEPARTAMENTO')
+    Left = 534
     Top = 153
   end
   object FDPhysFBDriverLink: TFDPhysFBDriverLink
@@ -122,7 +141,58 @@ object Main: TMain
   end
   object FDQueryEmployeesDepartments: TFDQuery
     Connection = FDConnection
+    SQL.Strings = (
+      'SELECT'
+      '    FUNCIONARIO_ID AS FUNCIONARIO,'
+      '    DEPARTAMENTO_ID AS DEPARTAMENTO'
+      'FROM'
+      '    FUNCIONARIO_DEPARTAMENTO')
     Left = 228
+    Top = 153
+  end
+  object FDScript: TFDScript
+    SQLScripts = <
+      item
+        Name = 'DDL'
+        SQL.Strings = (
+          'CREATE DOMAIN TString VARCHAR(80);'
+          'CREATE DOMAIN TDateTime TIMESTAMP;'
+          'CREATE DOMAIN TDouble DECIMAL(10, 2);'
+          'CREATE DOMAIN TInteger INTEGER;'
+          'CREATE DOMAIN TPhone CHAR(11);'
+          ''
+          'CREATE SEQUENCE GEN_FUNCIONARIO;'
+          'CREATE SEQUENCE GEN_DEPARTAMENTO;'
+          ''
+          'CREATE TABLE FUNCIONARIO'
+          '    ('
+          '        ID TInteger PRIMARY KEY,'
+          '        NOME TString,'
+          '        ADMISSAO TDateTime,'
+          '        SALARIO TDouble'
+          '    );'
+          ''
+          'CREATE TABLE DEPARTAMENTO'
+          '    ('
+          '        ID TInteger PRIMARY KEY,'
+          '        DESCRICAO TString,'
+          '        TELEFONE TPhone'
+          '    );'
+          ''
+          'CREATE TABLE FUNCIONARIO_DEPARTAMENTO'
+          '    ('
+          
+            '        FUNCIONARIO_ID TInteger NOT NULL REFERENCES FUNCIONARIO(' +
+            'ID),'
+          
+            '        DEPARTAMENTO_ID TInteger NOT NULL REFERENCES DEPARTAMENT' +
+            'O(ID)'
+          '    );')
+      end>
+    Connection = FDConnection
+    Params = <>
+    Macros = <>
+    Left = 687
     Top = 153
   end
 end

@@ -10,7 +10,7 @@ uses
   FireDAC.Comp.ScriptCommands, System.IOUtils, Vcl.StdCtrls, System.Diagnostics, System.UITypes,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.ExtCtrls, FireDAC.Phys.FBDef,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, System.Actions, Vcl.ActnList, Vcl.Grids, Vcl.DBGrids,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, FireDAC.Stan.Util;
 
 type
   TMain = class sealed(TForm)
@@ -31,11 +31,11 @@ type
     TabSheetDepartments: TTabSheet;
     TabSheetEmployees: TTabSheet;
     TabSheetEmployeesDepartments: TTabSheet;
+    FDScript: TFDScript;
   {$ENDREGION}
   private
     function GetDatabasePath: string;
     function DatabaseExists: Boolean;
-    function GetScripts: TArray<string>;
     procedure ConnectToDatabase;
     procedure SetUp;
     procedure RunScripts(Sender: TObject);
@@ -53,14 +53,7 @@ implementation
 procedure TMain.ConnectToDatabase;
 begin
   try
-    FDConnection.Params.Values['CharacterSet'] := 'WIN1252';
-    FDConnection.Params.Values['Database'] := GetDatabasePath;
-    FDConnection.Params.Values['ExtendedMetadata'] := 'True';
-    FDConnection.Params.Values['OpenMode'] := 'OpenOrCreate';
-    FDConnection.Params.Values['OSAuthent'] := 'No';
-    FDConnection.Params.Values['Password'] := 'masterkey';
-    FDConnection.Params.Values['SQLDialect'] := '3';
-    FDConnection.Params.Values['User_name'] := 'sysdba';
+    FDConnection.Params.Database := GetDatabasePath;
 
     if not DatabaseExists then
     begin
@@ -94,71 +87,17 @@ begin
   Result := 'C:\MISSION_14.fdb';
 end;
 
-function TMain.GetScripts: TArray<string>;
-begin
-  Result := [
-    ' CREATE DOMAIN TString VARCHAR(80);                                    ',
-    ' CREATE DOMAIN TDateTime TIMESTAMP;                                    ',
-    ' CREATE DOMAIN TDouble DECIMAL(10, 2);                                 ',
-    ' CREATE DOMAIN TInteger INTEGER;                                       ',
-    ' CREATE DOMAIN TPhone CHAR(11);                                        ',
-    '                                                                       ',
-    ' CREATE SEQUENCE GEN_FUNCIONARIO;                                      ',
-    ' CREATE SEQUENCE GEN_DEPARTAMENTO;                                     ',
-    '                                                                       ',
-    ' CREATE TABLE FUNCIONARIO                                              ',
-    '     (                                                                 ',
-    '         ID TInteger PRIMARY KEY,                                      ',
-    '         NOME TString,                                                 ',
-    '         ADMISSAO TDateTime,                                           ',
-    '         SALARIO TDouble                                               ',
-    '     );                                                                ',
-    '                                                                       ',
-    ' CREATE TABLE DEPARTAMENTO                                             ',
-    '     (                                                                 ',
-    '         ID TInteger PRIMARY KEY,                                      ',
-    '         DESCRICAO TString,                                            ',
-    '         TELEFONE TPhone                                               ',
-    '     );                                                                ',
-    '                                                                       ',
-    ' CREATE TABLE FUNCIONARIO_DEPARTAMENTO                                 ',
-    '     (                                                                 ',
-    '         FUNCIONARIO_ID TInteger NOT NULL REFERENCES FUNCIONARIO(ID),  ',
-    '         DEPARTAMENTO_ID TInteger NOT NULL REFERENCES DEPARTAMENTO(ID) ',
-    '     );                                                                '
-  ];
-end;
-
 procedure TMain.RunScripts(Sender: TObject);
-var
-  LRunner: TFDScript;
-  LScript: TFDSQLScript;
 begin
-  LRunner := TFDScript.Create(Self);
-  try
-    LRunner.Connection := FDConnection;
-    LScript := LRunner.SQLScripts.Add;
-    LScript.SQL.AddStrings(GetScripts);
-    LRunner.ValidateAll;
-    LRunner.ExecuteAll;
-  finally
-    LRunner.Free;
-  end;
+  FDScript.ValidateAll;
+  FDScript.ExecuteAll;
 end;
 
 procedure TMain.SetUp;
 begin
-  FDQueryEmployees.UpdateOptions.GeneratorName := 'GEN_FUNCIONARIO';
-  FDQueryEmployees.UpdateOptions.AutoIncFields := 'ID';
-  FDQueryEmployees.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
-  FDQueryEmployees.Open('SELECT * FROM FUNCIONARIO');
-
-  FDQueryDepartments.UpdateOptions.GeneratorName := 'GEN_DEPARTAMENTO';
-  FDQueryDepartments.UpdateOptions.AutoIncFields := 'ID';
-  FDQueryDepartments.UpdateOptions.FetchGeneratorsPoint := TFDFetchGeneratorsPoint.gpDeferred;
-  FDQueryDepartments.Open('SELECT * FROM DEPARTAMENTO');
-
-  FDQueryEmployeesDepartments.Open('SELECT FUNCIONARIO_ID AS FUNCIONARIO, DEPARTAMENTO_ID AS DEPARTAMENTO FROM FUNCIONARIO_DEPARTAMENTO');
+  FDQueryEmployees.Open;
+  FDQueryDepartments.Open;
+  FDQueryEmployeesDepartments.Open;
 end;
 
 end.
