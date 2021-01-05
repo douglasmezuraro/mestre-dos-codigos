@@ -99,6 +99,7 @@ object Main: TMain
       'ExtendedMetadata=True'
       'OpenMode=OpenOrCreate'
       'OSAuthent=No'
+      'Database=C:\MISSION_14.fdb'
       'DriverID=fB')
     LoginPrompt = False
     Left = 534

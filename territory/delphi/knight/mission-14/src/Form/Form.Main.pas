@@ -34,7 +34,6 @@ type
     FDScript: TFDScript;
   {$ENDREGION}
   private
-    function GetDatabasePath: string;
     function DatabaseExists: Boolean;
     procedure ConnectToDatabase;
     procedure SetUp;
@@ -50,11 +49,16 @@ implementation
 
 {$R *.dfm}
 
+constructor TMain.Create(AOwner: TComponent);
+begin
+  inherited;
+  ConnectToDatabase;
+  SetUp;
+end;
+
 procedure TMain.ConnectToDatabase;
 begin
   try
-    FDConnection.Params.Database := GetDatabasePath;
-
     if not DatabaseExists then
     begin
       FDConnection.AfterConnect := RunScripts;
@@ -70,21 +74,9 @@ begin
   end;
 end;
 
-constructor TMain.Create(AOwner: TComponent);
-begin
-  inherited;
-  ConnectToDatabase;
-  SetUp;
-end;
-
 function TMain.DatabaseExists: Boolean;
 begin
-  Result := TFile.Exists(GetDatabasePath);
-end;
-
-function TMain.GetDatabasePath: string;
-begin
-  Result := 'C:\MISSION_14.fdb';
+  Result := TFile.Exists(FDConnection.Params.Database);
 end;
 
 procedure TMain.RunScripts(Sender: TObject);
