@@ -122,4 +122,26 @@ object Main: TMain
       OnExecute = ActionInsertExecute
     end
   end
+  object FDScript: TFDScript
+    SQLScripts = <
+      item
+        Name = 'DDL'
+        SQL.Strings = (
+          'CREATE TABLE FUNCIONARIO'
+          '    (         '
+          '        ID INTEGER,'
+          '        NOME VARCHAR (180),'
+          '        CIDADE VARCHAR (180),'
+          '        EMAIL VARCHAR (180),'
+          '        DATANASC TIMESTAMP,'
+          '        PROFISSAO VARCHAR (180),'
+          '        CARTAO VARCHAR (180)'
+          '    );')
+      end>
+    Connection = FDConnection
+    Params = <>
+    Macros = <>
+    Left = 68
+    Top = 186
+  end
 end

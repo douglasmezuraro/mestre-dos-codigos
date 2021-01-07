@@ -9,7 +9,7 @@ uses
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase, FireDAC.Comp.UI, FireDAC.Comp.Script,
   FireDAC.Comp.ScriptCommands, System.IOUtils, Vcl.StdCtrls, System.Diagnostics, System.UITypes,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.ExtCtrls, FireDAC.Phys.FBDef,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, System.Actions, Vcl.ActnList;
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, System.Actions, Vcl.ActnList, FireDAC.Stan.Util;
 
 type
   TMain = class sealed(TForm)
@@ -23,12 +23,11 @@ type
     Panel: TPanel;
     ActionList: TActionList;
     ActionInsert: TAction;
+    FDScript: TFDScript;
   {$ENDREGION}
     procedure ActionInsertExecute(Sender: TObject);
   private
-    function GetDatabasePath: string;
     function DatabaseExists: Boolean;
-    function GetScripts: TArray<string>;
     procedure ConnectToDatabase;
     procedure LoadFile;
     procedure Insert;
@@ -66,16 +65,6 @@ end;
 procedure TMain.ConnectToDatabase;
 begin
   try
-    FDConnection.Params.Values['DriverID'] := 'FB';
-    FDConnection.Params.Values['OpenMode'] := 'OpenOrCreate';
-    FDConnection.Params.Values['CharacterSet'] := 'WIN1252';
-    FDConnection.Params.Values['Database'] := GetDatabasePath;
-    FDConnection.Params.Values['ExtendedMetadata'] := 'True';
-    FDConnection.Params.Values['OSAuthent'] := 'No';
-    FDConnection.Params.Values['Password'] := 'masterkey';
-    FDConnection.Params.Values['SQLDialect'] := '3';
-    FDConnection.Params.Values['User_name'] := 'sysdba';
-
     if not DatabaseExists then
     begin
       FDConnection.AfterConnect := RunScripts;
@@ -93,28 +82,7 @@ end;
 
 function TMain.DatabaseExists: Boolean;
 begin
-  Result := TFile.Exists(GetDatabasePath);
-end;
-
-function TMain.GetDatabasePath: string;
-begin
-  Result := 'C:\MISSION_19.fdb';
-end;
-
-function TMain.GetScripts: TArray<string>;
-begin
-  Result := [
-    ' CREATE TABLE FUNCIONARIO         ',
-    '     (                            ',
-    '         ID INTEGER,              ',
-    '         NOME VARCHAR (180),      ',
-    '         CIDADE VARCHAR (180),    ',
-    '         EMAIL VARCHAR (180),     ',
-    '         DATANASC TIMESTAMP,      ',
-    '         PROFISSAO VARCHAR (180), ',
-    '         CARTAO VARCHAR (180)     ',
-    '     );                           '
-  ];
+  Result := TFile.Exists(FDConnection.Params.Database);
 end;
 
 procedure TMain.Insert;
@@ -146,20 +114,9 @@ begin
 end;
 
 procedure TMain.RunScripts(Sender: TObject);
-var
-  LRunner: TFDScript;
-  LScript: TFDSQLScript;
 begin
-  LRunner := TFDScript.Create(Self);
-  try
-    LRunner.Connection := FDConnection;
-    LScript := LRunner.SQLScripts.Add;
-    LScript.SQL.AddStrings(GetScripts);
-    LRunner.ValidateAll;
-    LRunner.ExecuteAll;
-  finally
-    LRunner.Free;
-  end;
+  FDScript.ValidateAll;
+  FDScript.ExecuteAll;
 end;
 
 end.
