@@ -18,6 +18,9 @@ type
   {$ENDREGION}
     procedure ActionDownloadExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+  strict private
+    FDownloader: TDownloader;
   private
     procedure Download;
     procedure OnWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
@@ -39,15 +42,19 @@ end;
 procedure TMain.Download;
 var
   LDTO: TDownloaderDTO;
-  LDownloader: TDownloader;
 begin
   LDTO.Source := EditSource.Text;
   LDTO.Target := EditTarget.Text;
   LDTO.OnWork := OnWork;
   LDTO.OnWorkBegin := OnWorkBegin;
 
-  LDownloader := TDownloader.Create(LDTO);
-  LDownloader.Start;
+  FDownloader := TDownloader.Create(LDTO);
+  FDownloader.Start;
+end;
+
+procedure TMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose :=  FDownloader.Finished;
 end;
 
 procedure TMain.FormShow(Sender: TObject);

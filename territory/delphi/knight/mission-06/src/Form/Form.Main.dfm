@@ -14,6 +14,7 @@ object Main: TMain
   OldCreateOrder = False
   Position = poScreenCenter
   Visible = True
+  OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
