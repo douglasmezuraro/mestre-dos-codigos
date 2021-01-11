@@ -16,9 +16,9 @@ type
     EditTarget: TLabeledEdit;
     ProgressBar: TProgressBar;
   {$ENDREGION}
-    procedure ActionDownloadExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure ActionDownloadExecute(ASender: TObject);
+    procedure FormShow(ASender: TObject);
+    procedure FormCloseQuery(ASender: TObject; var ACanClose: Boolean);
   strict private
     FDownloader: TDownloader;
   private
@@ -34,7 +34,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TMain.ActionDownloadExecute(Sender: TObject);
+procedure TMain.ActionDownloadExecute(ASender: TObject);
 begin
   Download;
 end;
@@ -52,12 +52,12 @@ begin
   FDownloader.Start;
 end;
 
-procedure TMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TMain.FormCloseQuery(ASender: TObject; var ACanClose: Boolean);
 begin
-  CanClose := FDownloader = nil;
+  ACanClose := FDownloader = nil;
 end;
 
-procedure TMain.FormShow(Sender: TObject);
+procedure TMain.FormShow(ASender: TObject);
 begin
   EditSource.Text := 'https://speed.hetzner.de/100MB.bin';
   EditTarget.Text := TPath.Combine(TPath.GetDocumentsPath, 'downloaded-file.bin');
