@@ -9,7 +9,9 @@ uses
   Vcl.Forms,
   System.SysUtils,
   Form.Main in 'src\Form\Form.Main.pas' {Main},
-  Impl.Downloader in 'src\Impl\Impl.Downloader.pas';
+  Downloader.Thread in 'src\Downloader\Downloader.Thread.pas',
+  Downloader.DTO in 'src\Downloader\Downloader.DTO.pas',
+  Downloader in 'src\Downloader\Downloader.pas';
 
 {$R *.res}
 

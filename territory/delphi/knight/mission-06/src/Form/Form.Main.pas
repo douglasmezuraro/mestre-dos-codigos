@@ -4,7 +4,7 @@ interface
 
 uses
   System.Classes, System.Actions, Vcl.Controls, Vcl.Forms, Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.ComCtrls, Impl.Downloader, System.IOUtils, IdComponent;
+  Vcl.ComCtrls, System.IOUtils, Downloader;
 
 type
   TMain = class sealed(TForm)
@@ -38,13 +38,15 @@ end;
 
 procedure TMain.Download;
 var
+  LDTO: TDownloaderDTO;
   LDownloader: TDownloader;
 begin
-  LDownloader := TDownloader.Create;
-  LDownloader.Source := EditSource.Text;
-  LDownloader.Target := EditTarget.Text;
-  LDownloader.OnWork := OnWork;
-  LDownloader.OnWorkBegin := OnWorkBegin;
+  LDTO.Source := EditSource.Text;
+  LDTO.Target := EditTarget.Text;
+  LDTO.OnWork := OnWork;
+  LDTO.OnWorkBegin := OnWorkBegin;
+
+  LDownloader := TDownloader.Create(LDTO);
   LDownloader.Start;
 end;
 
