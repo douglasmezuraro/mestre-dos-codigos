@@ -9,14 +9,14 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     ActionList: TActionList;
     ActionListFiles: TAction;
     ActionSelectPathA: TAction;
     ActionSelectPathB: TAction;
     ActionSelectPathC: TAction;
-    ButtonListFiles: TButton;
     ButtonFirstPath: TSpeedButton;
+    ButtonListFiles: TButton;
     ButtonSecondPath: TSpeedButton;
     ButtonThirdPath: TSpeedButton;
     EditFirstPath: TLabeledEdit;

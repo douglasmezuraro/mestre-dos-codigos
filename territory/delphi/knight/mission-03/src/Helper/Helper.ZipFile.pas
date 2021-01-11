@@ -15,11 +15,11 @@ implementation
 
 procedure TZipFileHelper.Add(const AFiles: TArray<string>);
 var
-  FileName: string;
+  LFileName: string;
 begin
-  for FileName in AFiles do
+  for LFileName in AFiles do
   begin
-    Add(FileName);
+    Add(LFileName);
   end;
 end;
 

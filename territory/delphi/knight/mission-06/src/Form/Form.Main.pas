@@ -8,13 +8,13 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
-    EditSource: TLabeledEdit;
-    ButtonDownload: TButton;
-    ActionList: TActionList;
+  {$REGION 'Components'}
     ActionDownload: TAction;
-    ProgressBar: TProgressBar;
+    ActionList: TActionList;
+    ButtonDownload: TButton;
+    EditSource: TLabeledEdit;
     EditTarget: TLabeledEdit;
+    ProgressBar: TProgressBar;
   {$ENDREGION}
     procedure ActionDownloadExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);

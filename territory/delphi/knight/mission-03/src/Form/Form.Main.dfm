@@ -24,7 +24,7 @@ object Main: TMain
     Action = ActionCompress
     TabOrder = 0
   end
-  object ProgressBarCompression: TProgressBar
+  object ProgressBar: TProgressBar
     Left = 15
     Top = 560
     Width = 619
@@ -38,7 +38,7 @@ object Main: TMain
     Height = 446
     Caption = 'Input'
     TabOrder = 2
-    object MemoFiles: TMemo
+    object Memo: TMemo
       Left = 10
       Top = 15
       Width = 656
@@ -55,7 +55,7 @@ object Main: TMain
       TabOrder = 1
     end
   end
-  object GroupBox1: TGroupBox
+  object GroupBoxOutput: TGroupBox
     Left = 15
     Top = 477
     Width = 770

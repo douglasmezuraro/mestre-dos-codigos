@@ -8,15 +8,15 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
-    Grid: TDBGrid;
+  {$REGION 'Components'}
     DataSet: TClientDataSet;
     DataSource: TDataSource;
     FieldName: TStringField;
-    FieldVersion: TStringField;
     FieldPublisher: TStringField;
-    procedure FormShow(Sender: TObject);
+    FieldVersion: TStringField;
+    Grid: TDBGrid;
   {$ENDREGION}
+    procedure FormShow(Sender: TObject);
   strict private
     FPrograms: TProgramList;
   private

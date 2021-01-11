@@ -16,16 +16,6 @@ uses
   API.FileRepository in 'src\API.FileRepository.pas',
   Impl.Data in 'src\Impl.Data.pas';
 
-procedure PrintHeader;
-begin
-  Writeln('Author: Douglas Mezuraro');
-  Writeln('Modification date: 06/12/2020');
-  WriteLn('Level: Knight');
-  Writeln('Mission: 01');
-
-  Writeln(string.Empty);
-end;
-
 procedure SaveData;
 var
   LData: TData;
@@ -40,7 +30,6 @@ begin
 end;
 
 begin
-  PrintHeader;
   SaveData;
 
   Writeln(string.Empty);

@@ -8,24 +8,27 @@ uses
 
 type
   TMain = class sealed(TForm)
-    ActionList: TActionList;
+  {$REGION 'Components'}
     ActionCompress: TAction;
-    ButtonCompress: TButton;
-    ProgressBarCompression: TProgressBar;
-    ActionSelectFiles: TAction;
+    ActionList: TActionList;
     ActionSelectFileName: TAction;
-    GroupBoxInput: TGroupBox;
-    MemoFiles: TMemo;
-    ButtonSelectFiles: TButton;
-    GroupBox1: TGroupBox;
-    EditFileName: TEdit;
+    ActionSelectFiles: TAction;
+    ButtonCompress: TButton;
     ButtonSelectFileName: TButton;
+    ButtonSelectFiles: TButton;
+    EditFileName: TEdit;
+    GroupBoxInput: TGroupBox;
+    GroupBoxOutput: TGroupBox;
+    Memo: TMemo;
+    ProgressBar: TProgressBar;
+  {$ENDREGION}
     procedure ActionCompressExecute(Sender: TObject);
     procedure OnProgress(Sender: TObject; FileName: string; Header: TZipHeader; Position: Int64);
     procedure ActionSelectFilesExecute(Sender: TObject);
     procedure ActionSelectFileNameExecute(Sender: TObject);
-  private
+  strict private
     FZipWrapper: TZipWrapper;
+  private
     function SelectFiles: TArray<string>;
     function SelectFileName: string;
     procedure Compress;
@@ -41,9 +44,22 @@ implementation
 
 {$R *.dfm}
 
+constructor TMain.Create(AOwner: TComponent);
+begin
+  inherited;
+  FZipWrapper := TZipWrapper.Create;
+  FZipWrapper.OnProgress := OnProgress;
+end;
+
+destructor TMain.Destroy;
+begin
+  FZipWrapper.Free;
+  inherited;
+end;
+
 procedure TMain.ActionCompressExecute(Sender: TObject);
 begin
-  ProgressBarCompression.Position := 0;
+  ProgressBar.Position := 0;
   Compress;
 end;
 
@@ -56,8 +72,8 @@ end;
 procedure TMain.ActionSelectFilesExecute(Sender: TObject);
 begin
   FZipWrapper.Files := SelectFiles;
-  MemoFiles.Lines.Clear;
-  MemoFiles.Lines.AddStrings(FZipWrapper.Files);
+  Memo.Lines.Clear;
+  Memo.Lines.AddStrings(FZipWrapper.Files);
 end;
 
 procedure TMain.Compress;
@@ -77,22 +93,9 @@ begin
   end;
 end;
 
-constructor TMain.Create(AOwner: TComponent);
-begin
-  inherited;
-  FZipWrapper := TZipWrapper.Create;
-  FZipWrapper.OnProgress := OnProgress;
-end;
-
-destructor TMain.Destroy;
-begin
-  FZipWrapper.Free;
-  inherited;
-end;
-
 procedure TMain.OnProgress(Sender: TObject; FileName: string; Header: TZipHeader; Position: Int64);
 begin
-  ProgressBarCompression.Position := (Position * 100) div Header.UncompressedSize;
+  ProgressBar.Position := (Position * 100) div Header.UncompressedSize;
 end;
 
 function TMain.SelectFileName: string;

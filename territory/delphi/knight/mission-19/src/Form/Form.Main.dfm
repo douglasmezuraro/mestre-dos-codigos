@@ -52,11 +52,15 @@ object Main: TMain
   end
   object FDConnection: TFDConnection
     Params.Strings = (
-      'DriverID=fB'
       'User_Name=sysdba'
-      'Password=masterkey')
+      'Password=masterkey'
+      'Database=C:\MISSION_19.fdb'
+      'CharacterSet=WIN1252'
+      'ExtendedMetadata=True'
+      'OpenMode=OpenOrCreate'
+      'DriverID=fB')
     LoginPrompt = False
-    Left = 178
+    Left = 180
     Top = 75
   end
   object FDQuery: TFDQuery
