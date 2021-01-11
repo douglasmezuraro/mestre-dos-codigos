@@ -3,8 +3,8 @@ object Main: TMain
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Delphi Knight - Mission 06'
-  ClientHeight = 194
-  ClientWidth = 430
+  ClientHeight = 161
+  ClientWidth = 511
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,7 +21,7 @@ object Main: TMain
   object EditSource: TLabeledEdit
     Left = 20
     Top = 30
-    Width = 385
+    Width = 466
     Height = 21
     EditLabel.Width = 33
     EditLabel.Height = 13
@@ -29,8 +29,8 @@ object Main: TMain
     TabOrder = 0
   end
   object ButtonDownload: TButton
-    Left = 170
-    Top = 111
+    Left = 411
+    Top = 115
     Width = 75
     Height = 25
     Action = ActionDownload
@@ -38,15 +38,15 @@ object Main: TMain
   end
   object ProgressBar: TProgressBar
     Left = 20
-    Top = 156
+    Top = 115
     Width = 385
     Height = 25
     TabOrder = 2
   end
   object EditTarget: TLabeledEdit
     Left = 20
-    Top = 71
-    Width = 385
+    Top = 73
+    Width = 466
     Height = 21
     EditLabel.Width = 32
     EditLabel.Height = 13
@@ -54,8 +54,8 @@ object Main: TMain
     TabOrder = 3
   end
   object ActionList: TActionList
-    Left = 514
-    Top = 178
+    Left = 324
+    Top = 48
     object ActionDownload: TAction
       Caption = '&Download'
       OnExecute = ActionDownloadExecute
