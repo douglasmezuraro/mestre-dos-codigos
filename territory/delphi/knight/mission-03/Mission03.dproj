@@ -100,7 +100,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="src\Helper\Helper.ZipFile.pas"/>
-        <DCCReference Include="src\Impl\Impl.Zip.pas"/>
+        <DCCReference Include="src\Zip\Zip.Wrapper.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

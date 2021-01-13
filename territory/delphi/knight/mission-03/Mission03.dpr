@@ -10,7 +10,7 @@ uses
   Vcl.Forms,
   Form.Main in 'src\Form\Form.Main.pas' {Main},
   Helper.ZipFile in 'src\Helper\Helper.ZipFile.pas',
-  Impl.Zip in 'src\Impl\Impl.Zip.pas';
+  Zip.Wrapper in 'src\Zip\Zip.Wrapper.pas';
 
 {$R *.res}
 
