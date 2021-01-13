@@ -10,6 +10,7 @@ program Mission09;
 {$R *.res}
 
 uses
+  MidasLib,
   System.SysUtils,
   Horse in '3rdParty\Horse\src\Horse.pas',
   Horse.Commons in '3rdParty\Horse\src\Horse.Commons.pas',
@@ -64,3 +65,4 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+

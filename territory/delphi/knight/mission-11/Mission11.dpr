@@ -6,6 +6,7 @@ program Mission11;
 // Mission: 11
 
 uses
+  MidasLib,
   Vcl.Forms,
   System.SysUtils,
   WebService.Correios in 'src\WebService\WebService.Correios.pas',
@@ -23,3 +24,4 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+

@@ -10,6 +10,7 @@ program Mission16;
 {$R *.res}
 
 uses
+  MidasLib,
   System.SysUtils,
   uPessoa in '..\mission-13\src\3rdParty\AppDesktop\uPessoa.pas';
 

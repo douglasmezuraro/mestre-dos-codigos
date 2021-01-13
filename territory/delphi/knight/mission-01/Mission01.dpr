@@ -12,9 +12,9 @@ program Mission01;
 uses
   MidasLib,
   System.SysUtils,
-  API.CloudRepository in 'src\API.CloudRepository.pas',
-  API.FileRepository in 'src\API.FileRepository.pas',
-  Impl.Data in 'src\Impl.Data.pas';
+  Repository.Cloud.API in 'src\Repository\Repository.Cloud.API.pas',
+  Repository.Files.API in 'src\Repository\Repository.Files.API.pas',
+  Repository.Impl in 'src\Repository\Repository.Impl.pas';
 
 procedure SaveData;
 var
@@ -40,3 +40,4 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+

@@ -11,6 +11,7 @@
 {$WARN DUPLICATE_CTOR_DTOR OFF}
 
 uses
+  MidasLib,
   System.SysUtils,
 {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
@@ -92,3 +93,4 @@ begin
     end;
   end;
 end.
+

@@ -4,7 +4,7 @@ interface
 
 uses
   Email.Cryptography, Email.DTO, Email.Sender, Email.Exceptions, IdSMTP, IdSSLOpenSSL,
-  IdExplicitTLSClientServerBase, System.SysUtils;
+  IdExplicitTLSClientServerBase;
 
 type
   TIdSSLVersion = IdSSLOpenSSL.TIdSSLVersion;
@@ -12,11 +12,9 @@ type
   TIdUseTLS = IdExplicitTLSClientServerBase.TIdUseTLS;
   TIdSMTPAuthenticationType = IdSMTP.TIdSMTPAuthenticationType;
   TEmailDTO = Email.DTO.TEmailDTO;
-
   TEmailSender = Email.Sender.TEmailSender;
   TCryptography = Email.Cryptography.TCryptography;
 
-{$REGION 'Exceptions'}
   EEmailSenderArgumentException = Email.Exceptions.EEmailSenderArgumentException;
   EEmailEmptyHost = Email.Exceptions.EEmailEmptyHost;
   EEmailEmptyUsername = Email.Exceptions.EEmailEmptyUsername;
@@ -25,53 +23,50 @@ type
   EEmailEmptyBody = Email.Exceptions.EEmailEmptyBody;
   EEmailEmptySubject = Email.Exceptions.EEmailEmptySubject;
   EEmailEmptyRecipients = Email.Exceptions.EEmailEmptyRecipients;
-{$ENDREGION}
 
-{$REGION 'Enum helpers'}
   TIdSSLVersionHelper = record Helper for TIdSSLVersion
-    private
-      const Map: array[TIdSSLVersion] of string = ('SSL v2', 'SSL v23', 'SSL v3', 'TLS v1', 'TLS v1.1', 'TLS v1.2');
-    public
-      function ToInteger: Integer;
-      function ToString: string;
-      class function Parse(const AIndex: Integer): TIdSSLVersion; static;
-      class function ToArray: TArray<TIdSSLVersion>; static;
-      class function ToStringArray: TArray<string>; static;
-    end;
+  private
+    const Map: array[TIdSSLVersion] of string = ('SSL v2', 'SSL v23', 'SSL v3', 'TLS v1', 'TLS v1.1', 'TLS v1.2');
+  public
+    function ToInteger: Integer;
+    function ToString: string;
+    class function Parse(const AIndex: Integer): TIdSSLVersion; static;
+    class function ToArray: TArray<TIdSSLVersion>; static;
+    class function ToStringArray: TArray<string>; static;
+  end;
 
-    TIdSSLModeHelper = record Helper for TIdSSLMode
-    private
-      const Map: array[TIdSSLMode] of string = ('Unassigned', 'Client', 'Server', 'Both');
-    public
-      function ToInteger: Integer;
-      function ToString: string;
-      class function Parse(const AIndex: Integer): TIdSSLMode; static;
-      class function ToArray: TArray<TIdSSLMode>; static;
-      class function ToStringArray: TArray<string>; static;
-    end;
+  TIdSSLModeHelper = record Helper for TIdSSLMode
+  private
+    const Map: array[TIdSSLMode] of string = ('Unassigned', 'Client', 'Server', 'Both');
+  public
+    function ToInteger: Integer;
+    function ToString: string;
+    class function Parse(const AIndex: Integer): TIdSSLMode; static;
+    class function ToArray: TArray<TIdSSLMode>; static;
+    class function ToStringArray: TArray<string>; static;
+  end;
 
-    TIdUseTLSHelper = record Helper for TIdUseTLS
-    private
-      const Map: array[TIdUseTLS] of string = ('No TLS support', 'Implicit TLS', 'Require TLS', 'Explicit TLS');
-    public
-      function ToInteger: Integer;
-      function ToString: string;
-      class function Parse(const AIndex: Integer): TIdUseTLS; static;
-      class function ToArray: TArray<TIdUseTLS>; static;
-      class function ToStringArray: TArray<string>; static;
-    end;
+  TIdUseTLSHelper = record Helper for TIdUseTLS
+  private
+    const Map: array[TIdUseTLS] of string = ('No TLS support', 'Implicit TLS', 'Require TLS', 'Explicit TLS');
+  public
+    function ToInteger: Integer;
+    function ToString: string;
+    class function Parse(const AIndex: Integer): TIdUseTLS; static;
+    class function ToArray: TArray<TIdUseTLS>; static;
+    class function ToStringArray: TArray<string>; static;
+  end;
 
-    TIdSMTPAuthenticationTypeHelper = record Helper for TIdSMTPAuthenticationType
-    private
-      const Map: array[TIdSMTPAuthenticationType] of string = ('None', 'Default', 'SASL');
-    public
-      function ToInteger: Integer;
-      function ToString: string;
-      class function Parse(const AIndex: Integer): TIdSMTPAuthenticationType; static;
-      class function ToArray: TArray<TIdSMTPAuthenticationType>; static;
-      class function ToStringArray: TArray<string>; static;
-    end;
-{$ENDREGION}
+  TIdSMTPAuthenticationTypeHelper = record Helper for TIdSMTPAuthenticationType
+  private
+    const Map: array[TIdSMTPAuthenticationType] of string = ('None', 'Default', 'SASL');
+  public
+    function ToInteger: Integer;
+    function ToString: string;
+    class function Parse(const AIndex: Integer): TIdSMTPAuthenticationType; static;
+    class function ToArray: TArray<TIdSMTPAuthenticationType>; static;
+    class function ToStringArray: TArray<string>; static;
+  end;
 
 implementation
 

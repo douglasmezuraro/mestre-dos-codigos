@@ -5,9 +5,8 @@ program Mission14;
 // Level: Knight
 // Mission: 14
 
-
-
 uses
+  MidasLib,
   Vcl.Forms,
   System.SysUtils,
   Form.Main in 'src\Form\Form.Main.pas' {Main};
@@ -24,3 +23,4 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+

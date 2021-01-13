@@ -36,7 +36,7 @@ type
   private
     function DatabaseExists: Boolean;
     procedure ConnectToDatabase;
-    procedure SetUp;
+    procedure OpenDataSets;
     procedure RunScripts(ASender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
@@ -53,7 +53,7 @@ constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
   ConnectToDatabase;
-  SetUp;
+  OpenDataSets;
 end;
 
 procedure TMain.ConnectToDatabase;
@@ -85,7 +85,7 @@ begin
   FDScript.ExecuteAll;
 end;
 
-procedure TMain.SetUp;
+procedure TMain.OpenDataSets;
 begin
   FDQueryEmployees.Open;
   FDQueryDepartments.Open;

@@ -6,6 +6,7 @@ program Mission10;
 // Mission: 10
 
 uses
+  MidasLib,
   Vcl.Forms,
   System.SysUtils,
   WebService.RegExLib in 'src\WebService\WebService.RegExLib.pas',

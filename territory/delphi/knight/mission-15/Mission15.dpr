@@ -6,6 +6,7 @@ program Mission15;
 // Mission: 15
 
 uses
+  MidasLib,
   System.SysUtils,
   Vcl.Forms,
   Form.Main in 'src\Form\Form.Main.pas' {Main};
@@ -22,3 +23,4 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
 {$WARN SYMBOL_PLATFORM DEFAULT}
 end.
+

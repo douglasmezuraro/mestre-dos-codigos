@@ -14,6 +14,7 @@ uses
 
 type
   TMain = class sealed(TForm)
+  {$REGION 'Components'}
     DataSource: TDataSource;
     FDConnection: TFDConnection;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;
@@ -28,6 +29,7 @@ type
     ButtonSearch: TButton;
     ActionList: TActionList;
     ActionSearch: TAction;
+  {$ENDREGION}
     procedure ActionSearchExecute(ASender: TObject);
   public
     constructor Create(AOwner: TComponent); override;

@@ -86,6 +86,10 @@ begin
 end;
 
 procedure TMain.Insert;
+type
+  TParameters = (Id, Name, City, Email, Birthday, Profession, Card);
+const
+  ParametersNames: array[TParameters] of string = ('ID', 'NOME', 'CIDADE', 'EMAIL', 'DATANASC', 'PROFISSAO', 'CARTAO');
 var
   LIndex: Integer;
   LArray: TArray<string>;
@@ -95,13 +99,13 @@ begin
   begin
     LArray := Memo.Lines[LIndex].Split([',']);
 
-    FDQuery.ParamByName('ID').AsIntegers[LIndex] := LArray[0].ToInteger;
-    FDQuery.ParamByName('NOME').AsStrings[LIndex] := LArray[1];
-    FDQuery.ParamByName('CIDADE').AsStrings[LIndex] := LArray[2];
-    FDQuery.ParamByName('EMAIL').AsStrings[LIndex] := LArray[3];
-    FDQuery.ParamByName('DATANASC').AsDateTimes[LIndex] := StrToDateTimeDef(LArray[4], MinDateTime);
-    FDQuery.ParamByName('PROFISSAO').AsStrings[LIndex] := LArray[5];
-    FDQuery.ParamByName('CARTAO').AsStrings[LIndex] := LArray[6];
+    FDQuery.ParamByName(ParametersNames[TParameters.Id]).AsIntegers[LIndex] := LArray[Ord(TParameters.Id)].ToInteger;
+    FDQuery.ParamByName(ParametersNames[TParameters.Name]).AsStrings[LIndex] := LArray[Ord(TParameters.Name)];
+    FDQuery.ParamByName(ParametersNames[TParameters.City]).AsStrings[LIndex] := LArray[Ord(TParameters.City)];
+    FDQuery.ParamByName(ParametersNames[TParameters.Email]).AsStrings[LIndex] := LArray[Ord(TParameters.Email)];
+    FDQuery.ParamByName(ParametersNames[TParameters.Birthday]).AsDateTimes[LIndex] := StrToDateTimeDef(LArray[Ord(TParameters.Birthday)], MinDateTime);
+    FDQuery.ParamByName(ParametersNames[TParameters.Profession]).AsStrings[LIndex] := LArray[Ord(TParameters.Profession)];
+    FDQuery.ParamByName(ParametersNames[TParameters.Card]).AsStrings[LIndex] := LArray[Ord(TParameters.Card)];
   end;
 
   FDQuery.Execute(FDQuery.Params.ArraySize);

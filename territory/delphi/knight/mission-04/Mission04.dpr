@@ -6,6 +6,7 @@ program Mission04;
 // Mission: 04
 
 uses
+  MidasLib,
   Vcl.Forms,
   Form.Main in 'src\Form\Form.Main.pas' {Main};
 
@@ -19,3 +20,4 @@ begin
 
   ReportMemoryLeaksOnShutdown := True;
 end.
+
