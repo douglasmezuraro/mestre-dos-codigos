@@ -8,7 +8,7 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     ActionList: TActionList;
     ActionSearch: TAction;
     GroupBoxAddress: TGroupBox;

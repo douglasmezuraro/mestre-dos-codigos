@@ -14,7 +14,7 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     DataSourceDepartments: TDataSource;
     DataSourceEmployees: TDataSource;
     DataSourceEmployeesDepartments: TDataSource;

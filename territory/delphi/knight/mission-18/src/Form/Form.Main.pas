@@ -9,7 +9,7 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     ApplicationEvents: TApplicationEvents;
     DataSet: TClientDataSet;
     DataSource: TDataSource;
