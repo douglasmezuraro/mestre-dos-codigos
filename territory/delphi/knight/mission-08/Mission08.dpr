@@ -6,6 +6,7 @@ program Mission08;
 // Mission: 08
 
 uses
+  MidasLib,
   Vcl.Forms,
   System.SysUtils,
   Helper.DBGrid in 'src\Helper\Helper.DBGrid.pas',

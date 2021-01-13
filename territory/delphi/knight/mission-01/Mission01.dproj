@@ -95,9 +95,9 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="src\API.CloudRepository.pas"/>
-        <DCCReference Include="src\API.FileRepository.pas"/>
-        <DCCReference Include="src\Impl.Data.pas"/>
+        <DCCReference Include="src\Repository\Repository.Cloud.API.pas"/>
+        <DCCReference Include="src\Repository\Repository.Files.API.pas"/>
+        <DCCReference Include="src\Repository\Repository.Impl.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

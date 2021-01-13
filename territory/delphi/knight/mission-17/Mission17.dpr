@@ -6,6 +6,7 @@ program Mission17;
 // Mission: 17
 
 uses
+  MidasLib,
   System.SysUtils,
   Vcl.Forms,
   uPessoa in '..\mission-13\src\3rdParty\AppDesktop\uPessoa.pas',

@@ -1,9 +1,9 @@
-unit Impl.Data;
+unit Repository.Impl;
 
 interface
 
 uses
-  API.CloudRepository, API.FileRepository;
+  Repository.Cloud.API, Repository.Files.API;
 
 type
   TData = class sealed(TInterfacedObject, ICloudRepository, IFileRepository)

@@ -10,6 +10,7 @@ program Mission12;
 {$ENDIF}{$STRONGLINKTYPES ON}
 
 uses
+  MidasLib,
   System.SysUtils,
 {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
@@ -68,3 +69,4 @@ begin
     end;
   end;
 end.
+

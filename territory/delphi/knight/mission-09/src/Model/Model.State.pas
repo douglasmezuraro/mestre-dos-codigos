@@ -4,7 +4,7 @@ interface
 
 type
   TState = class sealed
-  private
+  strict private
     FName: string;
     FAbbreviation: string;
     FCapital: string;
@@ -28,3 +28,4 @@ begin
 end;
 
 end.
+

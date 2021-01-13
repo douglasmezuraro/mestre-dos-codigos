@@ -10,10 +10,11 @@ type
   strict private
     FDatabase: TDictionary<UInt64, TObject>;
   private
-    procedure RunMigration;
+    procedure MockDatabase;
   public
     constructor Create;
     destructor Destroy; override;
+    procedure AfterConstuction; override;
     function List: TArray<TObject>;
     function Get(const AId: UInt64): TObject;
   end;
@@ -23,13 +24,18 @@ implementation
 constructor TStateProvider.Create;
 begin
   FDatabase := TDictionary<UInt64, TObject>.Create;
-  RunMigration;
 end;
 
 destructor TStateProvider.Destroy;
 begin
   FDatabase.Free;
   inherited;
+end;
+
+procedure TStateProvider.AfterConstuction;
+begin
+  inherited;
+  MockDatabase;
 end;
 
 function TStateProvider.Get(const AId: UInt64): TObject;
@@ -42,7 +48,7 @@ begin
   Result := FDatabase.Values.ToArray;
 end;
 
-procedure TStateProvider.RunMigration;
+procedure TStateProvider.MockDatabase;
 begin
   FDatabase.Add(01, TState.Create('Acre', 'AC', 'Rio Branco', 'Norte'));
   FDatabase.Add(02, TState.Create('Alagoas', 'AL', 'Maceió', 'Nordeste'));

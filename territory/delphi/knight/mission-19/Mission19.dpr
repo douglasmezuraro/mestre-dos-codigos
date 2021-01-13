@@ -6,6 +6,7 @@ program Mission19;
 // Mission: 19
 
 uses
+  MidasLib,
   System.SysUtils,
   Vcl.Forms,
   Form.Main in 'src\Form\Form.Main.pas' {Main};
