@@ -10,8 +10,9 @@ uses
   Vcl.Forms,
   System.SysUtils,
   Form.Main in 'src\Form\Form.Main.pas' {Main},
-  Impl.ProgramInfo in 'src\Impl\Impl.ProgramInfo.pas',
-  Impl.ProgramList in 'src\Impl\Impl.ProgramList.pas';
+  Programs.Info in 'src\Programs\Programs.Info.pas',
+  Programs.List in 'src\Programs\Programs.List.pas',
+  Programs in 'src\Programs\Programs.pas';
 
 {$R *.res}
 

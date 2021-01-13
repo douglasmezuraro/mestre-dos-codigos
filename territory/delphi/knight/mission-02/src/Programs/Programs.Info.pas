@@ -1,4 +1,4 @@
-unit Impl.ProgramInfo;
+unit Programs.Info;
 
 interface
 
