@@ -57,9 +57,9 @@ begin
     FIdHttp.Get(FSource, FStream);
     FStream.SaveToFile(FTarget);
   except
-    on Exception: Exception do
+    on E: Exception do
     begin
-      ApplicationShowException(Exception);
+      ApplicationShowException(E);
     end;
   end;
 end;

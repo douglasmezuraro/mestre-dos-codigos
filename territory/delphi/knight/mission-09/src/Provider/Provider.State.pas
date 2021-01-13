@@ -14,7 +14,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure AfterConstuction; override;
+    procedure AfterConstruction; override;
     function List: TArray<TObject>;
     function Get(const AId: UInt64): TObject;
   end;
@@ -32,7 +32,7 @@ begin
   inherited;
 end;
 
-procedure TStateProvider.AfterConstuction;
+procedure TStateProvider.AfterConstruction;
 begin
   inherited;
   MockDatabase;

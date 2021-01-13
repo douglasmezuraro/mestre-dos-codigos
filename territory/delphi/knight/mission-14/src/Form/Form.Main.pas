@@ -66,9 +66,9 @@ begin
 
     FDConnection.Connected := True;
   except
-    on Error: Exception do
+    on E: Exception do
     begin
-      raise Exception.CreateFmt('There was a problem connecting to the database: %s.', [Error.Message]);
+      raise Exception.CreateFmt('There was a problem connecting to the database: %s.', [E.Message]);
       Application.Terminate;
     end;
   end;

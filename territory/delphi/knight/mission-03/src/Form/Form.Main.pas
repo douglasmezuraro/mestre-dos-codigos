@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList, Vcl.StdCtrls,
-  System.Zip, Vcl.ComCtrls, System.UITypes, System.Actions, Impl.Zip;
+  System.Zip, Vcl.ComCtrls, System.UITypes, System.Actions, Zip.Wrapper;
 
 type
   TMain = class sealed(TForm)
@@ -81,14 +81,14 @@ begin
   try
     FZipWrapper.Compress;
   except
-    on Exception: EArgumentException do
+    on E: EArgumentException do
     begin
-      MessageDlg(Exception.Message, TmsgDlgType.mtWarning, [mbOk], 0);
+      MessageDlg(E.Message, TmsgDlgType.mtWarning, [mbOk], 0);
     end;
 
-    on Exception: Exception do
+    on E: Exception do
     begin
-      MessageDlg('Unhandled error: ' + Exception.Message, TmsgDlgType.mtWarning, [mbOk], 0);
+      MessageDlg('Unhandled error: ' + E.Message, TmsgDlgType.mtWarning, [mbOk], 0);
     end;
   end;
 end;

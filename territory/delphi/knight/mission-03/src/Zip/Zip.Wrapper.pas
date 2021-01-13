@@ -1,4 +1,4 @@
-unit Impl.Zip;
+unit Zip.Wrapper;
 
 interface
 
