@@ -11,8 +11,9 @@ uses
   Form.Main in 'src\Form\Form.Main.pas' {Main},
   Email.Sender in 'src\Email\Email.Sender.pas',
   Email.DTO in 'src\Email\Email.DTO.pas',
-  Email.Wrapper in 'src\Email\Email.Wrapper.pas',
-  Impl.Cryptography in 'src\Impl\Impl.Cryptography.pas';
+  Email in 'src\Email\Email.pas',
+  Email.Cryptography in 'src\Email\Email.Cryptography.pas',
+  Email.Exceptions in 'src\Email\Email.Exceptions.pas';
 
 {$R *.res}
 

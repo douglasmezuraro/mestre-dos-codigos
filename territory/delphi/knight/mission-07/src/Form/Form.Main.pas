@@ -4,12 +4,12 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnList,
-  Vcl.ComCtrls, System.Actions, System.UITypes, Vcl.Dialogs, Email.Wrapper, Impl.Cryptography,
-  Vcl.Buttons, System.ImageList, Vcl.ImgList;
+  Vcl.ComCtrls, System.Actions, System.UITypes, Vcl.Dialogs, Vcl.Buttons, System.ImageList, Vcl.ImgList,
+  Email;
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     ActionList: TActionList;
     ActionSend: TAction;
     ComboBoxIdSMTPAuthenticationType: TComboBox;
@@ -42,9 +42,9 @@ type
     ImageList: TImageList;
     ButtonSend: TSpeedButton;
   {$ENDREGION}
-    procedure ActionSendExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure ActionSelectAttachmentsExecute(Sender: TObject);
+    procedure ActionSendExecute(ASender: TObject);
+    procedure FormShow(ASender: TObject);
+    procedure ActionSelectAttachmentsExecute(ASender: TObject);
   private
     procedure Send;
     function GetDTO: TEmailDTO;
@@ -60,12 +60,12 @@ implementation
 
 {$R *.dfm}
 
-procedure TMain.ActionSelectAttachmentsExecute(Sender: TObject);
+procedure TMain.ActionSelectAttachmentsExecute(ASender: TObject);
 begin
   ListBoxAttachments.Items.AddStrings(SelectAttachments);
 end;
 
-procedure TMain.ActionSendExecute(Sender: TObject);
+procedure TMain.ActionSendExecute(ASender: TObject);
 begin
   Send;
 end;
@@ -79,7 +79,7 @@ begin
   ComboBoxIdSMTPAuthenticationType.Items.AddStrings(TIdSMTPAuthenticationType.ToStringArray);
 end;
 
-procedure TMain.FormShow(Sender: TObject);
+procedure TMain.FormShow(ASender: TObject);
 begin
   PageControl.ActivePage := TabSheetMessage;
   EditHost.Text := 'smtp.office365.com';
@@ -150,9 +150,9 @@ begin
           LSender.Free;
         end;
       except
-        on Error: Exception do
+        on E: Exception do
         begin
-          MessageDlg(Error.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
+          MessageDlg(E.Message, TMsgDlgType.mtWarning, mbOKCancel, 0);
         end;
       end;
     end).Start;

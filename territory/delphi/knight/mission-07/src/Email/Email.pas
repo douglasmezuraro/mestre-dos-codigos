@@ -1,9 +1,10 @@
-unit Email.Wrapper;
+unit Email;
 
 interface
 
 uses
-  System.SysUtils, Email.DTO, Email.Sender, IdSMTP, IdSSLOpenSSL, IdExplicitTLSClientServerBase;
+  Email.Cryptography, Email.DTO, Email.Sender, Email.Exceptions, IdSMTP, IdSSLOpenSSL,
+  IdExplicitTLSClientServerBase, System.SysUtils;
 
 type
   TIdSSLVersion = IdSSLOpenSSL.TIdSSLVersion;
@@ -11,9 +12,22 @@ type
   TIdUseTLS = IdExplicitTLSClientServerBase.TIdUseTLS;
   TIdSMTPAuthenticationType = IdSMTP.TIdSMTPAuthenticationType;
   TEmailDTO = Email.DTO.TEmailDTO;
-  EEmailSenderArgumentException = Email.Sender.EEmailSenderArgumentException;
-  TEmailSender = Email.Sender.TEmailSender;
 
+  TEmailSender = Email.Sender.TEmailSender;
+  TCryptography = Email.Cryptography.TCryptography;
+
+{$REGION 'Exceptions'}
+  EEmailSenderArgumentException = Email.Exceptions.EEmailSenderArgumentException;
+  EEmailEmptyHost = Email.Exceptions.EEmailEmptyHost;
+  EEmailEmptyUsername = Email.Exceptions.EEmailEmptyUsername;
+  EEmailEmptyAddress = Email.Exceptions.EEmailEmptyAddress;
+  EEmailEmptyPassword = Email.Exceptions.EEmailEmptyPassword;
+  EEmailEmptyBody = Email.Exceptions.EEmailEmptyBody;
+  EEmailEmptySubject = Email.Exceptions.EEmailEmptySubject;
+  EEmailEmptyRecipients = Email.Exceptions.EEmailEmptyRecipients;
+{$ENDREGION}
+
+{$REGION 'Enum helpers'}
   TIdSSLVersionHelper = record Helper for TIdSSLVersion
     private
       const Map: array[TIdSSLVersion] of string = ('SSL v2', 'SSL v23', 'SSL v3', 'TLS v1', 'TLS v1.1', 'TLS v1.2');
@@ -57,6 +71,7 @@ type
       class function ToArray: TArray<TIdSMTPAuthenticationType>; static;
       class function ToStringArray: TArray<string>; static;
     end;
+{$ENDREGION}
 
 implementation
 

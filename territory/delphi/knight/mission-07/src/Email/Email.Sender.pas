@@ -4,11 +4,9 @@ interface
 
 uses
   IdMessage, IdText, IdSMTP, IdSSLOpenSSL, IdExplicitTLSClientServerBase, IdAttachmentFile,
-  Impl.Cryptography, System.Classes, System.SysUtils, Vcl.Forms, Email.DTO;
+  Email.Cryptography, System.Classes, System.SysUtils, Email.DTO, Email.Exceptions;
 
 type
-  EEmailSenderArgumentException = class(EArgumentException);
-
   TEmailSender = class sealed
   strict private
     FIdSMTP: TIdSMTP;
@@ -18,9 +16,9 @@ type
     FEmailDTO: TEmailDTO;
   private
     procedure Validate;
-    procedure Build;
+    procedure Assign;
   public
-    constructor Create(const ADTO: TEmailDTO);
+    constructor Create(const AEmailDTO: TEmailDTO);
     destructor Destroy; override;
     procedure AfterConstruction; override;
     procedure Send;
@@ -28,7 +26,7 @@ type
 
 implementation
 
-constructor TEmailSender.Create(const ADTO: TEmailDTO);
+constructor TEmailSender.Create(const AEmailDTO: TEmailDTO);
 begin
   FIdSMTP := TIdSMTP.Create(nil);
   FIdMessage := TIdMessage.Create(nil);
@@ -38,7 +36,7 @@ begin
   FIdSMTP.IOHandler := FIOHandler;
   FIdMessage.Encoding := TIdMessageEncoding.meMIME;
   FIdText.ContentType := 'text/plain; charset=iso-8859-1';
-  FEmailDTO := ADTO;
+  FEmailDTO := AEmailDTO;
 end;
 
 destructor TEmailSender.Destroy;
@@ -53,11 +51,11 @@ end;
 procedure TEmailSender.AfterConstruction;
 begin
   inherited;
-  Build;
+  Assign;
   Validate;
 end;
 
-procedure TEmailSender.Build;
+procedure TEmailSender.Assign;
 var
   LAttachment: string;
 begin
@@ -99,37 +97,37 @@ procedure TEmailSender.Validate;
 begin
   if FIdSMTP.Host.Trim.IsEmpty then
   begin
-    raise EEmailSenderArgumentException.Create('The host cannot be empty.');
+    raise EEmailEmptyHost.Create('The host cannot be empty.');
   end;
 
   if FIdSMTP.Username.Trim.IsEmpty then
   begin
-    raise EEmailSenderArgumentException.Create('The username cannot be empty.');
+    raise EEmailEmptyUsername.Create('The username cannot be empty.');
   end;
 
   if FIdMessage.From.Address.Trim.IsEmpty then
   begin
-    raise EEmailSenderArgumentException.Create('The address cannot be empty.');
+    raise EEmailEmptyAddress.Create('The address cannot be empty.');
   end;
 
   if FIdSMTP.Password.Trim.IsEmpty then
   begin
-    raise EEmailSenderArgumentException.Create('The password cannot be empty.');
+    raise EEmailEmptyPassword.Create('The password cannot be empty.');
   end;
 
   if FIdText.Body.Count = 0 then
   begin
-    raise EEmailSenderArgumentException.Create('The body cannot be empty.');
+    raise EEmailEmptyBody.Create('The body cannot be empty.');
   end;
 
   if FIdMessage.Subject.Trim.IsEmpty then
   begin
-    raise EEmailSenderArgumentException.Create('The subject cannot be empty.');
+    raise EEmailEmptySubject.Create('The subject cannot be empty.');
   end;
 
   if FIdMessage.Recipients.EMailAddresses.Trim.IsEmpty then
   begin
-    raise EEmailSenderArgumentException.Create('The recipients cannot be empty.');
+    raise EEmailEmptyRecipients.Create('The recipients cannot be empty.');
   end;
 end;
 
