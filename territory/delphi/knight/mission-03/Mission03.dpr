@@ -8,6 +8,7 @@ program Mission03;
 uses
   MidasLib,
   Vcl.Forms,
+  System.SysUtils,
   Form.Main in 'src\Form\Form.Main.pas' {Main},
   Helper.ZipFile in 'src\Helper\Helper.ZipFile.pas',
   Zip.Wrapper in 'src\Zip\Zip.Wrapper.pas';
@@ -20,6 +21,8 @@ begin
   Application.CreateForm(TMain, Main);
   Application.Run;
 
-  ReportMemoryLeaksOnShutdown := True;
+{$WARN SYMBOL_PLATFORM OFF}
+  ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
+{$WARN SYMBOL_PLATFORM DEFAULT}
 end.
 
