@@ -21,11 +21,11 @@ type
     Timer: TTimer;
     TrayIcon: TTrayIcon;
   {$ENDREGION}
-    procedure OnTimer(Sender: TObject);
-    procedure OnMinimize(Sender: TObject);
-    procedure OnTrayIconDblClick(Sender: TObject);
-    procedure OnDataSetAfterPost(const ADataSet: TDataSet);
-    procedure OnReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
+    procedure OnTimer(ASender: TObject);
+    procedure OnMinimize(ASender: TObject);
+    procedure OnTrayIconDblClick(ASender: TObject);
+    procedure OnDataSetAfterPost(ADataSet: TDataSet);
+    procedure OnReceiveLocalNotification(ASender: TObject; ANotification: TNotification);
   strict private
     FNotifications: TStack<TNotification>;
   private
@@ -91,27 +91,27 @@ begin
   Timer.Enabled := True;
 end;
 
-procedure TMain.OnDataSetAfterPost(const ADataSet: TDataSet);
+procedure TMain.OnDataSetAfterPost(ADataSet: TDataSet);
 begin
   FNotifications.Push(CreateNotification(ADataSet));
 end;
 
-procedure TMain.OnReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
+procedure TMain.OnReceiveLocalNotification(ASender: TObject; ANotification: TNotification);
 begin
   Maximize;
 end;
 
-procedure TMain.OnMinimize(Sender: TObject);
+procedure TMain.OnMinimize(ASender: TObject);
 begin
   Minimize;
 end;
 
-procedure TMain.OnTrayIconDblClick(Sender: TObject);
+procedure TMain.OnTrayIconDblClick(ASender: TObject);
 begin
   Maximize;
 end;
 
-procedure TMain.OnTimer(Sender: TObject);
+procedure TMain.OnTimer(ASender: TObject);
 const
   DATE_FORMAT: string = 'dd/mm/yyyy hh:MM';
 var

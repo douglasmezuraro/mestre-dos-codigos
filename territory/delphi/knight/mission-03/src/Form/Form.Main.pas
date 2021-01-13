@@ -22,10 +22,10 @@ type
     Memo: TMemo;
     ProgressBar: TProgressBar;
   {$ENDREGION}
-    procedure ActionCompressExecute(Sender: TObject);
-    procedure OnProgress(Sender: TObject; FileName: string; Header: TZipHeader; Position: Int64);
-    procedure ActionSelectFilesExecute(Sender: TObject);
-    procedure ActionSelectFileNameExecute(Sender: TObject);
+    procedure ActionCompressExecute(ASender: TObject);
+    procedure OnProgress(ASender: TObject; FileName: string; AHeader: TZipHeader; APosition: Int64);
+    procedure ActionSelectFilesExecute(ASender: TObject);
+    procedure ActionSelectFileNameExecute(ASender: TObject);
   strict private
     FZipWrapper: TZipWrapper;
   private
@@ -57,19 +57,19 @@ begin
   inherited;
 end;
 
-procedure TMain.ActionCompressExecute(Sender: TObject);
+procedure TMain.ActionCompressExecute(ASender: TObject);
 begin
   ProgressBar.Position := 0;
   Compress;
 end;
 
-procedure TMain.ActionSelectFileNameExecute(Sender: TObject);
+procedure TMain.ActionSelectFileNameExecute(ASender: TObject);
 begin
   FZipWrapper.FileName := SelectFileName;
   EditFileName.Text := FZipWrapper.FileName;
 end;
 
-procedure TMain.ActionSelectFilesExecute(Sender: TObject);
+procedure TMain.ActionSelectFilesExecute(ASender: TObject);
 begin
   FZipWrapper.Files := SelectFiles;
   Memo.Lines.Clear;
@@ -93,9 +93,9 @@ begin
   end;
 end;
 
-procedure TMain.OnProgress(Sender: TObject; FileName: string; Header: TZipHeader; Position: Int64);
+procedure TMain.OnProgress(ASender: TObject; FileName: string; AHeader: TZipHeader; APosition: Int64);
 begin
-  ProgressBar.Position := (Position * 100) div Header.UncompressedSize;
+  ProgressBar.Position := (APosition * 100) div AHeader.UncompressedSize;
 end;
 
 function TMain.SelectFileName: string;

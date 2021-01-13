@@ -42,6 +42,10 @@ object Main: TMain
     object TabSheetDepartments: TTabSheet
       Caption = 'Departamentos'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GridDepartments: TDBGrid
         Left = 0
         Top = 0
@@ -60,6 +64,10 @@ object Main: TMain
     object TabSheetEmployeesDepartments: TTabSheet
       Caption = 'Empregados x Departamentos'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GridEmployeesDepartments: TDBGrid
         Left = 0
         Top = 0

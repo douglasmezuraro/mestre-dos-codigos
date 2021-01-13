@@ -16,7 +16,7 @@ type
     FieldVersion: TStringField;
     Grid: TDBGrid;
   {$ENDREGION}
-    procedure FormShow(Sender: TObject);
+    procedure FormShow(ASender: TObject);
   strict private
     FPrograms: TProgramList;
   private
@@ -46,7 +46,7 @@ begin
   inherited;
 end;
 
-procedure TMain.FormShow(Sender: TObject);
+procedure TMain.FormShow(ASender: TObject);
 begin
   ListPrograms;
 end;

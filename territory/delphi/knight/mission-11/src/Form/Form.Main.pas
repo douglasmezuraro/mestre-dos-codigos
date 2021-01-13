@@ -20,8 +20,8 @@ type
     EditCEP: TMaskEdit;
     ButtonSearch: TButton;
   {$ENDREGION}
-    procedure ActionSearchExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
+    procedure ActionSearchExecute(ASender: TObject);
+    procedure FormShow(ASender: TObject);
   strict private
     FWebService: AtendeCliente;
   private
@@ -43,12 +43,12 @@ begin
   FWebService := WebService.Correios.GetAtendeCliente(True);
 end;
 
-procedure TMain.ActionSearchExecute(Sender: TObject);
+procedure TMain.ActionSearchExecute(ASender: TObject);
 begin
   Search;
 end;
 
-procedure TMain.FormShow(Sender: TObject);
+procedure TMain.FormShow(ASender: TObject);
 begin
   EditCEP.SetFocus;
 end;

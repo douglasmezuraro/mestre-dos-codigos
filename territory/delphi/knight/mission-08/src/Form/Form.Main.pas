@@ -25,7 +25,7 @@ type
     Request: TRESTRequest;
     EditUser: TEdit;
   {$ENDREGION}
-    procedure ActionSearchExecute(Sender: TObject);
+    procedure ActionSearchExecute(ASender: TObject);
   private
     procedure Search;
   end;
@@ -37,7 +37,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TMain.ActionSearchExecute(Sender: TObject);
+procedure TMain.ActionSearchExecute(ASender: TObject);
 begin
   Search;
 end;

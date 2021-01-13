@@ -37,7 +37,7 @@ type
     function DatabaseExists: Boolean;
     procedure ConnectToDatabase;
     procedure SetUp;
-    procedure RunScripts(Sender: TObject);
+    procedure RunScripts(ASender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -79,7 +79,7 @@ begin
   Result := TFile.Exists(FDConnection.Params.Database);
 end;
 
-procedure TMain.RunScripts(Sender: TObject);
+procedure TMain.RunScripts(ASender: TObject);
 begin
   FDScript.ValidateAll;
   FDScript.ExecuteAll;

@@ -49,8 +49,6 @@ object Main: TMain
     DataSource = DataSource
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 0
-    ExplicitWidth = 480
   end
   object Timer: TTimer
     Enabled = False

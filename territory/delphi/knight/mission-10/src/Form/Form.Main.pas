@@ -14,7 +14,7 @@ type
     ActionValidate: TAction;
     ButtonValidate: TButton;
   {$ENDREGION}
-    procedure ActionValidateExecute(Sender: TObject);
+    procedure ActionValidateExecute(ASender: TObject);
   strict private
     FWebService: WebServicesSoap;
   private
@@ -36,7 +36,7 @@ begin
   FWebService := WebService.RegExLib.GetWebServicesSoap(True);
 end;
 
-procedure TMain.ActionValidateExecute(Sender: TObject);
+procedure TMain.ActionValidateExecute(ASender: TObject);
 begin
   Validate;
 end;

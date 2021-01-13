@@ -28,7 +28,7 @@ type
     ButtonSearch: TButton;
     ActionList: TActionList;
     ActionSearch: TAction;
-    procedure ActionSearchExecute(Sender: TObject);
+    procedure ActionSearchExecute(ASender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -60,7 +60,7 @@ begin
   inherited;
 end;
 
-procedure TMain.ActionSearchExecute(Sender: TObject);
+procedure TMain.ActionSearchExecute(ASender: TObject);
 var
   LCitie: string;
 begin

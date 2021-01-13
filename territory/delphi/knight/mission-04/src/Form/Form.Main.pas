@@ -28,11 +28,11 @@ type
     MemoThirdPath: TMemo;
     Panel: TPanel;
   {$ENDREGION}
-    procedure ActionListFilesExecute(Sender: TObject);
-    procedure ActionSelectPathAExecute(Sender: TObject);
-    procedure ActionSelectPathBExecute(Sender: TObject);
-    procedure ActionSelectPathCExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
+    procedure ActionListFilesExecute(ASender: TObject);
+    procedure ActionSelectPathAExecute(ASender: TObject);
+    procedure ActionSelectPathBExecute(ASender: TObject);
+    procedure ActionSelectPathCExecute(ASender: TObject);
+    procedure FormShow(ASender: TObject);
   private
     procedure ClearMemos;
     procedure ListFiles;
@@ -46,23 +46,23 @@ implementation
 
 {$R *.dfm}
 
-procedure TMain.ActionListFilesExecute(Sender: TObject);
+procedure TMain.ActionListFilesExecute(ASender: TObject);
 begin
   ClearMemos;
   ListFiles;
 end;
 
-procedure TMain.ActionSelectPathAExecute(Sender: TObject);
+procedure TMain.ActionSelectPathAExecute(ASender: TObject);
 begin
   EditFirstPath.Text := SelectFolder;
 end;
 
-procedure TMain.ActionSelectPathBExecute(Sender: TObject);
+procedure TMain.ActionSelectPathBExecute(ASender: TObject);
 begin
   EditSecondPath.Text := SelectFolder;
 end;
 
-procedure TMain.ActionSelectPathCExecute(Sender: TObject);
+procedure TMain.ActionSelectPathCExecute(ASender: TObject);
 begin
   EditThirdPath.Text := SelectFolder;
 end;
@@ -74,7 +74,7 @@ begin
   MemoThirdPath.Lines.Clear;
 end;
 
-procedure TMain.FormShow(Sender: TObject);
+procedure TMain.FormShow(ASender: TObject);
 begin
   EditFirstPath.Text := 'C:\Windows\System32\';
   EditSecondPath.Text := 'C:\Windows\SysWOW64\';

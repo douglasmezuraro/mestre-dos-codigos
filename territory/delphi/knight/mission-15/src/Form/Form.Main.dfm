@@ -43,6 +43,7 @@ object Main: TMain
       Height = 27
       Align = alLeft
       TabOrder = 0
+      ExplicitHeight = 21
     end
     object ButtonSearch: TButton
       Left = 665
@@ -52,10 +53,6 @@ object Main: TMain
       Action = ActionSearch
       Align = alClient
       TabOrder = 1
-      ExplicitLeft = 640
-      ExplicitTop = 6
-      ExplicitWidth = 75
-      ExplicitHeight = 25
     end
   end
   object FDMemTableCustomers: TFDMemTable

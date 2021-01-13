@@ -13,7 +13,7 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     ButtonInsert: TButton;
     FDConnection: TFDConnection;
     FDGUIxWaitCursor: TFDGUIxWaitCursor;
@@ -25,13 +25,13 @@ type
     ActionInsert: TAction;
     FDScript: TFDScript;
   {$ENDREGION}
-    procedure ActionInsertExecute(Sender: TObject);
+    procedure ActionInsertExecute(ASender: TObject);
   private
     function DatabaseExists: Boolean;
     procedure ConnectToDatabase;
     procedure LoadFile;
     procedure Insert;
-    procedure RunScripts(Sender: TObject);
+    procedure RunScripts(ASender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -50,7 +50,7 @@ begin
   LoadFile;
 end;
 
-procedure TMain.ActionInsertExecute(Sender: TObject);
+procedure TMain.ActionInsertExecute(ASender: TObject);
 var
   LStopWatch: TStopWatch;
 begin
@@ -113,7 +113,7 @@ begin
   Memo.Lines.Delete(0);
 end;
 
-procedure TMain.RunScripts(Sender: TObject);
+procedure TMain.RunScripts(ASender: TObject);
 begin
   FDScript.ValidateAll;
   FDScript.ExecuteAll;
