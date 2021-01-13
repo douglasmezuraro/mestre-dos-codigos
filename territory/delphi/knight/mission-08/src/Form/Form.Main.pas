@@ -10,7 +10,7 @@ uses
 
 type
   TMain = class sealed(TForm)
-  {$REGION 'Visual Components'}
+  {$REGION 'Components'}
     Panel: TPanel;
     Grid: TDBGrid;
     ButtonSearch: TButton;
