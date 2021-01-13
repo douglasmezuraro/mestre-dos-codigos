@@ -1,10 +1,10 @@
-unit Impl.ProgramList;
+unit Programs.List;
 
 interface
 
 uses
-  Impl.ProgramInfo, System.Classes, System.Generics.Collections, System.SysUtils, System.Win.Registry,
-  Winapi.Windows;
+  System.Classes, System.Generics.Collections, System.SysUtils, System.Win.Registry, Winapi.Windows,
+  Programs.Info;
 
 type
   TProgramList = class sealed

@@ -3,8 +3,8 @@ unit Form.Main;
 interface
 
 uses
-  Data.DB, Datasnap.DBClient, Impl.ProgramInfo, Impl.ProgramList, System.Classes, Vcl.Controls,
-  Vcl.DBGrids, Vcl.Forms, Vcl.Grids;
+  Data.DB, Datasnap.DBClient, System.Classes, Vcl.Controls, Vcl.DBGrids, Vcl.Forms, Vcl.Grids,
+  Programs;
 
 type
   TMain = class sealed(TForm)
