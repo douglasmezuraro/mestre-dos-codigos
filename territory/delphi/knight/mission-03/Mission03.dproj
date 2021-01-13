@@ -97,7 +97,6 @@
         </DelphiCompile>
         <DCCReference Include="src\Form\Form.Main.pas">
             <Form>Main</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="src\Helper\Helper.ZipFile.pas"/>
         <DCCReference Include="src\Zip\Zip.Wrapper.pas"/>
