@@ -7,9 +7,9 @@ uses
 
 type
   EZipArgumentException = class abstract(EArgumentException);
-  EMustSelectAtLeastOneFile = class sealed(EZipArgumentException);
-  EMustSelectTheFileToBeSaved = class sealed(EZipArgumentException);
-  EInvalidFileExtension = class sealed(EZipArgumentException);
+  EZipMustSelectAtLeastOneFile = class sealed(EZipArgumentException);
+  EZipMustSelectTheFileToBeSaved = class sealed(EZipArgumentException);
+  EZipInvalidFileExtension = class sealed(EZipArgumentException);
 
 implementation
 

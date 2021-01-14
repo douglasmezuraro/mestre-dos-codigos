@@ -48,12 +48,12 @@ begin
 
   if FSource.Trim.IsEmpty then
   begin
-    raise ESourceCannotBeEmpty.Create('The source cannot be empty.');
+    raise EDownloaderSourceCannotBeEmpty.Create('The source cannot be empty.');
   end;
 
   if FTarget.Trim.IsEmpty then
   begin
-    raise ETargetCannotBeEmpty.Create('The target cannot be empty.');
+    raise EDownloaderTargetCannotBeEmpty.Create('The target cannot be empty.');
   end;
 end;
 

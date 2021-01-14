@@ -7,13 +7,13 @@ uses
 
 type
   EEmailSenderArgumentException = class abstract(EArgumentException);
-  EEmailEmptyHost = class sealed(EEmailSenderArgumentException);
-  EEmailEmptyUsername = class sealed(EEmailSenderArgumentException);
-  EEmailEmptyAddress = class sealed(EEmailSenderArgumentException);
-  EEmailEmptyPassword = class sealed(EEmailSenderArgumentException);
-  EEmailEmptyBody = class sealed(EEmailSenderArgumentException);
-  EEmailEmptySubject = class sealed(EEmailSenderArgumentException);
-  EEmailEmptyRecipients = class sealed(EEmailSenderArgumentException);
+  EEmailHostCannotBeEmpty = class sealed(EEmailSenderArgumentException);
+  EEmailUserNameCannotBeEmpty = class sealed(EEmailSenderArgumentException);
+  EEmailAddressCannotBeEmpty = class sealed(EEmailSenderArgumentException);
+  EEmailPasswordCannotBeEmpty = class sealed(EEmailSenderArgumentException);
+  EEmailBodyCannotBeEmpty = class sealed(EEmailSenderArgumentException);
+  EEmailSubjectCannotBeEmpty = class sealed(EEmailSenderArgumentException);
+  EEmailRecipientsCannotBeEmpty = class sealed(EEmailSenderArgumentException);
 
 implementation
 

@@ -12,8 +12,6 @@ type
     FFiles: TArray<string>;
     FZipFile: TZipFile;
     FInvalidExtensions: TArray<string>;
-  private
-    procedure Validate;
   public
     constructor Create(const AZipDTO: TZipDTO);
     destructor Destroy; override;
@@ -39,9 +37,31 @@ begin
 end;
 
 procedure TZipWrapper.AfterConstruction;
+var
+  LFileName: TFileName;
+  LExtension: string;
 begin
   inherited;
-  Validate;
+  if FFiles = nil then
+  begin
+    raise EZipMustSelectAtLeastOneFile.Create('You must select at least one file.');
+  end;
+
+  if FFileName.Trim.IsEmpty then
+  begin
+    raise EZipMustSelectTheFileToBeSaved.Create('You must select the file to be saved.');
+  end;
+
+  for LFileName in FFiles do
+  begin
+    for LExtension in FInvalidExtensions do
+    begin
+      if TPath.GetExtension(LFileName).Equals(LExtension) then
+      begin
+        raise EZipInvalidFileExtension.CreateFmt('Files with the extension "%s" are not allowed.', [LExtension]);
+      end;
+    end;
+  end;
 end;
 
 procedure TZipWrapper.Compress;
@@ -51,33 +71,6 @@ begin
     FZipFile.Add(FFiles);
   finally
     FZipFile.Close;
-  end;
-end;
-
-procedure TZipWrapper.Validate;
-var
-  LFileName: TFileName;
-  LExtension: string;
-begin
-  if FFiles = nil then
-  begin
-    raise EMustSelectAtLeastOneFile.Create('You must select at least one file.');
-  end;
-
-  if FFileName.Trim.IsEmpty then
-  begin
-    raise EMustSelectTheFileToBeSaved.Create('You must select the file to be saved.');
-  end;
-
-  for LFileName in FFiles do
-  begin
-    for LExtension in FInvalidExtensions do
-    begin
-      if TPath.GetExtension(LFileName).Equals(LExtension) then
-      begin
-        raise EInvalidFileExtension.CreateFmt('Files with the extension "%s" are not allowed.', [LExtension]);
-      end;
-    end;
   end;
 end;
 

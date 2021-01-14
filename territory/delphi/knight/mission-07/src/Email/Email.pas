@@ -3,7 +3,7 @@ unit Email;
 interface
 
 uses
-  Email.Cryptography, Email.DTO, Email.Sender, Email.Exceptions, IdSMTP, IdSSLOpenSSL,
+  Email.Cryptography, Email.DTO, Email.Exceptions ,Email.Sender, IdSMTP, IdSSLOpenSSL,
   IdExplicitTLSClientServerBase;
 
 type
@@ -16,13 +16,13 @@ type
   TCryptography = Email.Cryptography.TCryptography;
 
   EEmailSenderArgumentException = Email.Exceptions.EEmailSenderArgumentException;
-  EEmailEmptyHost = Email.Exceptions.EEmailEmptyHost;
-  EEmailEmptyUsername = Email.Exceptions.EEmailEmptyUsername;
-  EEmailEmptyAddress = Email.Exceptions.EEmailEmptyAddress;
-  EEmailEmptyPassword = Email.Exceptions.EEmailEmptyPassword;
-  EEmailEmptyBody = Email.Exceptions.EEmailEmptyBody;
-  EEmailEmptySubject = Email.Exceptions.EEmailEmptySubject;
-  EEmailEmptyRecipients = Email.Exceptions.EEmailEmptyRecipients;
+  EEmailHostCannotBeEmpty = Email.Exceptions.EEmailHostCannotBeEmpty;
+  EEmailUserNameCannotBeEmpty = Email.Exceptions.EEmailUserNameCannotBeEmpty;
+  EEmailAddressCannotBeEmpty = Email.Exceptions.EEmailAddressCannotBeEmpty;
+  EEmailPasswordCannotBeEmpty = Email.Exceptions.EEmailPasswordCannotBeEmpty;
+  EEmailBodyCannotBeEmpty = Email.Exceptions.EEmailBodyCannotBeEmpty;
+  EEmailSubjectCannotBeEmpty = Email.Exceptions.EEmailSubjectCannotBeEmpty;
+  EEmailRecipientsCannotBeEmpty = Email.Exceptions.EEmailRecipientsCannotBeEmpty;
 
   TIdSSLVersionHelper = record Helper for TIdSSLVersion
   private

@@ -7,8 +7,8 @@ uses
 
 type
   EDownloaderArgumentException = class abstract(EArgumentException);
-  ESourceCannotBeEmpty = class sealed(EDownloaderArgumentException);
-  ETargetCannotBeEmpty = class sealed(EDownloaderArgumentException);
+  EDownloaderSourceCannotBeEmpty = class sealed(EDownloaderArgumentException);
+  EDownloaderTargetCannotBeEmpty = class sealed(EDownloaderArgumentException);
 
 implementation
 

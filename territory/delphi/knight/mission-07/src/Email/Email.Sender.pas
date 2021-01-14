@@ -13,10 +13,6 @@ type
     FIdText: TIdText;
     FIdMessage: TIdMessage;
     FIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-    FEmailDTO: TEmailDTO;
-  private
-    procedure Validate;
-    procedure Assign;
   public
     constructor Create(const AEmailDTO: TEmailDTO);
     destructor Destroy; override;
@@ -27,6 +23,8 @@ type
 implementation
 
 constructor TEmailSender.Create(const AEmailDTO: TEmailDTO);
+var
+  LAttachment: string;
 begin
   FIdSMTP := TIdSMTP.Create(nil);
   FIdMessage := TIdMessage.Create(nil);
@@ -36,7 +34,25 @@ begin
   FIdSMTP.IOHandler := FIOHandler;
   FIdMessage.Encoding := TIdMessageEncoding.meMIME;
   FIdText.ContentType := 'text/plain; charset=iso-8859-1';
-  FEmailDTO := AEmailDTO;
+  FIdSMTP.Host := AEmailDTO.Host;
+  FIdSMTP.Username := AEmailDTO.Username;
+  FIdMessage.From.Address := AEmailDTO.Username;
+  FIdSMTP.Password := TCryptography.Decrypt(AEmailDTO.Password);
+  FIdSMTP.Port := AEmailDTO.Port;
+  FIdText.Body.AddStrings(AEmailDTO.Body);
+  FIdMessage.Subject := AEmailDTO.Subject;
+  FIdMessage.Recipients.EMailAddresses := AEmailDTO.Recipients;
+  FIdMessage.CCList.EMailAddresses := AEmailDTO.CC;
+  FIdMessage.BCCList.EMailAddresses := AEmailDTO.BCC;
+  FIOHandler.SSLOptions.Method := AEmailDTO.IdSSLVersion;
+  FIOHandler.SSLOptions.Mode := AEmailDTO.IdSSLMode;
+  FIdSMTP.UseTLS := AEmailDTO.IdUseTLS;
+  FIdSMTP.AuthType := AEmailDTO.IdSMTPAuthenticationType;
+
+  for LAttachment in AEmailDTO.Attachments do
+  begin
+    TIdAttachmentFile.Create(FIdMessage.MessageParts, LAttachment);
+  end;
 end;
 
 destructor TEmailSender.Destroy;
@@ -51,32 +67,40 @@ end;
 procedure TEmailSender.AfterConstruction;
 begin
   inherited;
-  Assign;
-  Validate;
-end;
 
-procedure TEmailSender.Assign;
-var
-  LAttachment: string;
-begin
-  FIdSMTP.Host := FEmailDTO.Host;
-  FIdSMTP.Username := FEmailDTO.Username;
-  FIdMessage.From.Address := FEmailDTO.Username;
-  FIdSMTP.Password := TCryptography.Decrypt(FEmailDTO.Password);
-  FIdSMTP.Port := FEmailDTO.Port;
-  FIdText.Body.AddStrings(FEmailDTO.Body);
-  FIdMessage.Subject := FEmailDTO.Subject;
-  FIdMessage.Recipients.EMailAddresses := FEmailDTO.Recipients;
-  FIdMessage.CCList.EMailAddresses := FEmailDTO.CC;
-  FIdMessage.BCCList.EMailAddresses := FEmailDTO.BCC;
-  FIOHandler.SSLOptions.Method := FEmailDTO.IdSSLVersion;
-  FIOHandler.SSLOptions.Mode := FEmailDTO.IdSSLMode;
-  FIdSMTP.UseTLS := FEmailDTO.IdUseTLS;
-  FIdSMTP.AuthType := FEmailDTO.IdSMTPAuthenticationType;
-
-  for LAttachment in FEmailDTO.Attachments do
+  if FIdSMTP.Host.Trim.IsEmpty then
   begin
-    TIdAttachmentFile.Create(FIdMessage.MessageParts, LAttachment);
+    raise EEmailHostCannotBeEmpty.Create('The host cannot be empty.');
+  end;
+
+  if FIdSMTP.Username.Trim.IsEmpty then
+  begin
+    raise EEmailUserNameCannotBeEmpty.Create('The username cannot be empty.');
+  end;
+
+  if FIdMessage.From.Address.Trim.IsEmpty then
+  begin
+    raise EEmailAddressCannotBeEmpty.Create('The address cannot be empty.');
+  end;
+
+  if FIdSMTP.Password.Trim.IsEmpty then
+  begin
+    raise EEmailPasswordCannotBeEmpty.Create('The password cannot be empty.');
+  end;
+
+  if FIdText.Body.ToString.Trim.IsEmpty then
+  begin
+    raise EEmailBodyCannotBeEmpty.Create('The body cannot be empty.');
+  end;
+
+  if FIdMessage.Subject.Trim.IsEmpty then
+  begin
+    raise EEmailSubjectCannotBeEmpty.Create('The subject cannot be empty.');
+  end;
+
+  if FIdMessage.Recipients.EMailAddresses.Trim.IsEmpty then
+  begin
+    raise EEmailRecipientsCannotBeEmpty.Create('The recipients cannot be empty.');
   end;
 end;
 
@@ -90,44 +114,6 @@ begin
     end;
   finally
     FIdSMTP.Disconnect;
-  end;
-end;
-
-procedure TEmailSender.Validate;
-begin
-  if FIdSMTP.Host.Trim.IsEmpty then
-  begin
-    raise EEmailEmptyHost.Create('The host cannot be empty.');
-  end;
-
-  if FIdSMTP.Username.Trim.IsEmpty then
-  begin
-    raise EEmailEmptyUsername.Create('The username cannot be empty.');
-  end;
-
-  if FIdMessage.From.Address.Trim.IsEmpty then
-  begin
-    raise EEmailEmptyAddress.Create('The address cannot be empty.');
-  end;
-
-  if FIdSMTP.Password.Trim.IsEmpty then
-  begin
-    raise EEmailEmptyPassword.Create('The password cannot be empty.');
-  end;
-
-  if FIdText.Body.Count = 0 then
-  begin
-    raise EEmailEmptyBody.Create('The body cannot be empty.');
-  end;
-
-  if FIdMessage.Subject.Trim.IsEmpty then
-  begin
-    raise EEmailEmptySubject.Create('The subject cannot be empty.');
-  end;
-
-  if FIdMessage.Recipients.EMailAddresses.Trim.IsEmpty then
-  begin
-    raise EEmailEmptyRecipients.Create('The recipients cannot be empty.');
   end;
 end;
 

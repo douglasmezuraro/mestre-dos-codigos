@@ -6,13 +6,14 @@ uses
   Zip.Wrapper, Zip.DTO, Zip.Exceptions, System.Zip;
 
 type
+  TZipHeader = System.Zip.TZipHeader;
   TZipWrapper = Zip.Wrapper.TZipWrapper;
   TZipDTO = Zip.DTO.TZipDTO;
+
   EZipArgumentException = Zip.Exceptions.EZipArgumentException;
-  EMustSelectAtLeastOneFile = Zip.Exceptions.EMustSelectAtLeastOneFile;
-  EMustSelectTheFileToBeSaved = Zip.Exceptions.EMustSelectTheFileToBeSaved;
-  EInvalidFileExtension = Zip.Exceptions.EInvalidFileExtension;
-  TZipHeader = System.Zip.TZipHeader;
+  EZipMustSelectAtLeastOneFile = Zip.Exceptions.EZipMustSelectAtLeastOneFile;
+  EZipMustSelectTheFileToBeSaved = Zip.Exceptions.EZipMustSelectTheFileToBeSaved;
+  EZipInvalidFileExtension = Zip.Exceptions.EZipInvalidFileExtension;
 
 implementation
 
