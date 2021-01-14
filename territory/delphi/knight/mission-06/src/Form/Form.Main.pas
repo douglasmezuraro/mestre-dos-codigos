@@ -54,7 +54,7 @@ end;
 
 procedure TMain.FormCloseQuery(ASender: TObject; var ACanClose: Boolean);
 begin
-  ACanClose := FDownloader = nil;
+  ACanClose := (FDownloader = nil) or (FDownloader.Finished);
 end;
 
 procedure TMain.FormShow(ASender: TObject);

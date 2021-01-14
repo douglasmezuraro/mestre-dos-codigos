@@ -12,7 +12,8 @@ uses
   Form.Main in 'src\Form\Form.Main.pas' {Main},
   Downloader.Thread in 'src\Downloader\Downloader.Thread.pas',
   Downloader.DTO in 'src\Downloader\Downloader.DTO.pas',
-  Downloader in 'src\Downloader\Downloader.pas';
+  Downloader in 'src\Downloader\Downloader.pas',
+  Downloader.Exceptions in 'src\Downloader\Downloader.Exceptions.pas';
 
 {$R *.res}
 
