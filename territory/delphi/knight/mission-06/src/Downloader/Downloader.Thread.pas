@@ -3,7 +3,7 @@ unit Downloader.Thread;
 interface
 
 uses
-  IdComponent, IdHTTP, System.Classes, System.SysUtils, Downloader.Exceptions, Downloader.DTO;
+  IdHTTP, System.Classes, System.SysUtils, Downloader.Exceptions, Downloader.DTO;
 
 type
   TThreadDownloader = class sealed(TThread)

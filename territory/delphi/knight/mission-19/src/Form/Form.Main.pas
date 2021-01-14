@@ -8,8 +8,9 @@ uses
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase, FireDAC.Comp.UI, FireDAC.Comp.Script,
   FireDAC.Comp.ScriptCommands, System.IOUtils, Vcl.StdCtrls, System.Diagnostics, System.UITypes,
-  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.ExtCtrls, FireDAC.Phys.FBDef,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, System.Actions, Vcl.ActnList, FireDAC.Stan.Util;
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.ExtCtrls,
+  System.Actions, Vcl.ActnList, FireDAC.Stan.Util, FireDAC.Phys.FBDef, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf;
 
 type
   TMain = class sealed(TForm)
@@ -74,7 +75,7 @@ begin
   except
     on E: Exception do
     begin
-      raise Exception.CreateFmt('There was a problem connecting to the database: %s.', [E.Message]);
+      MessageDlg(Format('There was a problem connecting to the database: %s.', [E.Message]), TMSgDlgType.mtWarning, mbOKCancel, 0);
       Application.Terminate;
     end;
   end;

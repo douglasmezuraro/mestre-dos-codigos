@@ -15,17 +15,12 @@ uses
   uPessoa in '..\mission-13\src\3rdParty\AppDesktop\uPessoa.pas';
 
 begin
-  try
-    Writeln('O warning acontecia devido a class "TPessoa" ter a section "published".');
-    Writeln('Para corrigir o warning deve ser incluído a diretiva {$M+} na classe para que o RTTI');
-    Writeln('consiga ler as propriedades/métodos da seção "published".');
-    Readln;
-  except
-    on Exception: Exception do
-    begin
-      Writeln(Exception.ClassName, ': ', Exception.Message);
-    end;
-  end;
+  Writeln('O warning acontecia devido a class "TPessoa" ter a section "published".');
+  Writeln('Para corrigir o warning deve ser incluído a diretiva {$M+} na classe para que o RTTI');
+  Writeln('consiga ler as propriedades/métodos da seção "published".');
+  Writeln(string.Empty);
+  Writeln('Press any key to exit.');
+  Readln;
 
 {$WARN SYMBOL_PLATFORM OFF}
   ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
