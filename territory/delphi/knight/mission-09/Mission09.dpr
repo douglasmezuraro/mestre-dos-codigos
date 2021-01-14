@@ -54,9 +54,9 @@ begin
         Writeln('Server is runing on ', AHorse.Host, ':', AHorse.Port);
       end);
   except
-    on Error: Exception do
+    on E: Exception do
     begin
-      Writeln(Error.ClassName, ': ', Error.Message);
+      Writeln(E.ClassName, ': ', E.Message);
       THorse.StopListen;
     end;
   end;

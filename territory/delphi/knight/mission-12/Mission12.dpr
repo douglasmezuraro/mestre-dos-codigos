@@ -63,9 +63,9 @@ begin
     ReportMemoryLeaksOnShutdown := DebugHook.ToBoolean;
   {$WARN SYMBOL_PLATFORM DEFAULT}
   except
-    on Error: Exception do
+    on E: Exception do
     begin
-      System.Writeln(Error.ClassName, ': ', Error.Message);
+      System.Writeln(E.ClassName, ': ', E.Message);
     end;
   end;
 end.
