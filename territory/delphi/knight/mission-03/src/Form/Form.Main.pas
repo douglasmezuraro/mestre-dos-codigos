@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList, Vcl.StdCtrls,
-  System.Zip, Vcl.ComCtrls, System.UITypes, System.Actions, Zip.Wrapper;
+  Vcl.ComCtrls, System.UITypes, System.Actions, Zip;
 
 type
   TMain = class sealed(TForm)
@@ -27,7 +27,7 @@ type
     procedure ActionSelectFilesExecute(ASender: TObject);
     procedure ActionSelectFileNameExecute(ASender: TObject);
   strict private
-    FZipWrapper: TZipWrapper;
+    FZip: TZipWrapper;
   private
     function SelectFiles: TArray<string>;
     function SelectFileName: string;
@@ -47,13 +47,13 @@ implementation
 constructor TMain.Create(AOwner: TComponent);
 begin
   inherited;
-  FZipWrapper := TZipWrapper.Create;
-  FZipWrapper.OnProgress := OnProgress;
+  FZip := TZipWrapper.Create;
+  FZip.OnProgress := OnProgress;
 end;
 
 destructor TMain.Destroy;
 begin
-  FZipWrapper.Free;
+  FZip.Free;
   inherited;
 end;
 
@@ -65,23 +65,23 @@ end;
 
 procedure TMain.ActionSelectFileNameExecute(ASender: TObject);
 begin
-  FZipWrapper.FileName := SelectFileName;
-  EditFileName.Text := FZipWrapper.FileName;
+  FZip.FileName := SelectFileName;
+  EditFileName.Text := FZip.FileName;
 end;
 
 procedure TMain.ActionSelectFilesExecute(ASender: TObject);
 begin
-  FZipWrapper.Files := SelectFiles;
+  FZip.Files := SelectFiles;
   Memo.Lines.Clear;
-  Memo.Lines.AddStrings(FZipWrapper.Files);
+  Memo.Lines.AddStrings(FZip.Files);
 end;
 
 procedure TMain.Compress;
 begin
   try
-    FZipWrapper.Compress;
+    FZip.Compress;
   except
-    on E: EArgumentException do
+    on E: EZipArgumentException do
     begin
       MessageDlg(E.Message, TmsgDlgType.mtWarning, [mbOk], 0);
     end;

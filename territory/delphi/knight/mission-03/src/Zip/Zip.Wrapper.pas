@@ -3,7 +3,7 @@ unit Zip.Wrapper;
 interface
 
 uses
-  Helper.ZipFile, System.IOUtils, System.SysUtils, System.Zip;
+  Helper.ZipFile, System.IOUtils, System.SysUtils, System.Zip, Zip.Exceptions;
 
 type
   TZipWrapper = class sealed
@@ -64,19 +64,19 @@ var
 begin
   if FFiles = nil then
   begin
-    raise EArgumentException.Create('You must select at least one file.');
+      raise EMustSelectAtLeastOneFile.Create('You must select at least one file.');
   end;
 
   if FFileName.Trim.IsEmpty then
   begin
-    raise EArgumentException.Create('It is necessary to select the file to be saved.');
+    raise EMustSelectTheFileToBeSaved.Create('You must select the file to be saved.');
   end;
 
   for LFileName in FFiles do
   begin
     if TPath.GetExtension(LFileName).Equals('.exe') then
     begin
-      raise EArgumentException.Create('Files with the extension ".exe" are not allowed.');
+      raise EInvalidFileExtension.Create('Files with the extension ".exe" are not allowed.');
     end;
   end;
 end;

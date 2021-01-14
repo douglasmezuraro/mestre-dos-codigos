@@ -99,6 +99,9 @@
             <Form>Main</Form>
         </DCCReference>
         <DCCReference Include="src\Helper\Helper.ZipFile.pas"/>
+        <DCCReference Include="src\Zip\Zip.pas"/>
+        <DCCReference Include="src\Zip\Zip.DTO.pas"/>
+        <DCCReference Include="src\Zip\Zip.Exceptions.pas"/>
         <DCCReference Include="src\Zip\Zip.Wrapper.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -125,7 +128,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\Mission03.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="bin\Win32\Debug\Mission03.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Mission03.exe</RemoteName>
                         <Overwrite>true</Overwrite>
