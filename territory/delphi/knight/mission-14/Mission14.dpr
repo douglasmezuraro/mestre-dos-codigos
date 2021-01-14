@@ -1,10 +1,5 @@
 program Mission14;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 14
-
 uses
   MidasLib,
   Vcl.Forms,

@@ -1,10 +1,5 @@
 program Mission17;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 17
-
 uses
   MidasLib,
   System.SysUtils,

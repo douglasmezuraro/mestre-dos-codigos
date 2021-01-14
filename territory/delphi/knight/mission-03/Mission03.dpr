@@ -1,10 +1,5 @@
 program Mission03;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 03
-
 uses
   MidasLib,
   System.SysUtils,

@@ -1,10 +1,5 @@
 program Mission07;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 07
-
 uses
   MidasLib,
   System.SysUtils,

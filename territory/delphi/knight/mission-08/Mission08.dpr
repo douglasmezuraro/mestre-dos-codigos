@@ -1,10 +1,5 @@
 program Mission08;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 08
-
 uses
   MidasLib,
   Vcl.Forms,

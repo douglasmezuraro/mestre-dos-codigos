@@ -1,10 +1,5 @@
 program Mission04;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 04
-
 uses
   MidasLib,
   Vcl.Forms,

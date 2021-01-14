@@ -1,12 +1,6 @@
 program Mission09;
 
-// Author: Douglas Mezuraro
-// Modification: 21/12/2020
-// Level: Knight
-// Mission: 09
-
 {$APPTYPE CONSOLE}
-
 {$R *.res}
 
 uses
