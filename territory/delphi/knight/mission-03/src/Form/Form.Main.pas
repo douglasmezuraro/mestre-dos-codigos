@@ -26,15 +26,10 @@ type
     procedure OnProgress(ASender: TObject; FileName: string; AHeader: TZipHeader; APosition: Int64);
     procedure ActionSelectFilesExecute(ASender: TObject);
     procedure ActionSelectFileNameExecute(ASender: TObject);
-  strict private
-    FZip: TZipWrapper;
   private
     function SelectFiles: TArray<string>;
     function SelectFileName: string;
     procedure Compress;
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
   end;
 
 var
@@ -44,19 +39,6 @@ implementation
 
 {$R *.dfm}
 
-constructor TMain.Create(AOwner: TComponent);
-begin
-  inherited;
-  FZip := TZipWrapper.Create;
-  FZip.OnProgress := OnProgress;
-end;
-
-destructor TMain.Destroy;
-begin
-  FZip.Free;
-  inherited;
-end;
-
 procedure TMain.ActionCompressExecute(ASender: TObject);
 begin
   ProgressBar.Position := 0;
@@ -65,21 +47,32 @@ end;
 
 procedure TMain.ActionSelectFileNameExecute(ASender: TObject);
 begin
-  FZip.FileName := SelectFileName;
-  EditFileName.Text := FZip.FileName;
+  EditFileName.Text := SelectFileName;
 end;
 
 procedure TMain.ActionSelectFilesExecute(ASender: TObject);
 begin
-  FZip.Files := SelectFiles;
   Memo.Lines.Clear;
-  Memo.Lines.AddStrings(FZip.Files);
+  Memo.Lines.AddStrings(SelectFiles);
 end;
 
 procedure TMain.Compress;
+var
+  LZip: TZipWrapper;
+  LZipDTO: TZipDTO;
 begin
   try
-    FZip.Compress;
+    LZipDTO.Files := Memo.Lines.ToStringArray;
+    LZipDTO.FileName := EditFileName.Text;
+    LZipDTO.OnProgress := OnProgress;
+    LZipDTO.InvalidExtensions := ['.exe'];
+
+    LZip := TZipWrapper.Create(LZipDTO);
+    try
+      LZip.Compress;
+    finally
+      LZip.Free;
+    end;
   except
     on E: EZipArgumentException do
     begin

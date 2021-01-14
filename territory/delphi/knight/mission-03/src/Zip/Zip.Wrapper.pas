@@ -3,7 +3,7 @@ unit Zip.Wrapper;
 interface
 
 uses
-  Helper.ZipFile, System.IOUtils, System.SysUtils, System.Zip, Zip.Exceptions;
+  Helper.ZipFile, System.IOUtils, System.SysUtils, System.Zip, Zip.DTO, Zip.Exceptions;
 
 type
   TZipWrapper = class sealed
@@ -11,24 +11,25 @@ type
     FFileName: string;
     FFiles: TArray<string>;
     FZipFile: TZipFile;
+    FInvalidExtensions: TArray<string>;
   private
-    function GetOnProgress: TZipProgressEvent;
-    procedure SetOnProgress(const AZipProgressEvent: TZipProgressEvent);
     procedure Validate;
   public
-    constructor Create;
+    constructor Create(const AZipDTO: TZipDTO);
     destructor Destroy; override;
+    procedure AfterConstruction; override;
     procedure Compress;
-    property Files: TArray<string> read FFiles write FFiles;
-    property FileName: string read FFileName write FFileName;
-    property OnProgress: TZipProgressEvent read GetOnProgress write SetOnProgress;
   end;
 
 implementation
 
-constructor TZipWrapper.Create;
+constructor TZipWrapper.Create(const AZipDTO: TZipDTO);
 begin
   FZipFile := TZipFile.Create;
+  FZipFile.OnProgress := AZipDTO.OnProgress;
+  FFiles := AZipDTO.Files;
+  FFileName := AZipDTO.FileName;
+  FInvalidExtensions := AZipDTO.InvalidExtensions;
 end;
 
 destructor TZipWrapper.Destroy;
@@ -37,9 +38,14 @@ begin
   inherited;
 end;
 
+procedure TZipWrapper.AfterConstruction;
+begin
+  inherited;
+  Validate;
+end;
+
 procedure TZipWrapper.Compress;
 begin
-  Validate;
   FZipFile.Open(FFileName, TZipMode.zmWrite);
   try
     FZipFile.Add(FFiles);
@@ -48,23 +54,14 @@ begin
   end;
 end;
 
-function TZipWrapper.GetOnProgress: TZipProgressEvent;
-begin
-  Result := FZipFile.OnProgress;
-end;
-
-procedure TZipWrapper.SetOnProgress(const AZipProgressEvent: TZipProgressEvent);
-begin
-  FZipFile.OnProgress := AZipProgressEvent;
-end;
-
 procedure TZipWrapper.Validate;
 var
   LFileName: TFileName;
+  LExtension: string;
 begin
   if FFiles = nil then
   begin
-      raise EMustSelectAtLeastOneFile.Create('You must select at least one file.');
+    raise EMustSelectAtLeastOneFile.Create('You must select at least one file.');
   end;
 
   if FFileName.Trim.IsEmpty then
@@ -74,9 +71,12 @@ begin
 
   for LFileName in FFiles do
   begin
-    if TPath.GetExtension(LFileName).Equals('.exe') then
+    for LExtension in FInvalidExtensions do
     begin
-      raise EInvalidFileExtension.Create('Files with the extension ".exe" are not allowed.');
+      if TPath.GetExtension(LFileName).Equals(LExtension) then
+      begin
+        raise EInvalidFileExtension.CreateFmt('Files with the extension "%s" are not allowed.', [LExtension]);
+      end;
     end;
   end;
 end;

@@ -11,6 +11,7 @@ type
     Files: TArray<string>;
     FileName: string;
     OnProgress: TZipProgressEvent;
+    InvalidExtensions: TArray<string>;
   end;
 
 implementation
