@@ -23,7 +23,7 @@ type
     ProgressBar: TProgressBar;
   {$ENDREGION}
     procedure ActionCompressExecute(ASender: TObject);
-    procedure OnProgress(ASender: TObject; FileName: string; AHeader: TZipHeader; APosition: Int64);
+    procedure OnProgress(ASender: TObject; AFileName: string; AHeader: TZipHeader; APosition: Int64);
     procedure ActionSelectFilesExecute(ASender: TObject);
     procedure ActionSelectFileNameExecute(ASender: TObject);
   private
@@ -41,7 +41,6 @@ implementation
 
 procedure TMain.ActionCompressExecute(ASender: TObject);
 begin
-  ProgressBar.Position := 0;
   Compress;
 end;
 
@@ -61,6 +60,7 @@ var
   LZip: TZipWrapper;
   LZipDTO: TZipDTO;
 begin
+  ProgressBar.Position := 0;
   try
     LZipDTO.Files := Memo.Lines.ToStringArray;
     LZipDTO.FileName := EditFileName.Text;
@@ -86,7 +86,7 @@ begin
   end;
 end;
 
-procedure TMain.OnProgress(ASender: TObject; FileName: string; AHeader: TZipHeader; APosition: Int64);
+procedure TMain.OnProgress(ASender: TObject; AFileName: string; AHeader: TZipHeader; APosition: Int64);
 begin
   ProgressBar.Position := (APosition * 100) div AHeader.UncompressedSize;
 end;
