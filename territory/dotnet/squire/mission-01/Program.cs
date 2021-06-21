@@ -50,7 +50,7 @@ namespace mission_01
 
         private static double ReadNumber()
         {
-            var number = 0.0;
+            var number = double.MinValue;
             while (!double.TryParse(Console.ReadLine(), out number)) ;
             return number;
         }

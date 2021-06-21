@@ -4,33 +4,42 @@ using System.Linq;
 
 namespace mission_02
 {
+    class Employee
+    {
+        public string name { get; set; }
+        public double salary { get; set; }
+        public override string ToString() => $"Nome: {this.name} - Salário: {this.salary:F2}";
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Missão 02");
-            var employees = new List<KeyValuePair<string, double>>();
+            var employees = new List<Employee>();
 
             Console.WriteLine("Digite a quantidade de funcionários");
             var quantity = ReadQuantity();
 
             for (int index = 1; index < quantity + 1; index++)
             {
+                var employee = new Employee();
+
                 Console.Write($"Digite o nome do funcionário #{index}: ");
-                var name = ReadName();
+                employee.name = ReadName();
 
                 Console.Write($"Digite o salário do funcionário #{index}: ");
-                var salary = ReadSalary();
+                employee.salary = ReadSalary();
 
                 Console.WriteLine("");
-                employees.Add(new KeyValuePair<string, double>(name, salary));
+                employees.Add(employee);
             }
 
-            var lower = employees.OrderBy(e => e.Value).First();
-            Console.WriteLine($"O funcionário {lower.Key} possui o menor salário com R${lower.Value:F2}.");
+            var lower = employees.OrderBy(e => e.salary).First();
+            Console.WriteLine($"Funcionário com salário mais baixo -> {lower}.");
 
-            var higher = employees.OrderBy(e => e.Value).Last();
-            Console.WriteLine($"O funcionário {higher.Key} possui o maior salário com R${higher.Value:F2}.");
+            var higher = employees.OrderBy(e => e.salary).Last();
+            Console.WriteLine($"Funcionário com salário mais alto -> {higher}.");
         }
 
         static string ReadName()
