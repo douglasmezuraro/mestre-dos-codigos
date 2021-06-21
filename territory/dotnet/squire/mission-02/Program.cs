@@ -22,35 +22,34 @@ namespace mission_02
                 Console.Write($"Digite o salário do funcionário #{index}: ");
                 var salary = ReadSalary();
 
-                employees.Add(new KeyValuePair<string, double>(name, salary));
-
                 Console.WriteLine("");
+                employees.Add(new KeyValuePair<string, double>(name, salary));
             }
 
-            var lower = employees.Where(e => e.Value == employees.Min(s => s.Value)).First();
-            Console.WriteLine($"O funcionário {lower.Key} possui o menor salário que é R${lower.Value}.");
+            var lower = employees.OrderBy(e => e.Value).First();
+            Console.WriteLine($"O funcionário {lower.Key} possui o menor salário com R${lower.Value:F2}.");
 
-            var higher = employees.Where(e => e.Value == employees.Max(s => s.Value)).First();
-            Console.WriteLine($"O funcionário {higher.Key} possui o maior salário que é R${higher.Value}.");
+            var higher = employees.OrderBy(e => e.Value).Last();
+            Console.WriteLine($"O funcionário {higher.Key} possui o maior salário com R${higher.Value:F2}.");
         }
 
         static string ReadName()
         {
-            var name = "";
-            name = Console.ReadLine();
+            var name = string.Empty;
+            do { name = Console.ReadLine(); } while (String.IsNullOrEmpty(name));
             return name;
         }
 
         static double ReadSalary()
         {
-            var salary = 0.0;
+            var salary = double.MinValue;
             while (!double.TryParse(Console.ReadLine(), out salary)) ;
             return salary;
         }
 
         static int ReadQuantity()
         {
-            var quantity = 0;
+            var quantity = int.MinValue;
             while (!int.TryParse(Console.ReadLine(), out quantity)) ;
             return quantity;
         }
