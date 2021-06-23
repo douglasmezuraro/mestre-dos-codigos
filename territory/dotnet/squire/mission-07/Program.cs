@@ -8,19 +8,16 @@ namespace mission_07
         {
             Console.WriteLine("Missão 7");
 
-            Console.Write("Digite o primeiro valor: ");
-            var a = ReadValidInt();
+            var length = args.Length == 2 ? int.Parse(args[1]) : 4;
+            var values = new int[length];
 
-            Console.Write("Digite o segundo valor: ");
-            var b = ReadValidInt();
+            for (int index = 0; index < length; index++)
+            {
+                Console.Write($"Digite o {index + 1}º número: ");
+                values[index] = ReadValidInt();
+            }
 
-            Console.Write("Digite o terceiro valor: ");
-            var c = ReadValidInt();
-
-            Console.Write("Digite o quarto valor: ");
-            var d = ReadValidInt();
-
-            var sum = SumOnlyEvens(new int[] { a, b, c, d });
+            var sum = SumOnlyEvens(values);
             Console.WriteLine($"Soma dos números pares: {sum}");
         }
 
